@@ -496,7 +496,6 @@ function runScript(scriptName) {
 function startRepl() {
   const vm = require("vm");
   const repl = require("repl");
-  const { Writable } = require("stream");
 
   log(`Kadence ${VERSION} ♪`, colors.bright + colors.green);
   log(`Type '.exit' to quit. Context is preserved.`, colors.dim);
@@ -607,7 +606,7 @@ function runTests(dir = process.cwd()) {
             env: { ...process.env, KADENCE_TEST_MODE: "true" }
           });
           stats.passed++;
-        } catch (err) {
+        } catch (_err) {
           stats.failed++;
           // output already shown
         } finally {
@@ -651,7 +650,7 @@ function generateDocs(dir = process.cwd(), isRoot = true) {
         if (trimmed.startsWith("note:")) {
           currentNote = trimmed.replace(/^note:\s*/, "").trim();
         } else if (trimmed.startsWith("export function ") || trimmed.startsWith("export async function ")) {
-          const name = trimmed.replace(/^export (async )?function /, "").split(/[ \(\[]/)[0];
+          const name = trimmed.replace(/^export (async )?function /, "").split(/[ ([]/)[0];
           docs.push({ file: path.relative(process.cwd(), full), name, note: currentNote, type: "function" });
           currentNote = "";
         } else if (trimmed.startsWith("export const ") || trimmed.startsWith("export let ")) {

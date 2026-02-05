@@ -4,5 +4,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
+    include: ["tests/compiler.test.js", "tests/language.test.js"]
   },
 });
