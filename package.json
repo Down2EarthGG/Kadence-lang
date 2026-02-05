@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kadence-lang/kadence-lang.git"
+    "url": "git+https://github.com/Down2EarthGG/Kadence-lang.git"
   },
   "bugs": {
-    "url": "https://github.com/kadence-lang/kadence-lang/issues"
+    "url": "https://github.com/Down2EarthGG/Kadence-lang/issues"
   },
-  "homepage": "https://github.com/kadence-lang/kadence-lang#readme",
+  "homepage": "https://github.com/Down2EarthGG/Kadence-lang#readme",
   "files": [
     "src/",
     "bin/",

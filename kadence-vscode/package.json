@@ -7,7 +7,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/kadence-lang/kadence-lang"
+        "url": "https://github.com/Down2EarthGG/Kadence-lang"
     },
     "description": "Language support for Kadence",
     "version": "0.2.0",

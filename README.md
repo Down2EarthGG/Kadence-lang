@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/kadence-lang.svg?style=flat-square)](https://www.npmjs.com/package/kadence-lang)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)](https://github.com/kadence-lang/kadence-lang)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)](https://github.com/Down2EarthGG/Kadence-lang)
 
 **A human-readable programming language that feels like poetry.**
 

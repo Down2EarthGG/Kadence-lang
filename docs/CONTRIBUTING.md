@@ -5,7 +5,7 @@ Thank you for your interest in contributing to Kadence! This document provides g
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/yourusername/kadence-lang.git`
+2. Clone your fork: `git clone https://github.com/yourusername/Kadence-lang.git`
 3. Install dependencies: `npm install`
 4. Make your changes
 5. Test your changes: `npm test`

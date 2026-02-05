@@ -34,7 +34,7 @@ export function render
     set tw text to "Twitter"
 
     let gh = create element "a"
-    set gh href to "https://github.com/kadence-lang/kadence-lang"
+    set gh href to "https://github.com/Down2EarthGG/Kadence-lang"
     set gh class to "hover:text-indigo-600 transition"
     set gh text to "GitHub"
 
