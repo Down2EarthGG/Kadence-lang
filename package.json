@@ -1,5 +1,5 @@
 {
-  "name": "kadence",
+  "name": "kadence-lang",
   "version": "0.2.0",
   "description": "A human-readable programming language that feels like poetry",
   "main": "src/compiler.js",
