@@ -1,0 +1,57 @@
+note: Hero section — badge, headline, tagline, install block
+
+export function render
+    let hero = create element "header"
+    set hero class to "relative pt-24 pb-32 px-4 shadow-sm overflow-hidden bg-slate-50"
+
+    let heroInner = create element "div"
+    set heroInner class to "max-w-7xl mx-auto relative z-10"
+
+    let heroCenter = create element "div"
+    set heroCenter class to "text-center"
+
+    let badge = create element "div"
+    set badge class to "inline-flex items-center space-x-2 bg-indigo-50 border border-indigo-100 rounded-full px-4 py-1.5 mb-8"
+
+    let badgeDot = create element "span"
+    set badgeDot class to "flex h-2 w-2 rounded-full bg-indigo-500"
+
+    let badgeText = create element "span"
+    set badgeText class to "text-sm font-semibold text-indigo-700"
+    set badgeText text to "Kadence 0.2.0 is here"
+
+    add badgeDot to badge
+    add badgeText to badge
+
+    let h1 = create element "h1"
+    set h1 class to "text-5xl lg:text-7xl font-extrabold tracking-tight text-slate-900 mb-8"
+    set h1 text to "Coding that feels like pure poetry."
+
+    let heroP = create element "p"
+    set heroP class to "max-w-2xl mx-auto text-xl text-slate-500 leading-relaxed mb-12"
+    set heroP text to "Experience the next generation of natural language programming. Express complex logic with the elegance of human speech, compiled to blazing fast JavaScript."
+
+    let installBlock = create element "div"
+    set installBlock class to "bg-white p-2 rounded-2xl shadow-xl border border-slate-200 flex items-center max-w-sm w-full mx-auto"
+
+    let installIcon = create element "div"
+    set installIcon class to "bg-indigo-600 p-2 rounded-lg text-white mr-3 text-sm"
+    set installIcon text to ">"
+
+    let installCode = create element "code"
+    set installCode class to "text-slate-800 font-mono text-sm flex-1 text-left"
+    set installCode text to "npm install -g kadence-lang"
+
+    add installIcon to installBlock
+    add installCode to installBlock
+
+    add badge to heroCenter
+    add h1 to heroCenter
+    add heroP to heroCenter
+    add installBlock to heroCenter
+
+    add heroCenter to heroInner
+    add heroInner to hero
+
+    return hero
+end
