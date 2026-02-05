@@ -140,12 +140,12 @@ Kadence ships with a comprehensive set of modules for common tasks.
 | `math` | `clamp`, `randomFloat`, `toRadians`, `hypotenuse` |
 | `datetime` | `the time now`, `the date today`, `diffDays`, `toIso` |
 | `file` | `readFile`, `writeFile`, `copyDir`, `removeDir`, `stat` |
-| `path` | `join`, `resolve`, `basename`, `dirname`, `extension` |
-| `env` | `get`, `has` (Environment Variables) |
+| `path` | `joinPaths`, `resolve`, `basename`, `dirname`, `extension` |
+| `env` | `getEnv`, `hasEnv` (Environment Variables) |
 | `process` | `args`, `exit`, `cwd` |
 | `system` | `platform`, `arch`, `totalMemory`, `freeMemory` |
-| `network` | `serve`, `get json` (Simple HTTP Server) |
-| `json` | `read`, `write`, `format`, `parseSafe` |
+| `network` | `serve`, `fetchJson` (Simple HTTP Server) |
+| `json` | `readJson`, `writeJson`, `format`, `parseSafe` |
 | `check` | `isNumber`, `isString`, `isEmail`, `between` |
 | `test` | `suite`, `assertEquals`, `assertTrue`, `assertThrows` |
 | `color` | `randomHex`, `rgbToHex`, `hexToRgb` |
