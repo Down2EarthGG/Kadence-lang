@@ -11,9 +11,28 @@ function preprocess(code) {
   const lines = code.split("\n");
   let result = "";
   let indentStack = [0];
+  let inBacktickString = false;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
+
+    // Check for backticks to toggle string state
+    // We remove escaped backticks to avoid false counts
+    const cleanLine = line.replace(/\\`/g, "__");
+    const backTickCount = (cleanLine.match(/`/g) || []).length;
+
+    const wasInString = inBacktickString;
+    if (backTickCount % 2 !== 0) {
+      inBacktickString = !inBacktickString;
+    }
+    const willBeInString = inBacktickString;
+
+    // If we started inside a string, preserve it exactly and skip indentation logic
+    if (wasInString) {
+      result += line + "\n";
+      continue;
+    }
+
     const trimmed = line.trim();
 
     if (trimmed.length === 0) {
@@ -49,10 +68,21 @@ function preprocess(code) {
     // Add the line itself
     result += line;
 
+    // If we are about to enter a multi-line string, DO NOT generate a block
+    if (willBeInString) {
+      result += "\n";
+      continue;
+    }
+
     // Check if we should add an opening brace
     let nextIndent = -1;
     for (let j = i + 1; j < lines.length; j++) {
       const nextTrimmed = lines[j].trim();
+
+      // We must handle the case where next line is inside a string?
+      // But we can't easily peek state. 
+      // Simplified assumption: Indentation of next NON-EMPTY line determines block.
+
       if (nextTrimmed.length > 0) {
         if (nextTrimmed === "end") {
           nextIndent = currentIndent;
@@ -186,7 +216,7 @@ Kadence {
 
   Block = "{" Statement* "}"
 
-  Expression = AwaitExpr | NewExpr | CreateExpr | ObjectLiteral | SpreadExpr | CoalesceExpr
+  Expression = AwaitExpr | NewExpr | CreateExpr | ObjectLiteral | SpreadExpr | TypeofExpr | CoalesceExpr
   
   NewExpr = "new" identifier "(" ListOf<Expression, ","> ")" -- paren
           | "new" identifier Arg* -- classic
@@ -258,9 +288,10 @@ Kadence {
   SpreadExpr = "..." Expression
   RangeExpr = "range" Expression "to" Expression
   
-  Lambda = identifier "=>" Expression                       -- simple
-         | "(" ListOf<identifier, ","> ")" "=>" Expression  -- multi
+  Lambda = identifier "=>" (Block | Expression)                       -- simple
+         | "(" ListOf<identifier, ","> ")" "=>" (Block | Expression)  -- multi
 
+  TypeofExpr = "typeof" Expression
 
   CoalesceExpr = CoalesceExpr "??" OrExpr -- coalesce
                | OrExpr
@@ -337,6 +368,7 @@ Kadence {
                  | Primary
 
   Primary = List                -- list
+          | Lambda              -- lambda
           | ItemAccess          -- access
           | Call                -- call
           | MathExpr            -- math
@@ -377,7 +409,7 @@ Kadence {
   Call = MemberAccess "(" ListOf<Expression, ","> ")" -- paren
        | "run" MemberAccess Arg*                      -- run
   
-  Arg = List | identifier | number | bool | string | "(" Expression ")" -- paren
+  Arg = Lambda | List | identifier | number | bool | string | "(" Expression ")" -- paren
 
   bool = "true" | "false"
   word = (letter | "_") (letter | digit | "_")*
@@ -400,10 +432,15 @@ Kadence {
   keyword = ("function" | "let" | "const" | "echo" | "say" | "print" | "true" | "false" | "if" | "elif" | "else" | "end" | "while" | "for" | "each" | "in" | "when" | "is" | "and" | "or" | "not" | "equals" | "more" | "than" | "at" | "least" | "most" | "plus" | "minus" | "times" | "run" | "list" | "item" | "from" | "create" | "element" | "set" | "class" | "add" | "to" | "ask" | "of" | "size" | "remove" | "increment" | "decrement" | "random" | "return" | "give" | "be" | "has" | "say" | "number" | "wait" | "second" | "seconds" | "uppercase" | "lowercase" | "average" | "save" | "read" | "go" | "convert" | "the" | "time" | "now" | "date" | "today" | "background" | "async" | "await" | "try" | "catch" | "match" | "then" | "repeat" | "object" | "get" | "post" | "put" | "delete" | "parse" | "stringify" | "regex" | "all" | "range" | "by" | "where" | "with" | "new" | "this" | "super" | "trim" | "split" | "join" | "map" | "filter" | "reduce" | "find" | "some" | "every" | "includes" | "starts" | "ends" | "replace" | "matches" | "extract" | "import" | "export" | "as" | "minimum" | "maximum" | "index" | "last" | "private" | "static" | "extends" | "pi" | "floor" | "ceiling" | "round" | "absolute" | "square" | "root" | "power" | "sin" | "cos" | "tan" | "break" | "continue") ~(letter | digit | "_")
   number = digit+ ("." digit+)?
   
-  string = "\\"" (escape | interpolation | text)* "\\""
+  string = doubleString | templateString
+  doubleString = "\\"" (escape | interpolation | textDouble)* "\\""
+  templateString = "\`" (escape | interpolation | textBacktick)* "\`"
+  
   escape = "\\\\" any
   interpolation = "{" (~"}" any)* "}"
-  text = (~("\\"" | "{" | "\\\\") any)+
+  
+  textDouble = (~("\\"" | "{" | "\\\\") any)+
+  textBacktick = (~("\`" | "{" | "\\\\") any)+
   
   space += "//" (~"\\n" any)*  -- comment
          | "note" ":"? (~"\\n" any)* -- note_comment
@@ -442,6 +479,9 @@ const semantics = grammar
   .addOperation("hasAwait", {
     AwaitExpr(_a, _e) {
       return true;
+    },
+    TypeofExpr(_t, e) {
+      return e.hasAwait();
     },
     _iter(...children) {
       return children.some((c) => c.hasAwait());
@@ -914,6 +954,7 @@ function __kadence_add(parent, child) {
     Multiplicative_div_word(left, _divided, _by, right) { return createNode(this, [left.toNode(), " / ", right.toNode()]); },
     Multiplicative(child) { return child.toNode(); },
     Primary_list(child) { return child.toNode(); },
+    Primary_lambda(child) { return child.toNode(); },
     Primary_access(child) { return child.toNode(); },
     Primary_call(child) { return child.toNode(); },
     Primary_math(child) { return child.toNode(); },
@@ -969,7 +1010,9 @@ function __kadence_add(parent, child) {
     MemberAccess_opt_index(obj, _dot, _lb, index, _rb) { return createNode(this, [obj.toNode(), "?.[", index.toNode(), "]"]); },
     MemberAccess_this(_this) { return "this"; },
     MemberAccess_super(_super) { return "super"; },
-    string(_l, parts, _r) { return createNode(this, ["`", ...parts.children.map(p => p.toNode()), "`"]); },
+    string(child) { return child.toNode(); },
+    doubleString(_l, parts, _r) { return createNode(this, ["`", ...parts.children.map(p => p.toNode()), "`"]); },
+    templateString(_l, parts, _r) { return createNode(this, ["`", ...parts.children.map(p => p.toNode()), "`"]); },
     escape(_slash, char) {
       const c = char.sourceString;
       if (c === "n") return "\\n";
@@ -980,7 +1023,8 @@ function __kadence_add(parent, child) {
       if (c === "`") return "\\`";
       return "\\" + c;
     },
-    text(char) { return char.sourceString; },
+    textDouble(char) { return char.sourceString; },
+    textBacktick(char) { return char.sourceString; },
     interpolation(_l, content, _r) {
       const exprMatch = grammar.match(content.sourceString, "Expression");
       if (exprMatch.failed()) throw new Error(`Invalid expression in string interpolation: ${exprMatch.message}`);
@@ -1559,6 +1603,9 @@ function __kadence_add(parent, child) {
     CoalesceExpr_coalesce(left, _op, right) {
       return `${left.toJS()} ?? ${right.toJS()}`;
     },
+    TypeofExpr(_typeof, expr) {
+      return `typeof ${expr.toJS()}`;
+    },
     CoalesceExpr(child) {
       return child.toJS();
     },
@@ -1683,6 +1730,9 @@ function __kadence_add(parent, child) {
     Primary_list(child) {
       return child.toJS();
     },
+    Primary_lambda(child) {
+      return child.toJS();
+    },
     Primary_access(child) {
       return child.toJS();
     },
@@ -1779,7 +1829,13 @@ function __kadence_add(parent, child) {
     MemberAccess_super(_super) {
       return "super";
     },
-    string(_l, parts, _r) {
+    string(child) {
+      return child.toJS();
+    },
+    doubleString(_l, parts, _r) {
+      return "`" + parts.children.map((p) => p.toJS()).join("") + "`";
+    },
+    templateString(_l, parts, _r) {
       return "`" + parts.children.map((p) => p.toJS()).join("") + "`";
     },
     escape(_slash, char) {
@@ -1792,7 +1848,10 @@ function __kadence_add(parent, child) {
       if (c === "`") return "\\`";
       return "\\" + c;
     },
-    text(char) {
+    textDouble(char) {
+      return char.sourceString;
+    },
+    textBacktick(char) {
       return char.sourceString;
     },
     interpolation(_l, content, _r) {
