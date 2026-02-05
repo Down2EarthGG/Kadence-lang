@@ -1,4 +1,48 @@
 {
+    "Note (Docstring)": {
+        "prefix": "note",
+        "body": [
+            "note: ${1:Description of the following export}"
+        ],
+        "description": "Add documentation for the export generator"
+    },
+    "Export Function": {
+        "prefix": "export",
+        "body": [
+            "export function ${1:name} ${2:params}",
+            "    $0",
+            "end"
+        ],
+        "description": "Exported function with block"
+    },
+    "Export Async Function": {
+        "prefix": "export-async",
+        "body": [
+            "export async function ${1:name} ${2:params}",
+            "    $0",
+            "end"
+        ],
+        "description": "Exported async function"
+    },
+    "Import statement": {
+        "prefix": "import",
+        "body": [
+            "import \"${1:stdlib/path.kade}\" as ${2:alias}"
+        ],
+        "description": "Import a module"
+    },
+    "Test Suite": {
+        "prefix": "suite",
+        "body": [
+            "import \"../stdlib/test.kade\" as t",
+            "",
+            "t.suite \"${1:Feature Name}\" () =>",
+            "    t.assertEquals (${2:1 plus 1}) ${3:2} \"${4:1 + 1 should be 2}\"",
+            "    $0",
+            "end"
+        ],
+        "description": "Create a new test suite"
+    },
     "Echo statement": {
         "prefix": "echo",
         "body": [
@@ -42,6 +86,15 @@
         ],
         "description": "For each loop"
     },
+    "While loop": {
+        "prefix": "while",
+        "body": [
+            "while ${1:condition}",
+            "    $0",
+            "end"
+        ],
+        "description": "While loop"
+    },
     "Repeat block": {
         "prefix": "repeat",
         "body": [
@@ -56,7 +109,7 @@
         "body": [
             "match ${1:expression}",
             "    when ${2:value} then ${3:action}",
-            "    else ${0:default_action}",
+            "    else ${4:default_action}",
             "end"
         ],
         "description": "Pattern matching"
@@ -70,14 +123,21 @@
         ],
         "description": "Function definition"
     },
-    "Async Function": {
-        "prefix": "async",
+    "Lambda": {
+        "prefix": "lambda",
         "body": [
-            "async function ${1:name} ${2:args}",
+            "(${1:params}) => ${2:expression}"
+        ],
+        "description": "Arrow function / Lambda"
+    },
+    "Lambda Block": {
+        "prefix": "lambdablock",
+        "body": [
+            "(${1:params}) =>",
             "    $0",
             "end"
         ],
-        "description": "Async function definition"
+        "description": "Arrow function with block"
     },
     "Class": {
         "prefix": "class",
@@ -100,17 +160,10 @@
             "try",
             "    $1",
             "catch error",
-            "    echo \"Oops: {error}\"",
+            "    echo \"Error: {error}\"",
             "end"
         ],
         "description": "Error handling"
-    },
-    "HTTP Get": {
-        "prefix": "get",
-        "body": [
-            "let ${1:data} = get from \"${2:url}\""
-        ],
-        "description": "Async HTTP GET"
     },
     "Wait": {
         "prefix": "wait",
@@ -119,14 +172,23 @@
         ],
         "description": "Pause execution"
     },
-    "Object literal": {
+    "Object (JSON-style)": {
+        "prefix": "{",
+        "body": [
+            "{",
+            "    ${1:key}: ${2:value}",
+            "}"
+        ],
+        "description": "Modern object literal"
+    },
+    "Object block": {
         "prefix": "object",
         "body": [
-            "let ${1:obj} = object",
-            "    ${2:key}: ${3:value}",
+            "object",
+            "    ${1:key}: ${2:value}",
             "end"
         ],
-        "description": "New object"
+        "description": "Traditional object block"
     },
     "Give (return)": {
         "prefix": "give",
@@ -135,13 +197,18 @@
         ],
         "description": "Return a value (poetic alias for return)"
     },
-    "While loop": {
-        "prefix": "while",
+    "Map list": {
+        "prefix": "map",
         "body": [
-            "while ${1:condition}",
-            "    $0",
-            "end"
+            "map ${1:list} with (${2:item}) => ${3:expression}"
         ],
-        "description": "While loop"
+        "description": "Map operation"
+    },
+    "Filter list": {
+        "prefix": "filter",
+        "body": [
+            "filter ${1:list} where (${2:item}) => ${3:expression}"
+        ],
+        "description": "Filter operation"
     }
 }
