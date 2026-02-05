@@ -1,5 +1,5 @@
 {
-  "name": "kadence-lang",
+  "name": "kadence",
   "version": "0.2.0",
   "description": "A human-readable programming language that feels like poetry",
   "main": "src/compiler.js",
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kadence-lang/kadence.git"
+    "url": "git+https://github.com/kadence-lang/kadence-lang.git"
   },
   "bugs": {
-    "url": "https://github.com/kadence-lang/kadence/issues"
+    "url": "https://github.com/kadence-lang/kadence-lang/issues"
   },
-  "homepage": "https://github.com/kadence-lang/kadence#readme",
+  "homepage": "https://github.com/kadence-lang/kadence-lang#readme",
   "files": [
     "src/",
     "bin/",

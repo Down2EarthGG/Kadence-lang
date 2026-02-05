@@ -35,7 +35,7 @@ Search for **"Kadence"** in the VS Code Extensions view (`Ctrl+Shift+X`).
 3. Press `F5` to launch a Debug Extension Host
 
 ## 🤝 Contributing
-Issues and pull requests are welcome in the [main repository](https://github.com/kadence-lang/kadence).
+Issues and pull requests are welcome in the [main repository](https://github.com/kadence-lang/kadence-lang).
 
 ---
 **Enjoy writing code that reads like a story.**

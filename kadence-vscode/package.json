@@ -7,7 +7,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/kadence-lang/kadence"
+        "url": "https://github.com/kadence-lang/kadence-lang"
     },
     "description": "Language support for Kadence",
     "version": "0.2.0",
