@@ -1,0 +1,18 @@
+note: --- Lists & Objects ---
+
+let fruits = list "apple" "banana" "cherry"
+for each fruit in fruits
+    echo "I love {fruit}"
+end
+
+add "mango" to fruits
+remove item 0 from fruits
+echo "Size: {size of fruits}"
+
+let person = object
+    name: "Alex"
+    age: 30
+end
+echo person.name
+echo keys of person
+echo values of person

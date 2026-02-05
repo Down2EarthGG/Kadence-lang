@@ -1,0 +1,11 @@
+note: Crypto utilities for Kadence (uses crypto-helpers.js)
+
+let mod = run require "./crypto-helpers.js"
+
+export function hash str
+    return run mod.hash str
+end
+
+export function randomBytes n
+    return run mod.randomBytes n
+end

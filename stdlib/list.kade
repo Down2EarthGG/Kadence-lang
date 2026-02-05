@@ -1,0 +1,75 @@
+note: List utilities for Kadence
+
+export function first array
+    return array[0]
+end
+
+export function lastOf array
+    let n = size of array
+    let idx = n minus 1
+    return array[idx]
+end
+
+export function isEmpty array
+    let len = size of array
+    return len equals 0
+end
+
+export function length array
+    return size of array
+end
+
+export function contains array itemToFind
+    let found = false
+    for each x in array
+        if x equals itemToFind
+            let found = true
+        end
+    end
+    return found
+end
+
+export function unique array
+    let result = list
+    for each x in array
+        let found = false
+        for each r in result
+            if r equals x
+                found = true
+            end
+        end
+        if not found
+            add x to result
+        end
+    end
+    return result
+end
+export function shuffle array
+    let output = list
+    for each x in array
+        add x to output
+    end
+    
+    let i = (size of output) minus 1
+    while i more than 0
+        let rand = run require "./random.js"
+        let j = run rand.int 0 (i plus 1)
+        
+        let temp = output[i]
+        output[i] = output[j]
+        output[j] = temp
+        
+        decrement i
+    end
+    return output
+end
+
+export function range start endNum
+    let result = list
+    let current = start
+    while current less than (endNum plus 1)
+        add current to result
+        increment current
+    end
+    return result
+end

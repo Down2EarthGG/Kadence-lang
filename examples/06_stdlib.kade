@@ -1,0 +1,20 @@
+note: --- Standard Library Showcase ---
+
+import "../stdlib/datetime.kade" as dt
+import "../stdlib/console.kade" as term
+import "../stdlib/check.kade" as check
+import "../stdlib/random.kade" as rnd
+import "../stdlib/color.kade" as color
+
+run term.log "Stdlib demo"
+echo "Current year: {run dt.year (run dt.currentTime)}"
+
+if run check.isNumber 42
+    echo "42 is a number"
+end
+
+let pick = run rnd.choice (list "a" "b" "c")
+echo "Random choice: {pick}"
+
+let hex = run color.randomHex
+echo "Random color: {hex}"

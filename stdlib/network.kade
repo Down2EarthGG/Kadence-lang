@@ -1,0 +1,37 @@
+note: Network utilities for Kadence
+
+let http = run require "http"
+
+export function serve port handler
+    let server = http.createServer((req, res) => {
+        let response = object
+            send: (body) => {
+                res.writeHead(200, { "Content-Type": "text/plain" })
+                res.end(body)
+            },
+            json: (body) => {
+                res.writeHead(200, { "Content-Type": "application/json" })
+                res.end(JSON.stringify(body))
+            },
+            html: (body) => {
+                res.writeHead(200, { "Content-Type": "text/html" })
+                res.end(body)
+            },
+            status: (code) => {
+              res.statusCode = code
+              return response
+            }
+        end
+
+        run handler req response
+    })
+
+    server.listen(port, () => {
+        say "Server running at http://localhost:{port}/"
+    })
+end
+
+export function get json url
+    let result = await get from url
+    return result
+end

@@ -1,0 +1,67 @@
+note: String utilities for Kadence
+
+export function words text
+    return split text by " "
+end
+
+export function lines text
+    return split text by "\n"
+end
+
+export function trimmed text
+    return trim text
+end
+
+export function capitalized text
+    let len = size of text
+    if len equals 0
+        return text
+    end
+    let firstChar = uppercase (text[0])
+    if size of text equals 1
+        return firstChar
+    end
+    let parts = split text by ""
+    let rest = list
+    let idx = 1
+    while idx less than size of parts
+        add parts[idx] to rest
+        increment idx
+    end
+    return firstChar plus (join rest with "")
+end
+
+export function padStart text length char
+    return text.padStart(length, char)
+end
+
+export function padEnd text length char
+    return text.padEnd(length, char)
+end
+
+export function repeated text count
+    return text.repeat(count)
+end
+
+export function toCamelCase text
+    let parts = split text by " "
+    if size of parts equals 1
+        return lowercase text
+    end
+    
+    let result = lowercase (parts[0])
+    let idx = 1
+    while idx less than size of parts
+        let part = parts[idx]
+        let first = uppercase (part[0])
+        let rest = slice part 1
+        let capped = first plus rest
+        let result = result plus capped
+        increment idx
+    end
+    return result
+end
+
+export function slice text start endIdx
+    return text.slice(start, endIdx)
+end

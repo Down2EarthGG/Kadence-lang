@@ -1,0 +1,37 @@
+note: Test utilities for Kadence
+
+let term = run require "./console.js"
+
+export function suite name callback
+    echo "Suite: " plus name
+    if callback not equals undefined
+        run callback
+    end
+    return true
+end
+
+export function assertEquals actual expected message
+    if actual equals expected
+        let colored = run term.green "PASS"
+        echo colored plus ": " plus message
+        return true
+    else
+        let colored = run term.red "FAIL"
+        echo colored plus ": " plus message
+        echo "  Expected: " plus expected
+        echo "  Actual: " plus actual
+        return false
+    end
+end
+
+export function assertTrue value message
+    if value
+        let colored = run term.green "PASS"
+        echo colored plus ": " plus message
+        return true
+    else
+        let colored = run term.red "FAIL"
+        echo colored plus ": " plus message
+        return false
+    end
+end

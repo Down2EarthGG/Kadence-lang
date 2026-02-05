@@ -1,0 +1,29 @@
+note: HTML tag helpers for Kadence
+
+export function tag name content
+    return "<" plus name plus ">" plus content plus "</" plus name plus ">"
+end
+
+export function div content
+    return run tag "div" content
+end
+
+export function span content
+    return run tag "span" content
+end
+
+export function p content
+    return run tag "p" content
+end
+
+export function h1 content
+    return run tag "h1" content
+end
+
+export function link content
+    return run tag "a" content
+end
+
+export function img content
+    return run tag "img" content
+end

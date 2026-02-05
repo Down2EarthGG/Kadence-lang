@@ -1,0 +1,17 @@
+note: Number utilities for Kadence
+
+export function parseNumber str
+    return convert str to number
+end
+
+export function formatNumber num decimals
+    return run num.toFixed decimals
+end
+
+export function isNaNVal val
+    return run Number.isNaN val
+end
+
+export function isFiniteVal val
+    return run Number.isFinite val
+end

@@ -1,0 +1,28 @@
+note: JSON utilities for Kadence
+
+let fsMod = run require "fs"
+
+export function read path
+    if not (run fsMod.existsSync path)
+        return null
+    end
+    let content = run fsMod.readFileSync path "utf8"
+    return parse json from content
+end
+
+export function write path data
+    let str = stringify data to json
+    run fsMod.writeFileSync path str
+end
+
+export function format data
+    return JSON.stringify(data, null, 2)
+end
+
+export function parseSafe text
+    try
+        return parse json from text
+    catch e
+        return null
+    end
+end

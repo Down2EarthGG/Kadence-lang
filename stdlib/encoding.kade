@@ -1,0 +1,19 @@
+note: Encoding utilities for Kadence
+
+export function base64Encode str
+    let buf = run Buffer["from"] str "utf8"
+    return run buf.toString "base64"
+end
+
+export function base64Decode str
+    let buf = run Buffer["from"] str "base64"
+    return run buf.toString "utf8"
+end
+
+export function urlEncode str
+    return run encodeURIComponent str
+end
+
+export function urlDecode str
+    return run decodeURIComponent str
+end

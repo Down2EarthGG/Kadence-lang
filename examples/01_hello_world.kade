@@ -1,0 +1,7 @@
+note: --- Hello World in Kadence ---
+
+let greeting = "Hello, Kadence ♪"
+echo greeting
+
+let name = "Developer"
+echo "Welcome to the future of poetic coding, {name}!"

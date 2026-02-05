@@ -1,0 +1,147 @@
+{
+    "Echo statement": {
+        "prefix": "echo",
+        "body": [
+            "echo \"${1:message}\""
+        ],
+        "description": "Print to console"
+    },
+    "Say statement": {
+        "prefix": "say",
+        "body": [
+            "say \"${1:message}\""
+        ],
+        "description": "Poetic print to console"
+    },
+    "If block": {
+        "prefix": "if",
+        "body": [
+            "if ${1:condition}",
+            "    $0",
+            "end"
+        ],
+        "description": "If statement"
+    },
+    "If-Else block": {
+        "prefix": "ifelse",
+        "body": [
+            "if ${1:condition}",
+            "    $2",
+            "else",
+            "    $0",
+            "end"
+        ],
+        "description": "If-else statement"
+    },
+    "For each": {
+        "prefix": "foreach",
+        "body": [
+            "for each ${1:item} in ${2:list}",
+            "    $0",
+            "end"
+        ],
+        "description": "For each loop"
+    },
+    "Repeat block": {
+        "prefix": "repeat",
+        "body": [
+            "repeat ${1:5} times",
+            "    $0",
+            "end"
+        ],
+        "description": "Repeat N times"
+    },
+    "Match block": {
+        "prefix": "match",
+        "body": [
+            "match ${1:expression}",
+            "    when ${2:value} then ${3:action}",
+            "    else ${0:default_action}",
+            "end"
+        ],
+        "description": "Pattern matching"
+    },
+    "Function": {
+        "prefix": "function",
+        "body": [
+            "function ${1:name} ${2:args}",
+            "    $0",
+            "end"
+        ],
+        "description": "Function definition"
+    },
+    "Async Function": {
+        "prefix": "async",
+        "body": [
+            "async function ${1:name} ${2:args}",
+            "    $0",
+            "end"
+        ],
+        "description": "Async function definition"
+    },
+    "Class": {
+        "prefix": "class",
+        "body": [
+            "class ${1:ClassName}",
+            "    function constructor ${2:args}",
+            "        $3",
+            "    end",
+            "",
+            "    function ${4:methodName}",
+            "        $0",
+            "    end",
+            "end"
+        ],
+        "description": "Class declaration"
+    },
+    "Try-Catch": {
+        "prefix": "try",
+        "body": [
+            "try",
+            "    $1",
+            "catch error",
+            "    echo \"Oops: {error}\"",
+            "end"
+        ],
+        "description": "Error handling"
+    },
+    "HTTP Get": {
+        "prefix": "get",
+        "body": [
+            "let ${1:data} = get from \"${2:url}\""
+        ],
+        "description": "Async HTTP GET"
+    },
+    "Wait": {
+        "prefix": "wait",
+        "body": [
+            "wait ${1:1} second"
+        ],
+        "description": "Pause execution"
+    },
+    "Object literal": {
+        "prefix": "object",
+        "body": [
+            "let ${1:obj} = object",
+            "    ${2:key}: ${3:value}",
+            "end"
+        ],
+        "description": "New object"
+    },
+    "Give (return)": {
+        "prefix": "give",
+        "body": [
+            "give ${1:value}"
+        ],
+        "description": "Return a value (poetic alias for return)"
+    },
+    "While loop": {
+        "prefix": "while",
+        "body": [
+            "while ${1:condition}",
+            "    $0",
+            "end"
+        ],
+        "description": "While loop"
+    }
+}

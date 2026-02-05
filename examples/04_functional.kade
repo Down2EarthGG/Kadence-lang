@@ -1,0 +1,14 @@
+note: --- Map, Filter, Reduce ---
+
+let nums = list 1 2 3 4 5
+let doubled = map nums with x => x * 2
+echo stringify doubled to json
+
+let evens = filter nums where x => (floor (x / 2) * 2) equals x
+echo stringify evens to json
+
+let sum = reduce nums from 0 with (acc, x) => acc plus x
+echo sum
+
+let avg = average of nums
+echo "Average: {avg}"

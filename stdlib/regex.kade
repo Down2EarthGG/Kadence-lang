@@ -1,0 +1,11 @@
+note: Regex utilities for Kadence (uses regex-helpers.js)
+
+let mod = run require "./regex-helpers.js"
+
+export function test pattern str
+    return run mod.test pattern str
+end
+
+export function replaceAll pattern str replacement
+    return run mod.replaceAll pattern str replacement
+end

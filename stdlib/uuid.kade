@@ -1,0 +1,35 @@
+note: UUID utilities for Kadence (uses random.choice)
+
+let rand = run require "./random.js"
+
+export function v4
+    let chars = list "0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f"
+    let variants = list "8" "9" "a" "b"
+    let s = ""
+    repeat 8 times
+        let s = s plus (run rand.choice chars)
+    end
+    let s = s plus "-"
+    repeat 4 times
+        let s = s plus (run rand.choice chars)
+    end
+    let s = s plus "-4"
+    repeat 3 times
+        let s = s plus (run rand.choice chars)
+    end
+    let s = s plus "-"
+    let s = s plus (run rand.choice variants)
+    repeat 3 times
+        let s = s plus (run rand.choice chars)
+    end
+    let s = s plus "-"
+    repeat 12 times
+        let s = s plus (run rand.choice chars)
+    end
+    return s
+end
+
+export function validate uuid
+    let helper = run require "./regex-helpers.js"
+    return run helper.validateUuid uuid
+end

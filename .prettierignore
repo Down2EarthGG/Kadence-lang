@@ -1,0 +1,13 @@
+# Exclude generated JavaScript files
+*.js
+!compiler.js
+!cadence.js
+!eslint.config.js
+!vitest.config.js
+!.prettierrc
+
+# Standard excludes
+node_modules/
+dist/
+build/
+.agent/

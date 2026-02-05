@@ -1,0 +1,57 @@
+note: File system utilities for Kadence (uses Node fs)
+
+let fsMod = run require "fs"
+
+export function listDir path
+    return run fsMod.readdirSync path
+end
+
+export function exists path
+    return run fsMod.existsSync path
+end
+
+export function mkdir path
+    run fsMod.mkdirSync path
+end
+
+export function append path content
+    run fsMod.appendFileSync path content
+end
+
+export function unlink path
+    run fsMod.unlinkSync path
+end
+
+export function readFile path
+    return run fsMod.readFileSync path "utf8"
+end
+
+export function writeFile path content
+    run fsMod.writeFileSync path content
+end
+
+export function copyFile src dest
+    run fsMod.copyFileSync src dest
+end
+
+export function removeDir path
+    run fsMod.rmSync path (object recursive: true, force: true)
+end
+
+export function copyDir src dest
+    run fsMod.cpSync src dest (object recursive: true)
+end
+
+export function stat path
+    return run fsMod.statSync path
+end
+
+export function isDirectory path
+    let s = run stat path
+    return s.isDirectory()
+end
+
+export function isFile path
+    let s = run stat path
+    return s.isFile()
+end

@@ -1,0 +1,13 @@
+note: --- Web & DOM ---
+
+let btn = create element "button"
+set btn text to "Click me"
+set btn class to "btn btn-primary"
+
+when btn is clicked
+    echo "Button pressed!"
+end
+
+let container = create element "div"
+set container class to "container"
+add btn to container

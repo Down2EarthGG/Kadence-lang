@@ -1,0 +1,19 @@
+note: Promise utilities for Kadence (uses promise-helpers.js)
+
+let mod = run require "./promise-helpers.js"
+
+export function promiseAll promises
+    return run Promise["all"] promises
+end
+
+export function promiseRace promises
+    return run Promise["race"] promises
+end
+
+export function delay ms
+    return run mod.delay ms
+end
+
+export function retry fn maxRetries
+    return run mod.retry fn maxRetries
+end

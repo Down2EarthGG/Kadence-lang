@@ -1,0 +1,31 @@
+note: --- Control Flow & Logic ---
+
+let score = 85
+
+note: If-Else branching
+if score at least 90
+    echo "Excellent!"
+elif score more than 70
+    echo "Good job!"
+else
+    echo "Keep practicing."
+end
+
+note: Pattern Matching
+let status = 200
+match status
+    when 200 then echo "Success"
+    when 404 then echo "Not Found"
+    else echo "Unknown Status"
+end
+
+note: Loops
+let count = 1
+while count less than 4
+    echo "Count is {count}"
+    increment count
+end
+
+repeat 2 times
+    echo "This repeats twice!"
+end

@@ -1,0 +1,64 @@
+{
+  "name": "kadence-lang",
+  "version": "0.2.0",
+  "description": "A human-readable programming language that feels like poetry",
+  "main": "src/compiler.js",
+  "bin": {
+    "kadence": "./bin/kadence.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kadence-lang/kadence.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kadence-lang/kadence/issues"
+  },
+  "homepage": "https://github.com/kadence-lang/kadence#readme",
+  "files": [
+    "src/",
+    "bin/",
+    "stdlib/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "scripts": {
+    "dev": "npm run serve:demo",
+    "demo": "npm run serve:demo",
+    "build:demo": "node scripts/build-demo.js",
+    "serve:demo": "npm run build:demo && serve . -p 3000",
+    "build:apps": "node scripts/build-apps.js",
+    "serve:apps": "npm run build:apps && serve . -p 3000",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "compile": "node src/compiler.js",
+    "prepublishOnly": "eslint src/compiler.js bin/kadence.js src/vite-plugin-kadence.js && npm test"
+  },
+  "keywords": [
+    "language",
+    "compiler",
+    "natural-language",
+    "transpiler",
+    "kadence"
+  ],
+  "author": "The Kadence Team",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.23",
+    "ohm-js": "^17.3.0",
+    "readline-sync": "^1.4.10",
+    "safe-eval": "^0.4.1",
+    "source-map": "^0.7.4"
+  },
+  "devDependencies": {
+    "esbuild": "^0.21.0",
+    "eslint": "^9.39.2",
+    "prettier": "^3.8.1",
+    "serve": "^14.2.5",
+    "vitest": "^4.0.18"
+  }
+}

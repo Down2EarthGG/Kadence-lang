@@ -1,0 +1,39 @@
+note: Math utilities for Kadence
+
+export function hypotenuse a b
+    return square root ((a * a) plus (b * b))
+end
+
+export function areaOfCircle radius
+    return pi * radius * radius
+end
+
+export function isEven n
+    if (n / 2) * 2 equals n
+        return true
+    else
+        return false
+    end
+end
+
+export function clamp val minVal maxVal
+    if val less than minVal
+        return minVal
+    elif val more than maxVal
+        return maxVal
+    else
+        return val
+    end
+end
+export function randomFloat min max
+    let r = random
+    return min plus (r * (max minus min))
+end
+
+export function toRadians deg
+    return deg * (pi / 180)
+end
+
+export function toDegrees rad
+    return rad * (180 / pi)
+end

@@ -1,0 +1,24 @@
+note: Color utilities for Kadence
+
+export function rgb r g b
+    return "rgb(" plus r plus "," plus g plus "," plus b plus ")"
+end
+
+export function rgba r g b a
+    return "rgba(" plus r plus "," plus g plus "," plus b plus "," plus a plus ")"
+end
+
+export function hex hexStr
+    let helper = run require "./color-helpers.js"
+    return run helper.hexToRgb hexStr
+end
+
+export function randomHex
+    let rand = run require "./random.js"
+    let chars = list "0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f"
+    let parts = list "#"
+    repeat 6 times
+        add (run rand.choice chars) to parts
+    end
+    return join parts with ""
+end

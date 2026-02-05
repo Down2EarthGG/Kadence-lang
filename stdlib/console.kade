@@ -1,0 +1,21 @@
+note: Console and terminal styling for Kadence
+
+export function log message
+    console.log(message)
+end
+
+export function error message
+    console.error(message)
+end
+
+export function red text
+    return "\x1b[31m" plus text plus "\x1b[0m"
+end
+
+export function green text
+    return "\x1b[32m" plus text plus "\x1b[0m"
+end
+
+export function bold text
+    return "\x1b[1m" plus text plus "\x1b[0m"
+end

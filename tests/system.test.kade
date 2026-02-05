@@ -1,0 +1,10 @@
+import "../stdlib/test.kade" as t
+import "../stdlib/system.kade" as sys
+
+t.suite "System Tests" () =>
+    let p = sys.platform
+    t.assertEquals (typeof p) "string" "Platform should be a string"
+    
+    let mem = sys.totalMemory
+    t.assertTrue (mem more than 0) "Total memory should be positive"
+end

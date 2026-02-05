@@ -1,0 +1,14 @@
+note: URL utilities for Kadence
+
+export function parseUrl urlString
+    return new URL(urlString)
+end
+
+export function buildUrl href
+    let u = new URL(href)
+    return run u.toString
+end
+
+export function getSearchParam url name
+    return run url.searchParams["get"] name
+end

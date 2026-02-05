@@ -1,0 +1,46 @@
+note: Random utilities for Kadence
+
+export function float min max
+    return min plus (random times (max minus min))
+end
+
+export function integer min max
+    let rangeVal = (max minus min) plus 1
+    let factor = random
+    return floor (min plus (factor times rangeVal))
+end
+
+export function choice items
+    let len = size of items
+    if len equals 0
+        return ""
+    end
+    let idx = run integer 0 (len minus 1)
+    return items[idx]
+end
+
+export function shuffle items
+    let res = list
+    let temp = list
+    for each x in items
+        add x to temp
+    end
+    let n = size of temp
+    repeat n times
+        let idx = run integer 0 ((size of temp) minus 1)
+        let picked = temp[idx]
+        add picked to res
+        remove item idx from temp
+    end
+    return res
+end
+
+export function uuid
+    let chars = "0123456789abcdef"
+    let result = "#"
+    repeat 6 times
+        let idx = run integer 0 15
+        let result = result plus (chars[idx])
+    end
+    return result
+end

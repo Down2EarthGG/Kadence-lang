@@ -1,0 +1,22 @@
+note: Stream utilities for Kadence.
+
+export function createReader stream
+    return stream.getReader()
+end
+
+export async function readAll stream
+    let reader = run createReader stream
+    let result = list
+    while true
+        let { done, value } = await reader.read()
+        if done
+            break
+        end
+        add value to result
+    end
+    return result
+end
+
+export function pipe source to target
+    return source.pipeTo(target)
+end

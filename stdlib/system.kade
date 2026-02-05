@@ -1,0 +1,31 @@
+note: System utilities
+
+let os = run require "os"
+
+export function platform
+    return run os.platform
+end
+
+export function arch
+    return run os.arch
+end
+
+export function cpus
+    return run os.cpus
+end
+
+export function totalMemory
+    return run os.totalmem
+end
+
+export function freeMemory
+    return run os.freemem
+end
+
+export function homedir
+    return run os.homedir
+end
+
+export function hostname
+    return run os.hostname
+end

@@ -1,0 +1,57 @@
+note: --- Kadence Contact Card Demo ---
+
+function create_card name bio image_url
+    let card = create element "div"
+    set card class to "bg-white rounded-2xl shadow-xl p-6 transition hover:scale-105 duration-300 w-80 m-4 border border-gray-100"
+
+    let img = create element "img"
+    set img src to image_url
+    set img class to "w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-50"
+    add img to card
+
+    let title = create element "h2"
+    set title class to "text-xl font-bold text-center text-gray-800"
+    set title text to name
+    add title to card
+
+    let desc = create element "p"
+    set desc class to "text-gray-500 text-center text-sm mt-2"
+    set desc text to bio
+    add desc to card
+
+    let stats_div = create element "div"
+    set stats_div class to "mt-6 pt-4 border-t border-gray-100 flex justify-around"
+
+    let counter = 0
+    let like_btn = create element "button"
+    set like_btn class to "bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition shadow-md"
+    set like_btn text to "Helpful (0)"
+
+    when like_btn is clicked
+        increment counter
+        set like_btn text to "Helpful ({counter})"
+        echo "Card for {name} was acknowledged at {the time now}"
+    end
+
+    add like_btn to stats_div
+    add stats_div to card
+
+    return card
+end
+
+note: Demo: create a few cards and show them
+let wrap = create element "div"
+set wrap class to "flex flex-wrap justify-center p-6 bg-gray-50 min-h-screen"
+
+let card1 = run create_card "Alex Rivera" "Full-stack developer and open-source enthusiast." "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex"
+add card1 to wrap
+
+let card2 = run create_card "Sam Chen" "Design systems and accessibility advocate." "https://api.dicebear.com/7.x/avataaars/svg?seed=Sam"
+add card2 to wrap
+
+let card3 = run create_card "Jordan Lee" "DevOps and cloud infrastructure." "https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan"
+add card3 to wrap
+
+let mountPoint = create element "div"
+add wrap to mountPoint
+window.kadenceRoot = mountPoint

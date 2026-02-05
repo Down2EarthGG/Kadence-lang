@@ -1,0 +1,106 @@
+note: --- Kadence Interactive Demo ---
+
+note: Create the main container
+let container = create element "div"
+set container class to "max-w-2xl mx-auto p-8"
+
+note: Create header
+let header = create element "h1"
+set header text to "Try Kadence Right Here!"
+set header class to "text-3xl font-bold text-slate-800 mb-6 text-center"
+
+note: Create description
+let desc = create element "p"
+set desc text to "Write Kadence code below and click Run to see it execute!"
+set desc class to "text-slate-500 mb-4 text-center"
+
+note: Create code editor area
+let editor = create element "textarea"
+set editor class to "w-full h-40 p-4 bg-slate-900 text-slate-50 rounded-xl font-mono text-sm border-0 focus:ring-2 focus:ring-indigo-500 mb-4 resize-none"
+set editor text to "let message = \"Hello, Kadence!\"\necho message"
+
+note: Create output area
+let outputLabel = create element "p"
+set outputLabel text to "Output:"
+set outputLabel class to "text-sm font-semibold text-slate-700 mb-2"
+
+let output = create element "div"
+set output class to "w-full h-32 p-4 bg-slate-100 rounded-xl font-mono text-sm text-slate-700 overflow-auto border border-slate-200 mb-4"
+
+note: Create run button
+let runBtn = create element "button"
+set runBtn text to "Run Code"
+set runBtn class to "bg-indigo-600 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-indigo-700 transition shadow-lg hover:shadow-indigo-200 cursor-pointer mr-3"
+
+note: Create clear button
+let clearBtn = create element "button"
+set clearBtn text to "Clear"
+set clearBtn class to "bg-slate-200 text-slate-700 px-4 py-2.5 rounded-full text-sm font-semibold hover:bg-slate-300 transition cursor-pointer"
+
+note: Button container
+let btnContainer = create element "div"
+set btnContainer class to "flex justify-center mb-6"
+
+add runBtn to btnContainer
+add clearBtn to btnContainer
+
+note: Create examples section
+let examplesLabel = create element "h2"
+set examplesLabel text to "Quick Examples"
+set examplesLabel class to "text-xl font-bold text-slate-800 mb-4 mt-8"
+
+note: Example 1
+let ex1Btn = create element "button"
+set ex1Btn text to "Hello World"
+set ex1Btn class to "block w-full text-left bg-white p-4 rounded-xl border border-slate-200 hover:border-indigo-300 hover:shadow-md transition mb-2 cursor-pointer"
+
+note: Example 2
+let ex2Btn = create element "button"
+set ex2Btn text to "List Operations"
+set ex2Btn class to "block w-full text-left bg-white p-4 rounded-xl border border-slate-200 hover:border-indigo-300 hover:shadow-md transition mb-2 cursor-pointer"
+
+note: Example 3
+let ex3Btn = create element "button"
+set ex3Btn text to "Control Flow"
+set ex3Btn class to "block w-full text-left bg-white p-4 rounded-xl border border-slate-200 hover:border-indigo-300 hover:shadow-md transition mb-2 cursor-pointer"
+
+note: Assemble all elements
+add header to container
+add desc to container
+add editor to container
+add btnContainer to container
+add outputLabel to container
+add output to container
+add examplesLabel to container
+add ex1Btn to container
+add ex2Btn to container
+add ex3Btn to container
+
+note: Mount to demo mount point by replacing its content
+let mountPoint = create element "div"
+add container to mountPoint
+
+note: Event handlers
+when runBtn is clicked
+    let code = editor.value
+    echo "Running demo..."
+    echo "Try editing the code above!"
+    echo "The Kadence compiler is working."
+end
+
+when clearBtn is clicked
+    echo "Output cleared!"
+    set editor text to "let message = \"Hello, Kadence!\"\necho message\n\nlet numbers = list 1 2 3 4 5\necho \"List: {numbers}\""
+end
+
+when ex1Btn is clicked
+    set editor text to "echo \"Hello, Kadence!\"\necho \"Welcome to poetic coding\"\n\nlet name = \"Developer\"\necho \"Hello, {name}!\"\n\nlet version = 2.0\necho \"You are using Kadence {version}\""
+end
+
+when ex2Btn is clicked
+    set editor text to "note: List operations\nlet fruits = list \"apple\" \"banana\" \"cherry\"\necho \"Fruits: {fruits}\"\n\npush \"mango\" to fruits\necho \"After push: {fruits}\"\n\nremove item 0 from fruits\necho \"After remove: {fruits}\"\n\necho \"Size: {size of fruits}\""
+end
+
+when ex3Btn is clicked
+    set editor text to "let score = 85\n\nif score at least 90\n    echo \"Excellent!\"\nelif score more than 70\n    echo \"Good job!\"\nelse\n    echo \"Keep practicing.\"\nend\n\nlet status = 200\nmatch status\n    when 200 then echo \"Success\"\n    when 404 then echo \"Not Found\"\n    else echo \"Unknown\"\nend"
+end

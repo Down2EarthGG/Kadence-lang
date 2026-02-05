@@ -1,0 +1,6 @@
+import "../stdlib/test.kade" as t
+
+t.suite "Math Tests" () =>
+    t.assertEquals (1 plus 1) 2 "1 + 1 should be 2"
+    t.assertTrue (10 more than 5) "10 > 5"
+end

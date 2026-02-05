@@ -1,0 +1,32 @@
+note: Date and time utilities for Kadence
+
+export function currentTime
+    return new Date()
+end
+
+export function today
+    return new Date()
+end
+
+export function year d
+    return d.getFullYear()
+end
+
+export function month d
+    let m = d.getMonth()
+    return m + 1
+end
+
+export function day d
+    return d.getDate()
+end
+
+export function toIso d
+    return d.toISOString()
+end
+
+export function addDays d n
+    let result = new Date(d)
+    result.setDate(result.getDate() + n)
+    return result
+end

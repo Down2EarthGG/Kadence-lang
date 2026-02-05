@@ -1,0 +1,29 @@
+note: Process control utilities
+
+let processMod = run require "process"
+
+export function exit code
+    if code is undefined
+        run processMod.exit 0
+    else
+        run processMod.exit code
+    end
+end
+
+export function args
+    let allArgs = processMod.argv
+    let properArgs = list
+    let idx = 2
+    let len = size of allArgs
+    
+    while idx less than len
+        add allArgs[idx] to properArgs
+        increment idx
+    end
+    
+    return properArgs
+end
+
+export function cwd
+    return run processMod.cwd
+end

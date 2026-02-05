@@ -1,0 +1,23 @@
+note: Object utilities for Kadence
+
+export function hasKey obj key
+    let ks = keys of obj
+    for each k in ks
+        if k equals key
+            return true
+        end
+    end
+    return false
+end
+
+export function getKeys obj
+    return keys of obj
+end
+
+export function getValues obj
+    return values of obj
+end
+
+export function mergeObjects a b
+    return merge a with b
+end

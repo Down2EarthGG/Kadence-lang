@@ -1,0 +1,32 @@
+node_modules/
+*.log
+.DS_Store
+.vscode/
+*.swp
+*.swo
+*~
+.idea/
+dist/
+build/
+coverage/
+.nyc_output/
+*.tgz
+.env
+.env.local
+.env.*.local
+
+# Generated / build output
+examples/*.js
+# Ignore all apps
+apps/
+
+# Agent / AI local storage
+.agent/
+.gemini/
+.DS_Store
+Thumbs.db
+
+# Test temp files
+tests/**/*.js
+tests/**/*.js.map
+repro.kade

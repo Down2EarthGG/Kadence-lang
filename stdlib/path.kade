@@ -1,0 +1,23 @@
+note: Path utilities for Kadence
+
+let pathMod = run require "path"
+
+export function join a b
+    return run pathMod.join a b
+end
+
+export function resolve path
+    return run pathMod.resolve path
+end
+
+export function dirname path
+    return run pathMod.dirname path
+end
+
+export function basename path
+    return run pathMod.basename path
+end
+
+export function extension path
+    return run pathMod.extname path
+end

@@ -1,0 +1,68 @@
+{
+    "name": "kadence-vscode",
+    "displayName": "Kadence Language Support",
+    "publisher": "kadence-lang",
+    "author": {
+        "name": "The Kadence Team"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kadence-lang/kadence"
+    },
+    "description": "Language support for Kadence",
+    "version": "0.2.0",
+    "main": "./extension.js",
+    "engines": {
+        "vscode": "^1.75.0"
+    },
+    "scripts": {
+        "vscode:prepublish": "npm install",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "dependencies": {
+        "vscode-languageclient": "^8.0.2",
+        "vscode-languageserver": "^8.0.2",
+        "vscode-languageserver-textdocument": "^1.0.7",
+        "ohm-js": "^17.3.0",
+        "source-map": "^0.7.4"
+    },
+    "contributes": {
+        "languages": [
+            {
+                "id": "kadence",
+                "aliases": [
+                    "Kadence",
+                    "kadence"
+                ],
+                "extensions": [
+                    ".kade"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "kadence",
+                "scopeName": "source.kadence",
+                "path": "./syntaxes/kadence.tmLanguage.json"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "kadence",
+                "path": "./snippets/kadence.code-snippets"
+            }
+        ],
+        "themes": [
+            {
+                "label": "Kadence Night",
+                "uiTheme": "vs-dark",
+                "path": "./themes/kadence-theme.json"
+            }
+        ]
+    }
+}

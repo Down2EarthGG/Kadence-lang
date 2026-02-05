@@ -1,0 +1,228 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Kadence",
+    "patterns": [
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#constants"
+        },
+        {
+            "include": "#storage"
+        },
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#operators"
+        },
+        {
+            "include": "#support"
+        },
+        {
+            "include": "#functions"
+        },
+        {
+            "include": "#set_assignment"
+        },
+        {
+            "include": "#variable_assignment"
+        },
+        {
+            "include": "#numbers"
+        },
+        {
+            "include": "#object_literal"
+        },
+        {
+            "include": "#punctuation"
+        },
+        {
+            "include": "#identifier"
+        }
+    ],
+    "repository": {
+        "comments": {
+            "patterns": [
+                {
+                    "match": "//.*",
+                    "name": "comment.line.double-slash.kadence"
+                },
+                {
+                    "match": "\\bnote:.*",
+                    "name": "comment.line.note.kadence"
+                }
+            ]
+        },
+        "strings": {
+            "name": "string.quoted.double.kadence",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                {
+                    "name": "constant.character.escape.kadence",
+                    "match": "\\\\."
+                },
+                {
+                    "name": "variable.interpolation.kadence",
+                    "begin": "\\{",
+                    "end": "\\}",
+                    "patterns": [
+                        {
+                            "include": "source.kadence"
+                        }
+                    ]
+                }
+            ]
+        },
+        "constants": {
+            "match": "\\b(true|false|null|undefined|pi)\\b",
+            "name": "constant.language.kadence"
+        },
+        "storage": {
+            "match": "\\b(let|const|var|list|object|class|function|async)\\b",
+            "name": "storage.type.kadence"
+        },
+        "keywords": {
+            "patterns": [
+                {
+                    "match": "\\b(if|else|elif|while|for|each|in|repeat|match|when|then|end|try|catch|return|give|break|continue|await|async|import|export|from|as|wait|go|seconds?|times?|typeof)\\b",
+                    "name": "keyword.control.kadence"
+                },
+                {
+                    "match": "\\b(run|create|element|set|add|remove|item|to|of|is|save|read|convert|the|now|today|with|where|by|all|new|this|at|least|most|more|than|less|increment|decrement)\\b",
+                    "name": "keyword.other.kadence"
+                }
+            ]
+        },
+        "operators": {
+            "patterns": [
+                {
+                    "match": "\\b(not\\s+equals|is\\s+not|does\\s+not\\s+equal|doesn't\\s+equal|divided\\s+by)\\b",
+                    "name": "keyword.operator.word.kadence"
+                },
+                {
+                    "match": "\\b(equals|not|and|or|plus|minus|times|divided|is)\\b",
+                    "name": "keyword.operator.word.kadence"
+                },
+                {
+                    "match": "=>|\\.\\.\\.|&&|\\|\\||==|!=|<=|>=|\\+\\+|--|[=+\\-*/><!]",
+                    "name": "keyword.operator.symbol.kadence"
+                }
+            ]
+        },
+        "support": {
+            "match": "\\b(echo|print|ask|size|random|number|uppercase|lowercase|average|minimum|maximum|round|floor|ceiling|absolute|square|root|power|sin|cos|tan|sort|reverse|push|pop|keys|values|merge|time|date|get|post|put|delete|parse|stringify|json|regex|extract|range|trim|split|join|map|filter|reduce|find|some|every|replace|matches|index|last|document|window|console|Math|Date)\\b",
+            "name": "support.function.kadence"
+        },
+        "functions": {
+            "patterns": [
+                {
+                    "match": "\\b(function)\\s+([a-zA-Z_]\\w*)",
+                    "captures": {
+                        "1": {
+                            "name": "storage.type.function.kadence"
+                        },
+                        "2": {
+                            "name": "entity.name.function.kadence"
+                        }
+                    }
+                },
+                {
+                    "match": "\\b(run)\\s+([a-zA-Z_][\\w\\.]*)",
+                    "captures": {
+                        "1": {
+                            "name": "keyword.other.kadence"
+                        },
+                        "2": {
+                            "name": "entity.name.function.call.kadence"
+                        }
+                    }
+                },
+                {
+                    "match": "\\b([a-zA-Z_]\\w*)\\s*\\(",
+                    "captures": {
+                        "1": {
+                            "name": "entity.name.function.call.kadence"
+                        }
+                    }
+                }
+            ]
+        },
+        "set_assignment": {
+            "match": "\\b(set)\\s+([a-zA-Z_]\\w*(?:\\s*\\.\\s*[a-zA-Z_]\\w*)?)\\s+(to)\\b",
+            "captures": {
+                "1": {
+                    "name": "keyword.other.kadence"
+                },
+                "2": {
+                    "name": "variable.other.kadence"
+                },
+                "3": {
+                    "name": "keyword.other.kadence"
+                }
+            }
+        },
+        "variable_assignment": {
+            "match": "([a-zA-Z_]\\w*)\\s*\\.\\s*([a-zA-Z_]\\w*)",
+            "captures": {
+                "1": {
+                    "name": "variable.other.object.kadence"
+                },
+                "2": {
+                    "name": "variable.other.property.kadence"
+                }
+            }
+        },
+        "numbers": {
+            "match": "\\b\\d+(\\.\\d+)?\\b",
+            "name": "constant.numeric.kadence"
+        },
+        "punctuation": {
+            "match": "[(){}\\[\\],.]",
+            "name": "punctuation.separator.kadence"
+        },
+        "object_literal": {
+            "begin": "\\{",
+            "end": "\\}",
+            "patterns": [
+                {
+                    "include": "#object_key"
+                },
+                {
+                    "include": "#strings"
+                },
+                {
+                    "include": "#constants"
+                },
+                {
+                    "include": "#numbers"
+                },
+                {
+                    "include": "#punctuation"
+                }
+            ]
+        },
+        "object_key": {
+            "match": "([a-zA-Z_]\\w*)\\s*:",
+            "captures": {
+                "1": {
+                    "name": "variable.other.property.kadence"
+                }
+            }
+        },
+        "identifier": {
+            "match": "\\b([a-zA-Z_]\\w*)\\b",
+            "captures": {
+                "1": {
+                    "name": "variable.other.kadence"
+                }
+            }
+        }
+    },
+    "scopeName": "source.kadence"
+}

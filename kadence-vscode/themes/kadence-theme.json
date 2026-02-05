@@ -1,0 +1,143 @@
+{
+    "name": "Kadence Night",
+    "type": "dark",
+    "colors": {
+        "editor.background": "#0f172a",
+        "editor.foreground": "#f8fafc",
+        "activityBar.background": "#0f172a",
+        "activityBar.foreground": "#f8fafc",
+        "sideBar.background": "#0f172a",
+        "statusBar.background": "#6366f1",
+        "statusBar.foreground": "#ffffff",
+        "editorLineNumber.foreground": "#334155",
+        "editorLineNumber.activeForeground": "#818cf8",
+        "editor.selectionBackground": "#1e293b",
+        "list.activeSelectionBackground": "#1e293b",
+        "list.inactiveSelectionBackground": "#1e293b",
+        "editorCursor.foreground": "#818cf8",
+        "editorBracketMatch.background": "#1e293b",
+        "editorBracketMatch.border": "#818cf8"
+    },
+    "tokenColors": [
+        {
+            "name": "Comments",
+            "scope": [
+                "comment",
+                "punctuation.definition.comment"
+            ],
+            "settings": {
+                "foreground": "#64748b",
+                "fontStyle": "italic"
+            }
+        },
+        {
+            "name": "Keywords",
+            "scope": [
+                "keyword.control",
+                "storage.type",
+                "storage.modifier"
+            ],
+            "settings": {
+                "foreground": "#818cf8",
+                "fontStyle": "bold"
+            }
+        },
+        {
+            "name": "Logic & Operational Keywords",
+            "scope": [
+                "keyword.other",
+                "keyword.operator.word"
+            ],
+            "settings": {
+                "foreground": "#a5b4fc"
+            }
+        },
+        {
+            "name": "Strings",
+            "scope": [
+                "string"
+            ],
+            "settings": {
+                "foreground": "#34d399"
+            }
+        },
+        {
+            "name": "Interpolation",
+            "scope": [
+                "variable.interpolation"
+            ],
+            "settings": {
+                "foreground": "#f8fafc"
+            }
+        },
+        {
+            "name": "Numbers",
+            "scope": [
+                "constant.numeric"
+            ],
+            "settings": {
+                "foreground": "#fbbf24"
+            }
+        },
+        {
+            "name": "Constants & Booleans",
+            "scope": [
+                "constant.language",
+                "constant.other"
+            ],
+            "settings": {
+                "foreground": "#f472b6"
+            }
+        },
+        {
+            "name": "Functions",
+            "scope": [
+                "entity.name.function",
+                "support.function"
+            ],
+            "settings": {
+                "foreground": "#c084fc"
+            }
+        },
+        {
+            "name": "Variables",
+            "scope": [
+                "variable",
+                "variable.other",
+                "variable.parameter"
+            ],
+            "settings": {
+                "foreground": "#f8fafc"
+            }
+        },
+        {
+            "name": "Object Properties",
+            "scope": [
+                "variable.other.property",
+                "variable.other.object.property"
+            ],
+            "settings": {
+                "foreground": "#38bdf8"
+            }
+        },
+        {
+            "name": "Operators",
+            "scope": [
+                "keyword.operator.symbol"
+            ],
+            "settings": {
+                "foreground": "#94a3b8"
+            }
+        },
+        {
+            "name": "Classes",
+            "scope": [
+                "entity.name.type.class",
+                "support.class"
+            ],
+            "settings": {
+                "foreground": "#2dd4bf"
+            }
+        }
+    ]
+}

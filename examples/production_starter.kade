@@ -1,0 +1,45 @@
+// Kadence Full Project Template
+// This file demonstrates the recommended structure for a production-ready Kadence app.
+
+import "stdlib/console.kade" as term
+import "stdlib/datetime.kade" as dt
+
+// 1. Define your data models / classes
+class Task
+    function constructor id title
+        this.id = id
+        this.title = title
+        this.completed = false
+    end
+
+    function complete
+        this.completed = true
+        say "Task {this.id} finished!" with term.green
+    end
+end
+
+// 2. Main Logic Container
+async function runApplication
+    say "--- Kadence Production Starter ---" with term.bold + term.cyan
+    say "Started at: {the date today} {the time now}"
+    
+    let taskList = list
+    add new Task 1 "Setup project structure" to taskList
+    add new Task 2 "Write poetic code" to taskList
+    
+    for each task in taskList
+        say "Processing: {task.title}..."
+        wait 500 ms
+        run task.complete
+    end
+    
+    say "All systems operational." with term.bold + term.green
+end
+
+// 3. Execution handling
+try
+    run runApplication
+catch error
+    say "Critical System Failure: {error}" with term.red
+    exit with code 1
+end

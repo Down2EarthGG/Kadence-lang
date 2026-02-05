@@ -1,0 +1,21 @@
+note: Validation utilities for Kadence
+
+export function isNumber val
+    return val is a number
+end
+
+export function isString val
+    return val is a string
+end
+
+export function isEmail text
+    let helper = run require "./check-helpers.js"
+    return helper.isEmail(text)
+end
+
+export function between val min max
+    if not (val is a number)
+        return false
+    end
+    return val at least min and val at most max
+end
