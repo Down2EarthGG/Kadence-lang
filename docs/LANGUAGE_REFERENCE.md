@@ -1,6 +1,6 @@
 # Kadence Language Reference
 
-**Version 0.5.9**
+**Version 0.2.0**
 
 Kadence is a poetic, high-level programming language that transpiles to JavaScript. It is designed for maximum readability, making code feel like natural prose while retaining the power of modern systems.
 
