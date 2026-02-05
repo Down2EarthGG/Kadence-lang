@@ -2,7 +2,7 @@ note: Path utilities for Kadence
 
 let pathMod = run require "path"
 
-export function join a b
+export function joinPaths a b
     return run pathMod.join a b
 end
 

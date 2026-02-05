@@ -65,10 +65,30 @@ function copyFile (src, dest) {
   fsMod.copyFileSync(src, dest);  
  }
 if (typeof exports !== 'undefined') exports.copyFile = copyFile;
-function rename (oldPath, newPath) { 
-  fsMod.renameSync(oldPath, newPath);  
+function removeDir (path) { 
+  fsMod.rmSync(path); 
+  { recursive: true, force: true };  
  }
-if (typeof exports !== 'undefined') exports.rename = rename; 
+if (typeof exports !== 'undefined') exports.removeDir = removeDir;
+function copyDir (src, dest) { 
+  fsMod.cpSync(src, dest); 
+  { recursive: true };  
+ }
+if (typeof exports !== 'undefined') exports.copyDir = copyDir;
+function stat (path) { 
+  return fsMod.statSync(path); 
+ }
+if (typeof exports !== 'undefined') exports.stat = stat;
+function isDirectory (path) { 
+  let s = stat(path); 
+  return s.isDirectory(); 
+ }
+if (typeof exports !== 'undefined') exports.isDirectory = isDirectory;
+function isFile (path) { 
+  let s = stat(path); 
+  return s.isFile(); 
+ }
+if (typeof exports !== 'undefined') exports.isFile = isFile; 
 (async () => { 
  
  })().catch(err => { if (err) console.error("\x1b[31mRuntime Error:\x1b[0m", err.stack || err.message); }); 

@@ -35,11 +35,11 @@ export function copyFile src dest
 end
 
 export function removeDir path
-    run fsMod.rmSync path (object recursive: true, force: true)
+    run fsMod.rmSync path { recursive: true, force: true }
 end
 
 export function copyDir src dest
-    run fsMod.cpSync src dest (object recursive: true)
+    run fsMod.cpSync src dest { recursive: true }
 end
 
 export function stat path

@@ -64,7 +64,7 @@ export function shuffle array
     return output
 end
 
-export function range start endNum
+export function makeRange start endNum
     let result = list
     let current = start
     while current less than (endNum plus 1)

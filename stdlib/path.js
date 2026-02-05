@@ -33,26 +33,26 @@ function __kadence_add(parent, child) {
 }
  
 let pathMod = require(`path`); 
-function pathJoin (a, b) { 
-  return pathMod[`join`](a, b); 
+function joinPaths (a, b) { 
+  return pathMod.join(a, b); 
  }
-if (typeof exports !== 'undefined') exports.pathJoin = pathJoin;
-function dirname (p) { 
-  return pathMod.dirname(p); 
+if (typeof exports !== 'undefined') exports.joinPaths = joinPaths;
+function resolve (path) { 
+  return pathMod.resolve(path); 
+ }
+if (typeof exports !== 'undefined') exports.resolve = resolve;
+function dirname (path) { 
+  return pathMod.dirname(path); 
  }
 if (typeof exports !== 'undefined') exports.dirname = dirname;
-function basename (p) { 
-  return pathMod.basename(p); 
+function basename (path) { 
+  return pathMod.basename(path); 
  }
 if (typeof exports !== 'undefined') exports.basename = basename;
-function extname (p) { 
-  return pathMod.extname(p); 
+function extension (path) { 
+  return pathMod.extname(path); 
  }
-if (typeof exports !== 'undefined') exports.extname = extname;
-function resolve (p) { 
-  return pathMod.resolve(p); 
- }
-if (typeof exports !== 'undefined') exports.resolve = resolve; 
+if (typeof exports !== 'undefined') exports.extension = extension; 
 (async () => { 
  
  })().catch(err => { if (err) console.error("\x1b[31mRuntime Error:\x1b[0m", err.stack || err.message); }); 

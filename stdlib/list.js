@@ -76,7 +76,34 @@ function unique (array) {
  } 
   return result; 
  }
-if (typeof exports !== 'undefined') exports.unique = unique; 
+if (typeof exports !== 'undefined') exports.unique = unique;
+function shuffle (array) { 
+  let output = []; 
+  for (let x of array) { 
+  __kadence_add(output, x); 
+ } 
+  let i = (output.length) - 1 ; 
+  while (i > 0 ) { 
+  let rand = require(`./random.js`); 
+  let j = rand.int(0, (i + 1 )); 
+  let temp = output[i]; 
+  output[i] = output[j]; 
+  output[j] = temp; 
+  i--; 
+ }  
+  return output; 
+ }
+if (typeof exports !== 'undefined') exports.shuffle = shuffle;
+function makeRange (start, endNum) { 
+  let result = []; 
+  let current = start; 
+  while (current < (endNum + 1 ) ) { 
+  __kadence_add(result, current);
+  current++; 
+ }  
+  return result; 
+ }
+if (typeof exports !== 'undefined') exports.makeRange = makeRange; 
 (async () => { 
  
  })().catch(err => { if (err) console.error("\x1b[31mRuntime Error:\x1b[0m", err.stack || err.message); }); 

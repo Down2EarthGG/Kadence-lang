@@ -3,7 +3,7 @@ note: Process control utilities
 let processMod = run require "process"
 
 export function exit code
-    if code is undefined
+    if code equals undefined
         run processMod.exit 0
     else
         run processMod.exit code

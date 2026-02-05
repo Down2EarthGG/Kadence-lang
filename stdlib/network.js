@@ -32,31 +32,35 @@ function __kadence_add(parent, child) {
     throw new Error("Runtime Error: Cannot add item to " + typeof parent);
 }
  
-let processMod = require(`process`); 
-function exit (code) { 
-  if (code === undefined ) { 
-  processMod.exit(0);  
- }   else { 
-  processMod.exit(code);  
- }   
+let http = require(`http`); 
+function serve (port, handler) { 
+  let server = http.createServer((req, res) => { 
+  let response = { send: (body) => { 
+  res.writeHead(200, { `Content-Type`: `text/plain` }); 
+  res.end(body);  
+ } , json: (body) => { 
+  res.writeHead(200, { `Content-Type`: `application/json` }); 
+  res.end(JSON.stringify(body));  
+ } , html: (body) => { 
+  res.writeHead(200, { `Content-Type`: `text/html` }); 
+  res.end(body);  
+ }  }; 
+  response.status = (code) => { 
+  res.statusCode = code; 
+  return response; 
+ } ;
+  handler(req, response);  
+ } ); 
+  server.listen(port, () => { 
+  __kadence_echo(`Server running at http://localhost:${port}/`);  
+ } );  
  }
-if (typeof exports !== 'undefined') exports.exit = exit;
-function args () { 
-  let allArgs = processMod.argv; 
-  let properArgs = []; 
-  let idx = 2; 
-  let len = allArgs.length; 
-  while (idx < len ) { 
-  __kadence_add(properArgs, allArgs[idx]);
-  idx++; 
- }  
-  return properArgs; 
+if (typeof exports !== 'undefined') exports.serve = serve;
+function fetchJson (url) { 
+  let result = await fetch(url).then(r => r.json()); 
+  return result; 
  }
-if (typeof exports !== 'undefined') exports.args = args;
-function cwd () { 
-  return processMod.cwd(); 
- }
-if (typeof exports !== 'undefined') exports.cwd = cwd; 
+if (typeof exports !== 'undefined') exports.fetchJson = fetchJson; 
 (async () => { 
  
  })().catch(err => { if (err) console.error("\x1b[31mRuntime Error:\x1b[0m", err.stack || err.message); }); 

@@ -32,12 +32,13 @@ function __kadence_add(parent, child) {
     throw new Error("Runtime Error: Cannot add item to " + typeof parent);
 }
  
+let processMod = require(`process`); 
 function getEnv (name) { 
-  return process.env[name]; 
+  return processMod.env[name]; 
  }
 if (typeof exports !== 'undefined') exports.getEnv = getEnv;
 function hasEnv (name) { 
-  return process.env.hasOwnProperty(name); 
+  return (getEnv(name)) !== undefined ; 
  }
 if (typeof exports !== 'undefined') exports.hasEnv = hasEnv; 
 (async () => { 

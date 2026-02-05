@@ -2,7 +2,7 @@ note: JSON utilities for Kadence
 
 let fsMod = run require "fs"
 
-export function read path
+export function readJson path
     if not (run fsMod.existsSync path)
         return null
     end
@@ -10,7 +10,7 @@ export function read path
     return parse json from content
 end
 
-export function write path data
+export function writeJson path data
     let str = stringify data to json
     run fsMod.writeFileSync path str
 end

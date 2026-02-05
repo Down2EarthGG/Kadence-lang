@@ -32,31 +32,32 @@ function __kadence_add(parent, child) {
     throw new Error("Runtime Error: Cannot add item to " + typeof parent);
 }
  
-let processMod = require(`process`); 
-function exit (code) { 
-  if (code === undefined ) { 
-  processMod.exit(0);  
- }   else { 
-  processMod.exit(code);  
+let fsMod = require(`fs`); 
+function readJson (path) { 
+  if (!((fsMod.existsSync(path)))) { 
+  return null; 
+ }  
+  let content = fsMod.readFileSync(path, `utf8`); 
+  return JSON.parse(content); 
+ }
+if (typeof exports !== 'undefined') exports.readJson = readJson;
+function writeJson (path, data) { 
+  let str = JSON.stringify(data); 
+  fsMod.writeFileSync(path, str);  
+ }
+if (typeof exports !== 'undefined') exports.writeJson = writeJson;
+function format (data) { 
+  return JSON.stringify(data, null, 2); 
+ }
+if (typeof exports !== 'undefined') exports.format = format;
+function parseSafe (text) { 
+  try { 
+  return JSON.parse(text); 
+ }  catch(e) { 
+  return null; 
  }   
  }
-if (typeof exports !== 'undefined') exports.exit = exit;
-function args () { 
-  let allArgs = processMod.argv; 
-  let properArgs = []; 
-  let idx = 2; 
-  let len = allArgs.length; 
-  while (idx < len ) { 
-  __kadence_add(properArgs, allArgs[idx]);
-  idx++; 
- }  
-  return properArgs; 
- }
-if (typeof exports !== 'undefined') exports.args = args;
-function cwd () { 
-  return processMod.cwd(); 
- }
-if (typeof exports !== 'undefined') exports.cwd = cwd; 
+if (typeof exports !== 'undefined') exports.parseSafe = parseSafe; 
 (async () => { 
  
  })().catch(err => { if (err) console.error("\x1b[31mRuntime Error:\x1b[0m", err.stack || err.message); }); 

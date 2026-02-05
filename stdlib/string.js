@@ -63,10 +63,39 @@ function capitalized (text) {
   return firstChar + (rest.join(``)) ; 
  }
 if (typeof exports !== 'undefined') exports.capitalized = capitalized;
-function isEmpty (text) { 
-  return text === 0 .length; 
+function padStart (text, length, char) { 
+  return text.padStart(length, char); 
  }
-if (typeof exports !== 'undefined') exports.isEmpty = isEmpty; 
+if (typeof exports !== 'undefined') exports.padStart = padStart;
+function padEnd (text, length, char) { 
+  return text.padEnd(length, char); 
+ }
+if (typeof exports !== 'undefined') exports.padEnd = padEnd;
+function repeated (text, count) { 
+  return text.repeat(count); 
+ }
+if (typeof exports !== 'undefined') exports.repeated = repeated;
+function slice (text, start, endIdx) { 
+  return text.slice(start, endIdx); 
+ }
+if (typeof exports !== 'undefined') exports.slice = slice;
+function toCamelCase (text) { 
+  let parts = text.split(` `); 
+  if (parts === 1 .length) { 
+  return (text).toString().toLowerCase(); 
+ }  
+  let res = ((parts[0])).toString().toLowerCase(); 
+  let idx = 1; 
+  while (idx < parts.length ) { 
+  let part = parts[idx]; 
+  let first = ((part[0])).toString().toUpperCase(); 
+  let rest = slice(part, 1); 
+  res = res + first  + rest ;
+  idx++; 
+ }  
+  return res; 
+ }
+if (typeof exports !== 'undefined') exports.toCamelCase = toCamelCase; 
 (async () => { 
  
  })().catch(err => { if (err) console.error("\x1b[31mRuntime Error:\x1b[0m", err.stack || err.message); }); 
