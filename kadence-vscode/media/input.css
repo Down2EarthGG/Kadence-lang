@@ -1,0 +1,9 @@
+/* Base styles for Kadence VSCode extension webviews */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Kadence utilities can go here */
+.kadence-gradient {
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+}

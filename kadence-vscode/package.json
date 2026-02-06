@@ -10,25 +10,28 @@
         "url": "https://github.com/Down2EarthGG/Kadence-lang"
     },
     "description": "Language support for Kadence",
-    "version": "0.2.1",
+    "version": "0.2.3",
     "main": "./extension.js",
     "engines": {
         "vscode": "^1.75.0"
     },
+    "activationEvents": [],
     "scripts": {
-        "vscode:prepublish": "npm install",
+        "vscode:prepublish": "npm install && npm run build:css",
         "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./"
+        "watch": "tsc -watch -p ./",
+        "build:css": "tailwindcss -i ./media/input.css -o ./media/style.css --minify",
+        "watch:css": "tailwindcss -i ./media/input.css -o ./media/style.css --watch"
     },
     "categories": [
         "Programming Languages"
     ],
     "dependencies": {
+        "ohm-js": "^17.3.0",
+        "source-map": "^0.7.4",
         "vscode-languageclient": "^8.0.2",
         "vscode-languageserver": "^8.0.2",
-        "vscode-languageserver-textdocument": "^1.0.7",
-        "ohm-js": "^17.3.0",
-        "source-map": "^0.7.4"
+        "vscode-languageserver-textdocument": "^1.0.7"
     },
     "contributes": {
         "languages": [
@@ -63,5 +66,11 @@
                 "path": "./themes/kadence-theme.json"
             }
         ]
+    },
+    "devDependencies": {
+        "@tailwindcss/cli": "^4.1.18",
+        "autoprefixer": "^10.4.24",
+        "postcss": "^8.5.6",
+        "tailwindcss": "^4.1.18"
     }
 }

@@ -1,0 +1,10 @@
+{
+    "name": "kadence-lang",
+    "version": "0.2.3",
+    "description": "A human-readable programming language that feels like poetry",
+    "author": "The Kadence Team",
+    "scripts": {
+        "test": "kadence test"
+    },
+    "dependencies": {}
+}

@@ -1,0 +1,14 @@
+.vscode/**
+.vscode-test/**
+.git/**
+.gitignore
+node_modules/**
+src/**
+**/*.map
+**/*.ts
+tsconfig.json
+tailwind.config.js
+postcss.config.js
+media/input.css
+!media/style.css
+*.vsix

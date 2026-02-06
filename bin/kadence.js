@@ -5,7 +5,7 @@ const readline = require("readline");
 const { execSync } = require("child_process");
 const { compile } = require("../src/compiler");
 
-const VERSION = "0.2.2";
+const VERSION = "0.2.3";
 
 const colors = {
   reset: "\x1b[0m",
@@ -45,8 +45,8 @@ Core Commands:
   kadence -c <file>      Compile to JavaScript only
   
 Project Commands:
-  kadence create <name> [--web]  Create a new project from a template
-  kadence init [--web]           Initialize Kadence in existing folder
+  kadence create <name> [--web] [--tailwind]  Create a new project from a template
+  kadence init [--web] [--tailwind]           Initialize Kadence in existing folder
   kadence dev                    Start Vite development server (Web only)
   kadence build                  Compile all .kade files in project
   kadence test                   Run all .test.kade files
@@ -132,9 +132,9 @@ function buildProject(dir = process.cwd(), isRoot = true, opts = {}) {
   return count;
 }
 
-/** Write project scaffold into targetDir. opts: { projectName, version, description, author, isWeb }. */
+/** Write project scaffold into targetDir. opts: { projectName, version, description, author, isWeb, isTailwind }. */
 function writeScaffold(targetDir, opts) {
-  const { projectName, version, description, author, isWeb } = opts;
+  const { projectName, version, description, author, isWeb, isTailwind } = opts;
   const dirs = ["src", "dist", "src/components", "src/lib", "src/assets"];
   dirs.forEach((d) => {
     const full = path.join(targetDir, d);
@@ -263,8 +263,59 @@ module.exports = {
     };
     if (isWeb) {
       pkg.devDependencies = { vite: "latest", "vite-plugin-kadence": "^0.2.1" };
+      if (isTailwind) {
+        pkg.devDependencies["tailwindcss"] = "^3.4.1";
+        pkg.devDependencies["postcss"] = "^8.4.35";
+        pkg.devDependencies["autoprefixer"] = "^10.4.17";
+      }
     }
     fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+  }
+
+  if (isWeb && isTailwind) {
+    const tailwindConfig = path.join(targetDir, "tailwind.config.js");
+    if (!fs.existsSync(tailwindConfig)) {
+      fs.writeFileSync(
+        tailwindConfig,
+        `/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./index.html",
+    "./src/**/*.{kade,js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        kadence: {
+          light: '#4facfe',
+          DEFAULT: '#00f2fe',
+          dark: '#1a1a2e'
+        }
+      },
+      fontFamily: {
+        sans: ['Outfit', 'sans-serif'],
+      }
+    },
+  },
+  plugins: [],
+}`,
+        "utf8"
+      );
+    }
+
+    const postcssConfig = path.join(targetDir, "postcss.config.js");
+    if (!fs.existsSync(postcssConfig)) {
+      fs.writeFileSync(
+        postcssConfig,
+        `module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}`,
+        "utf8"
+      );
+    }
   }
 
   if (isWeb) {
@@ -278,27 +329,27 @@ module.exports = {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${projectName} | Kadence</title>
-    <link rel="stylesheet" href="/src/style.css">
+    ${isTailwind ? '<link href="/src/style.css" rel="stylesheet">' : '<link rel="stylesheet" href="/src/style.css">'}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
-        <header>
-            <div class="logo">♪</div>
-            <h1>${projectName}</h1>
-            <p class="subtitle">Built with Kadence</p>
+<body class="${isTailwind ? 'bg-slate-900 text-white min-h-screen flex items-center justify-center font-sans' : ''}">
+    <div class="${isTailwind ? 'text-center max-w-2xl p-8' : 'container'}">
+        <header class="${isTailwind ? 'mb-12' : ''}">
+            <div class="${isTailwind ? 'text-7xl mb-4 bg-gradient-to-br from-cyan-400 to-blue-500 bg-clip-text text-transparent' : 'logo'}">♪</div>
+            <h1 class="${isTailwind ? 'text-5xl font-semibold m-0' : ''}">${projectName}</h1>
+            <p class="${isTailwind ? 'text-slate-400 text-lg mt-2' : 'subtitle'}">Built with Kadence</p>
         </header>
         
         <main>
-            <div class="card">
-                <h2 id="counter">Count: 0</h2>
-                <button onclick="increment()">Increment</button>
+            <div class="${isTailwind ? 'bg-white/5 backdrop-blur-md border border-white/10 p-10 rounded-3xl shadow-2xl mb-8 hover:-translate-y-1 transition-transform duration-300' : 'card'}">
+                <h2 id="counter" class="${isTailwind ? 'text-4xl mb-6' : ''}">Count: 0</h2>
+                <button onclick="increment()" class="${isTailwind ? 'bg-gradient-to-br from-blue-400 to-cyan-400 border-0 text-white py-3 px-8 text-lg font-semibold rounded-xl cursor-pointer transition-all duration-200 shadow-lg hover:scale-105 hover:shadow-cyan-400/40 active:scale-95' : ''}">Increment</button>
             </div>
             
-            <div class="info">
-                <p>Edit <code>src/main.kade</code> to get started.</p>
+            <div class="${isTailwind ? 'text-slate-500 text-sm' : 'info'}">
+                <p>Edit <code class="${isTailwind ? 'bg-white/10 px-2 py-1 rounded text-slate-200' : ''}">src/main.kade</code> to get started.</p>
             </div>
         </main>
     </div>
@@ -311,9 +362,23 @@ module.exports = {
 
     const styleCss = path.join(targetDir, "src", "style.css");
     if (!fs.existsSync(styleCss)) {
-      fs.writeFileSync(
-        styleCss,
-        `body {
+      if (isTailwind) {
+        fs.writeFileSync(
+          styleCss,
+          `@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background: radial-gradient(circle at top right, #1a1a2e, #0f0f1b);
+}
+`,
+          "utf8"
+        );
+      } else {
+        fs.writeFileSync(
+          styleCss,
+          `body {
     margin: 0;
     padding: 0;
     font-family: 'Outfit', sans-serif;
@@ -409,8 +474,9 @@ code {
     color: #e2e8f0;
 }
 `,
-        "utf8"
-      );
+          "utf8"
+        );
+      } // end if (isTailwind) else
     }
 
     const viteConfig = path.join(targetDir, "vite.config.js");
@@ -454,12 +520,14 @@ function initProject() {
         const description = desc || "";
         rl.question("Author: ", (author) => {
           const isWeb = process.argv.includes("--web");
+          const isTailwind = process.argv.includes("--tailwind");
           writeScaffold(process.cwd(), {
             projectName,
             version,
             description,
             author: author || "",
             isWeb,
+            isTailwind,
           });
           log(`\n✨ Project '${projectName}' initialized.`, colors.green);
           log(`Next steps:\n  npm install\n  ${isWeb ? "kadence dev" : "kadence run start"}`, colors.dim);
@@ -473,6 +541,7 @@ function initProject() {
 
 function createProject(appName) {
   const isWeb = process.argv.includes("--web");
+  const isTailwind = process.argv.includes("--tailwind");
   if (!appName || appName.startsWith("-")) {
     log("Usage: kadence create <project-name> [--web] [--yes]", colors.red);
     log("Example: kadence create my-app --web", colors.dim);
@@ -494,6 +563,7 @@ function createProject(appName) {
     description: "",
     author: "",
     isWeb,
+    isTailwind,
   });
   log(`✨ Project created. Installing dependencies...`, colors.green);
   try {
