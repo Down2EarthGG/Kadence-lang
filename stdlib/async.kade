@@ -1,0 +1,43 @@
+note: Async utilities for Kadence
+
+let mod = run require "./async-helpers.js"
+
+export function delay milliseconds
+    return run mod.delay milliseconds
+end
+
+export function timeout promise milliseconds
+    return run mod.timeout promise milliseconds
+end
+
+export function retry fn maxAttempts delayMs
+    return run mod.retry fn maxAttempts delayMs
+end
+
+export function debounce fn delayMs
+    return run mod.debounce fn delayMs
+end
+
+export function throttle fn delayMs
+    return run mod.throttle fn delayMs
+end
+
+export function parallel promises
+    return Promise.all(promises)
+end
+
+export function race promises
+    return Promise.race(promises)
+end
+
+export function sequential tasks
+    return run mod.sequential tasks
+end
+
+export function waterfall tasks initialValue
+    return run mod.waterfall tasks initialValue
+end
+
+export function batch items batchSize processFn
+    return run mod.batch items batchSize processFn
+end

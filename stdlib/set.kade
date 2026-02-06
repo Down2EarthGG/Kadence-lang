@@ -1,0 +1,110 @@
+note: Set operations for Kadence
+
+export function union set1 set2
+    let result = list
+    
+    for each elem in set1
+        add elem to result
+    end
+    
+    for each elem in set2
+        let found = false
+        for each existing in result
+            if existing equals elem
+                set found to true
+            end
+        end
+        if not found
+            add elem to result
+        end
+    end
+    
+    return result
+end
+
+export function intersection set1 set2
+    let result = list
+    
+    for each elem in set1
+        let found = false
+        for each item2 in set2
+            if elem equals item2
+                set found to true
+            end
+        end
+        if found
+            add elem to result
+        end
+    end
+    
+    return result
+end
+
+export function difference set1 set2
+    let result = list
+    
+    for each elem in set1
+        let found = false
+        for each item2 in set2
+            if elem equals item2
+                set found to true
+            end
+        end
+        if not found
+            add elem to result
+        end
+    end
+    
+    return result
+end
+
+export function symmetricDifference set1 set2
+    let diff1 = run difference set1 set2
+    let diff2 = run difference set2 set1
+    return run union diff1 diff2
+end
+
+export function isSubset subset bigSet
+    for each elem in subset
+        let found = false
+        for each elem2 in bigSet
+            if elem equals elem2
+                set found to true
+            end
+        end
+        if not found
+            return false
+        end
+    end
+    return true
+end
+
+export function isSuperset bigSet subset
+    return run isSubset subset bigSet
+end
+
+export function areDisjoint set1 set2
+    for each elem in set1
+        for each item2 in set2
+            if elem equals item2
+                return false
+            end
+        end
+    end
+    return true
+end
+
+export function cartesianProduct set1 set2
+    let result = list
+    
+    for each item1 in set1
+        for each item2 in set2
+            let pair = list
+            add item1 to pair
+            add item2 to pair
+            add pair to result
+        end
+    end
+    
+    return result
+end

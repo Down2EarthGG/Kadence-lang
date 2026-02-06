@@ -1,0 +1,47 @@
+note: Test new stdlib modules
+
+import "../stdlib/array.kade" as arr
+import "../stdlib/map.kade" as m
+import "../stdlib/set.kade" as s
+import "../stdlib/format.kade" as fmt
+import "../stdlib/async.kade" as asyncUtil
+
+say "Testing new stdlib modules..."
+
+note: Test array functions
+let numbers = list 1 2 3 4 5
+let reversed = run arr.reverse numbers
+echo "Reversed: {reversed}"
+
+let nested = list (list 1 2) (list 3 4)
+let flat = run arr.flatten nested
+echo "Flattened: {flat}"
+
+let first3 = run arr.take numbers 3
+echo "First 3: {first3}"
+
+note: Test map functions
+let person = { name: "Alice", age: 30, city: "NYC" }
+let personKeys = run m.keys person
+echo "Keys: {personKeys}"
+
+note: Test set operations
+let setA = list 1 2 3
+let setB = list 3 4 5
+let unionResult = run s.union setA setB
+echo "Union: {unionResult}"
+
+let intersect = run s.intersection setA setB
+echo "Intersection: {intersect}"
+
+note: Test format functions
+let price = run fmt.currency 1234.56 "USD"
+echo "Price: {price}"
+
+let bytes = run fmt.fileSize 1536
+echo "File size: {bytes}"
+
+let title = run fmt.titleCase "hello world"
+echo "Title case: {title}"
+
+say "All tests completed!"

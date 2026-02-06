@@ -1,0 +1,12 @@
+note: Test file
+
+export function testReverse array
+    let result = list
+    let i = (size of array) minus 1
+    
+    while i at least 0
+        add array[i] to result
+        decrement i
+    end
+    return result
+end

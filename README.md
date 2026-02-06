@@ -135,8 +135,14 @@ Kadence ships with a comprehensive set of modules for common tasks.
 
 | Module | Core Functionality |
 | :--- | :--- |
+| `array` | `flatten`, `zip`, `chunk`, `partition`, `take`, `drop`, `reverse`, `findIndex` |
+| `async` | `delay`, `timeout`, `retry`, `debounce`, `throttle`, `parallel`, `sequential`, `waterfall` |
 | `list` | `first`, `lastOf`, `shuffle`, `range`, `unique` |
 | `string` | `trimmed`, `repeated`, `toCamelCase`, `padStart`, `words` |
+| `map` | `keys`, `values`, `entries`, `merge`, `pick`, `omit`, `mapValues`, `deepClone`, `fromPairs` |
+| `set` | `union`, `intersection`, `difference`, `isSubset`, `isSuperset`, `cartesianProduct` |
+| `format` | `currency`, `fileSize`, `ordinal`, `plural`, `titleCase`, `snakeCase`, `kebabCase` |
+| `validation` | `isEmail`, `isUrl`, `isNumeric`, `isAlpha`, `isInRange`, `isHexColor`, `isCreditCard` |
 | `math` | `clamp`, `randomFloat`, `toRadians`, `hypotenuse` |
 | `datetime` | `the time now`, `the date today`, `diffDays`, `toIso` |
 | `file` | `readFile`, `writeFile`, `copyDir`, `removeDir`, `stat` |

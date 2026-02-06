@@ -39,6 +39,55 @@ function defaults(obj, defs) {
   return r;
 }
 
+function keys(obj) {
+  return Object.keys(obj);
+}
+
+function values(obj) {
+  return Object.values(obj);
+}
+
+function entries(obj) {
+  return Object.entries(obj);
+}
+
+function hasKey(obj, key) {
+  return Object.prototype.hasOwnProperty.call(obj, key);
+}
+
+function merge(obj1, obj2) {
+  return Object.assign({}, obj1, obj2);
+}
+
+function mapValues(obj, fn) {
+  const result = {};
+  for (const key of Object.keys(obj)) {
+    result[key] = fn(obj[key], key);
+  }
+  return result;
+}
+
+function mapKeys(obj, fn) {
+  const result = {};
+  for (const key of Object.keys(obj)) {
+    const newKey = fn(key, obj[key]);
+    result[newKey] = obj[key];
+  }
+  return result;
+}
+
+function invert(obj) {
+  const result = {};
+  for (const key of Object.keys(obj)) {
+    result[obj[key]] = key;
+  }
+  return result;
+}
+
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { pick, omit, deepClone, get, defaults };
+  module.exports = {
+    pick, omit, deepClone, get, defaults,
+    keys, values, entries, hasKey, merge,
+    mapValues, mapKeys, invert
+  };
 }

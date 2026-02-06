@@ -1,0 +1,68 @@
+note: Map and dictionary utilities for Kadence
+
+let mod = run require "./object-helpers.js"
+
+export function keys obj
+    return run mod.keys obj
+end
+
+export function values obj
+    return run mod.values obj
+end
+
+export function entries obj
+    return run mod.entries obj
+end
+
+export function hasKey obj key
+    return run mod.hasKey obj key
+end
+
+export function merge obj1 obj2
+    return run mod.merge obj1 obj2
+end
+
+export function pick obj keysArray
+    return run mod.pick obj keysArray
+end
+
+export function omit obj keysArray
+    return run mod.omit obj keysArray
+end
+
+export function mapValues obj fn
+    return run mod.mapValues obj fn
+end
+
+export function mapKeys obj fn
+    return run mod.mapKeys obj fn
+end
+
+export function invert obj
+    return run mod.invert obj
+end
+
+export function deepClone obj
+    return run mod.deepClone obj
+end
+
+export function getPath obj path
+    return run mod.get obj path
+end
+
+export function defaults obj defs
+    return run mod.defaults obj defs
+end
+
+export function isEmpty obj
+    let allKeys = Object.keys(obj)
+    return (size of allKeys) equals 0
+end
+
+export function fromPairs pairsArray
+    let result = {}
+    for each pair in pairsArray
+        result[pair[0]] = pair[1]
+    end
+    return result
+end

@@ -1,0 +1,129 @@
+note: Advanced array utilities for Kadence
+
+export function flatten nestedArray
+    let result = list
+    for each elem in nestedArray
+        if typeof elem equals "object" and elem.length
+            let flattened = run flatten elem
+            for each subItem in flattened
+                add subItem to result
+            end
+        else
+            add elem to result
+        end
+    end
+    return result
+end
+
+export function zip array1 array2
+    let result = list
+    let len1 = size of array1
+    let len2 = size of array2
+    let minLen = 0
+    if len1 less than len2
+        set minLen to len1
+    else
+        set minLen to len2
+    end
+    
+    let i = 0
+    while i less than minLen
+        let pair = list
+        add array1[i] to pair
+        add array2[i] to pair
+        add pair to result
+        increment i
+    end
+    return result
+end
+
+export function chunk array chunkSize
+    let result = list
+    let i = 0
+    let len = size of array
+    
+    while i less than len
+        let currentChunk = list
+        let j = 0
+        while j less than chunkSize and (i plus j) less than len
+            add array[i plus j] to currentChunk
+            increment j
+        end
+        add currentChunk to result
+        set i to i plus chunkSize
+    end
+    return result
+end
+
+export function partition array predicate
+    let truthy = list
+    let falsy = list
+    
+    for each elem in array
+        if run predicate elem
+            add elem to truthy
+        else
+            add elem to falsy
+        end
+    end
+    
+    let output = list
+    add truthy to output
+    add falsy to output
+    return output
+end
+
+export function take array count
+    let result = list
+    let len = size of array
+    let actualCount = 0
+    if count less than len
+        set actualCount to count
+    else
+        set actualCount to len
+    end
+    
+    let i = 0
+    while i less than actualCount
+        add array[i] to result
+        increment i
+    end
+    return result
+end
+
+export function drop array count
+    let result = list
+    let len = size of array
+    let i = count
+    
+    while i less than len
+        add array[i] to result
+        increment i
+    end
+    return result
+end
+
+export function reverse array
+    let result = list
+    let i = (size of array) minus 1
+    
+    while i at least 0
+        add array[i] to result
+        decrement i
+    end
+    return result
+end
+
+export function findIndex array predicate
+    let i = 0
+    let len = size of array
+    
+    while i less than len
+        let elem = array[i]
+        if run predicate elem
+            return i
+        end
+        increment i
+    end
+    return 0 minus 1
+end

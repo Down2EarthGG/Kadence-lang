@@ -17,6 +17,7 @@ coverage/
 
 # Generated / build output
 examples/*.js
+stdlib/.object.kade.js
 # Ignore all apps
 apps/
 

@@ -1,0 +1,78 @@
+note: Validation utilities for Kadence
+
+let mod = run require "./validation-helpers.js"
+
+export function isEmail text
+    return run mod.isEmail text
+end
+
+export function isUrl text
+    try
+        new URL(text)
+        return true
+    catch error
+        return false
+    end
+end
+
+export function isNumeric text
+    return run mod.isNumeric text
+end
+
+export function isAlpha text
+    return run mod.isAlpha text
+end
+
+export function isAlphanumeric text
+    return run mod.isAlphanumeric text
+end
+
+export function isInteger text
+    return run mod.isInteger text
+end
+
+export function isPositive num
+    return num more than 0
+end
+
+export function isNegative num
+    return num less than 0
+end
+
+export function isInRange num min max
+    return num at least min and num at most max
+end
+
+export function isLength text minLen maxLen
+    let len = size of text
+    return len at least minLen and len at most maxLen
+end
+
+export function isBlank text
+    let trimmedText = trim text
+    return (size of trimmedText) equals 0
+end
+
+export function isNotEmpty text
+    return not (run isBlank text)
+end
+
+export function isHexColor text
+    return run mod.isHexColor text
+end
+
+export function isIpAddress text
+    return run mod.isIpAddress text
+end
+
+export function isPhoneNumber text
+    return run mod.isPhoneNumber text
+end
+
+export function isCreditCard text
+    return run mod.isCreditCard text
+end
+
+export function isStrongPassword text
+    return run mod.isStrongPassword text
+end

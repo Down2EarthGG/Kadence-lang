@@ -1,0 +1,119 @@
+note: Formatting utilities for Kadence
+
+let mod = run require "./format-helpers.js"
+
+export function currency amount currencyCode
+    return run mod.currency amount currencyCode
+end
+
+export function formatNumber num decimals
+    return num.toFixed(decimals)
+end
+
+export function percentage num decimals
+    let fixed = num.toFixed(decimals)
+    return fixed plus "%"
+end
+
+export function fileSize bytes
+    if bytes less than 1024
+        return bytes plus " B"
+    elif bytes less than 1048576
+        let kb = bytes / 1024
+        return (kb.toFixed(2)) plus " KB"
+    elif bytes less than 1073741824
+        let mb = bytes / 1048576
+        return (mb.toFixed(2)) plus " MB"
+    else
+        let gb = bytes / 1073741824
+        return (gb.toFixed(2)) plus " GB"
+    end
+end
+
+export function ordinal num
+    let tens = floor (num / 10) times 10
+    let remainder = num minus tens
+    let lastTwo = num minus (floor (num / 100) times 100)
+    
+    if lastTwo at least 11 and lastTwo at most 13
+        return num plus "th"
+    end
+    
+    if remainder equals 1
+        return num plus "st"
+    elif remainder equals 2
+        return num plus "nd"
+    elif remainder equals 3
+        return num plus "rd"
+    else
+        return num plus "th"
+    end
+end
+
+export function plural count singular pluralForm
+    if count equals 1
+        return singular
+    else
+        return pluralForm
+    end
+end
+
+export function truncate text maxLength suffix
+    let len = size of text
+    if len at most maxLength
+        return text
+    end
+    
+    let truncated = text.slice(0, maxLength)
+    return truncated plus suffix
+end
+
+export function ellipsis text maxLength
+    return run truncate text maxLength "..."
+end
+
+export function padNumber num width
+    let str = String(num)
+    let len = size of str
+    
+    if len at least width
+        return str
+    end
+    
+    let zerosNeeded = width minus len
+    let zeros = ""
+    let i = 0
+    while i less than zerosNeeded
+        set zeros to zeros plus "0"
+        increment i
+    end
+    
+    return zeros plus str
+end
+
+export function phoneNumber text
+    return run mod.phoneNumber text
+end
+
+export function titleCase text
+    let words = split text by " "
+    let result = list
+    
+    for each word in words
+        if (size of word) more than 0
+            let first = uppercase (word[0])
+            let rest = lowercase (word.slice(1))
+            add (first plus rest) to result
+        end
+    end
+    
+    return join result with " "
+end
+
+export function snakeCase text
+    return run mod.snakeCase text
+end
+
+export function kebabCase text
+    return run mod.kebabCase text
+end
