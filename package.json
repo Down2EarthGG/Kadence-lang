@@ -1,6 +1,6 @@
 {
   "name": "kadence-lang",
-  "version": "0.2.2",
+  "version": "0.2.1",
   "description": "A human-readable programming language that feels like poetry",
   "icon": "icon.svg",
   "main": "src/compiler.js",
