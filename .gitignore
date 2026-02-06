@@ -20,6 +20,7 @@ examples/*.js
 stdlib/.object.kade.js
 # Ignore all apps
 apps/
+/demo-web
 
 
 # Agent / AI local storage

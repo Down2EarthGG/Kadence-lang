@@ -9,6 +9,9 @@
             "include": "#strings"
         },
         {
+            "include": "#numbers"
+        },
+        {
             "include": "#constants"
         },
         {
@@ -18,31 +21,28 @@
             "include": "#keywords"
         },
         {
-            "include": "#operators"
+            "include": "#support"
         },
         {
-            "include": "#support"
+            "include": "#builtinObjects"
+        },
+        {
+            "include": "#operators"
         },
         {
             "include": "#functions"
         },
         {
-            "include": "#set_assignment"
+            "include": "#setAssignment"
         },
         {
-            "include": "#variable_assignment"
+            "include": "#propertyAccess"
         },
         {
-            "include": "#numbers"
-        },
-        {
-            "include": "#object_literal"
+            "include": "#objectLiteral"
         },
         {
             "include": "#punctuation"
-        },
-        {
-            "include": "#identifier"
         }
     ],
     "repository": {
@@ -115,8 +115,52 @@
                 }
             ]
         },
+        "builtinObjects": {
+            "patterns": [
+                {
+                    "match": "\\b(document|window|console|navigator|localStorage|sessionStorage|location|history)\\b",
+                    "name": "support.class.builtin.kadence"
+                },
+                {
+                    "match": "\\b(Math|Date|Array|Object|String|Number|Boolean|RegExp|JSON|Promise|Set|Map|Error)\\b",
+                    "name": "support.class.builtin.kadence"
+                }
+            ]
+        },
+        "methodCalls": {
+            "patterns": [
+                {
+                    "match": "\\b([a-zA-Z_]\\w*)\\s*\\(",
+                    "captures": {
+                        "1": {
+                            "name": "entity.name.function.call.kadence"
+                        }
+                    }
+                }
+            ]
+        },
+        "propertyAccess": {
+            "patterns": [
+                {
+                    "match": "\\.\\s*([a-zA-Z_]\\w*)\\s*(?=\\()",
+                    "captures": {
+                        "1": {
+                            "name": "entity.name.function.method.kadence"
+                        }
+                    }
+                },
+                {
+                    "match": "\\.\\s*([a-zA-Z_]\\w*)",
+                    "captures": {
+                        "1": {
+                            "name": "variable.other.property.kadence"
+                        }
+                    }
+                }
+            ]
+        },
         "support": {
-            "match": "\\b(echo|print|ask|size|random|number|uppercase|lowercase|average|minimum|maximum|round|floor|ceiling|absolute|square|root|power|sin|cos|tan|sort|reverse|push|pop|keys|values|merge|time|date|get|post|put|delete|parse|stringify|json|regex|extract|range|trim|split|join|map|filter|reduce|find|some|every|replace|matches|index|last|document|window|console|Math|Date)\\b",
+            "match": "\\b(echo|print|ask|size|random|number|uppercase|lowercase|average|minimum|maximum|round|floor|ceiling|absolute|square|root|power|sin|cos|tan|sort|reverse|push|pop|keys|values|merge|time|date|get|post|put|delete|parse|stringify|json|regex|extract|range|trim|split|join|map|filter|reduce|find|some|every|replace|matches|index|last)\\b",
             "name": "support.function.kadence"
         },
         "functions": {
@@ -133,18 +177,7 @@
                     }
                 },
                 {
-                    "match": "\\b(run)\\s+([a-zA-Z_][\\w\\.]*)",
-                    "captures": {
-                        "1": {
-                            "name": "keyword.other.kadence"
-                        },
-                        "2": {
-                            "name": "entity.name.function.call.kadence"
-                        }
-                    }
-                },
-                {
-                    "match": "\\b([a-zA-Z_]\\w*)\\s*\\(",
+                    "match": "\\b([a-zA-Z_]\\w*)\\s*(?=\\()",
                     "captures": {
                         "1": {
                             "name": "entity.name.function.call.kadence"
@@ -153,7 +186,7 @@
                 }
             ]
         },
-        "set_assignment": {
+        "setAssignment": {
             "match": "\\b(set)\\s+([a-zA-Z_]\\w*(?:\\s*\\.\\s*[a-zA-Z_]\\w*)?)\\s+(to)\\b",
             "captures": {
                 "1": {
@@ -167,7 +200,7 @@
                 }
             }
         },
-        "variable_assignment": {
+        "variableAssignment": {
             "match": "([a-zA-Z_]\\w*)\\s*\\.\\s*([a-zA-Z_]\\w*)",
             "captures": {
                 "1": {
@@ -186,12 +219,12 @@
             "match": "[(){}\\[\\],.]",
             "name": "punctuation.separator.kadence"
         },
-        "object_literal": {
+        "objectLiteral": {
             "begin": "\\{",
             "end": "\\}",
             "patterns": [
                 {
-                    "include": "#object_key"
+                    "include": "#objectKey"
                 },
                 {
                     "include": "#strings"
@@ -207,7 +240,7 @@
                 }
             ]
         },
-        "object_key": {
+        "objectKey": {
             "match": "([a-zA-Z_]\\w*)\\s*:",
             "captures": {
                 "1": {
