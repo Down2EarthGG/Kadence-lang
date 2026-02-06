@@ -51,7 +51,14 @@ function between (val, min, max) {
  }  
   return val >= min  && val <= max  ; 
  }
-if (typeof exports !== 'undefined') exports.between = between; 
+if (typeof exports !== 'undefined') exports.between = between;
+function coalesce (a, b) { 
+  if (a !== undefined  && a !== null  ) { 
+  return a; 
+ }  
+  return b; 
+ }
+if (typeof exports !== 'undefined') exports.coalesce = coalesce; 
 (async () => { 
  
  })().catch(err => { if (err) console.error("\x1b[31mRuntime Error:\x1b[0m", err.stack || err.message); }); 

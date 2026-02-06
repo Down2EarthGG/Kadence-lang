@@ -32,6 +32,15 @@ function __kadence_add(parent, child) {
     throw new Error("Runtime Error: Cannot add item to " + typeof parent);
 }
  
+let listMod = require(`./list-helpers.js`); 
+function sort (array) { 
+  return listMod.sort(array); 
+ }
+if (typeof exports !== 'undefined') exports.sort = sort;
+function sortBy (array, keyFn) { 
+  return listMod.sortBy(array, keyFn); 
+ }
+if (typeof exports !== 'undefined') exports.sortBy = sortBy;
 function first (array) { 
   return array[0]; 
  }

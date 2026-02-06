@@ -33,6 +33,7 @@ function __kadence_add(parent, child) {
 }
  
 let term = require(`./console.js`); 
+let testHelpers = require(`./test-helpers.js`); 
 function suite (name, callback) { 
   __kadence_echo(`Suite: ` + name ); 
   if (callback !== undefined ) { 
@@ -66,7 +67,33 @@ function assertTrue (value, message) {
   return false; 
  }   
  }
-if (typeof exports !== 'undefined') exports.assertTrue = assertTrue; 
+if (typeof exports !== 'undefined') exports.assertTrue = assertTrue;
+function assertFalse (value, message) { 
+  if (!(value)) { 
+  let colored = term.green(`PASS`); 
+  __kadence_echo(colored + `: `  + message ); 
+  return true; 
+ }   else { 
+  let colored = term.red(`FAIL`); 
+  __kadence_echo(colored + `: `  + message ); 
+  return false; 
+ }   
+ }
+if (typeof exports !== 'undefined') exports.assertFalse = assertFalse;
+function assertThrows (fn, message) { 
+  let result = testHelpers.assertThrows(fn); 
+  if (result.threw) { 
+  let colored = term.green(`PASS`); 
+  __kadence_echo(colored + `: `  + message ); 
+  return true; 
+ }   else { 
+  let colored = term.red(`FAIL`); 
+  __kadence_echo(colored + `: `  + message ); 
+  __kadence_echo(`  Expected function to throw`); 
+  return false; 
+ }   
+ }
+if (typeof exports !== 'undefined') exports.assertThrows = assertThrows; 
 (async () => { 
  
  })().catch(err => { if (err) console.error("\x1b[31mRuntime Error:\x1b[0m", err.stack || err.message); }); 

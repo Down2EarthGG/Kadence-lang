@@ -35,11 +35,13 @@ export function copyFile src dest
 end
 
 export function removeDir path
-    run fsMod.rmSync path { recursive: true, force: true }
+    let options = { recursive: true, force: true }
+    run fsMod.rmSync path options
 end
 
 export function copyDir src dest
-    run fsMod.cpSync src dest { recursive: true }
+    let options = { recursive: true }
+    run fsMod.cpSync src dest options
 end
 
 export function stat path

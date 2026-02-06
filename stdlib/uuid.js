@@ -38,24 +38,24 @@ function v4 () {
   let variants = [`8`, `9`, `a`, `b`]; 
   let s = ``; 
   for (let __i = 0; __i < 8; __i++) { 
-  let s = s + (rand.choice(chars)) ;  
+  s = s + (rand.choice(chars)) ; 
  }  
-  let s = s + `-` ; 
+  s = s + `-` ;
   for (let __i = 0; __i < 4; __i++) { 
-  let s = s + (rand.choice(chars)) ;  
+  s = s + (rand.choice(chars)) ; 
  }  
-  let s = s + `-4` ; 
+  s = s + `-4` ;
   for (let __i = 0; __i < 3; __i++) { 
-  let s = s + (rand.choice(chars)) ;  
+  s = s + (rand.choice(chars)) ; 
  }  
-  let s = s + `-` ; 
-  let s = s + (rand.choice(variants)) ; 
+  s = s + `-` ;
+  s = s + (rand.choice(variants)) ;
   for (let __i = 0; __i < 3; __i++) { 
-  let s = s + (rand.choice(chars)) ;  
+  s = s + (rand.choice(chars)) ; 
  }  
-  let s = s + `-` ; 
+  s = s + `-` ;
   for (let __i = 0; __i < 12; __i++) { 
-  let s = s + (rand.choice(chars)) ;  
+  s = s + (rand.choice(chars)) ; 
  }  
   return s; 
  }

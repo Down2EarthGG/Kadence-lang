@@ -1,0 +1,143 @@
+note: Comprehensive test for all Kadence Standard Library modules
+
+import "../stdlib/check.kade" as check
+import "../stdlib/color.kade" as color
+import "../stdlib/console.kade" as con
+import "../stdlib/crypto.kade" as crypto
+import "../stdlib/datetime.kade" as dt
+import "../stdlib/encoding.kade" as enc
+import "../stdlib/env.kade" as env
+import "../stdlib/file.kade" as file
+import "../stdlib/html.kade" as html
+import "../stdlib/json.kade" as json
+import "../stdlib/list.kade" as listMod
+import "../stdlib/math.kade" as math
+import "../stdlib/network.kade" as net
+import "../stdlib/number.kade" as num
+import "../stdlib/object.kade" as obj
+import "../stdlib/path.kade" as path
+import "../stdlib/process.kade" as proc
+import "../stdlib/promise.kade" as prom
+import "../stdlib/random.kade" as rand
+import "../stdlib/regex.kade" as reg
+import "../stdlib/stream.kade" as stream
+import "../stdlib/string.kade" as str
+import "../stdlib/system.kade" as sys
+import "../stdlib/test.kade" as test
+import "../stdlib/url.kade" as url
+import "../stdlib/uuid.kade" as uuid
+import "../stdlib/validation.kade" as val
+
+say "--- Starting Comprehensive Stdlib Test ---"
+
+note: Check
+if run check.isNumber 42
+    say "✓ check.isNumber"
+end
+
+note: Color
+let rgb = run color.rgb 255 0 0
+say "✓ color.rgb: {rgb}"
+
+note: Console
+run con.log "✓ console.log working"
+
+note: Crypto
+let hash = run crypto.hash "kadence"
+say "✓ crypto.hash: {hash}"
+
+note: Datetime
+let year = run dt.year (run dt.today)
+say "✓ datetime.year: {year}"
+
+note: Encoding
+let b64 = run enc.base64Encode "Kadence"
+say "✓ encoding.base64Encode: {b64}"
+
+note: Env
+let hasPath = run env.hasEnv "PATH"
+say "✓ env.hasEnv PATH: {hasPath}"
+
+note: File (be careful with writes, just check exists)
+let exists = run file.exists "README.md"
+say "✓ file.exists README.md: {exists}"
+
+note: HTML
+let tag = run html.div "content"
+say "✓ html.div: {tag}"
+
+note: JSON
+let jsonStr = run json.format (object { a: 1 })
+say "✓ json.format: {jsonStr}"
+
+note: List
+let l = list 3 1 2
+let sorted = run listMod.sort l
+say "✓ list.sort: {sorted}"
+
+note: Math
+let h = run math.hypotenuse 3 4
+say "✓ math.hypotenuse: {h}"
+
+note: Network (just check fetchJson definition exists, don't call)
+say "✓ network module loaded"
+
+note: Number
+let n = run num.formatNumber 3.14159 2
+say "✓ number.formatNumber: {n}"
+
+note: Object
+let o = object { x: 1 }
+let keys = run obj.getKeys o
+say "✓ object.getKeys: {keys}"
+
+note: Path
+let p = run path.joinPaths "a" "b"
+say "✓ path.joinPaths: {p}"
+
+note: Process
+let cwd = run proc.cwd
+say "✓ process.cwd: {cwd}"
+
+note: Promise
+async function testPromise
+    await run prom.delay 10
+    say "✓ promise.delay completed"
+end
+run testPromise
+
+note: Random
+let r = run rand.integer 1 100
+say "✓ random.integer: {r}"
+
+note: Regex
+let isMatch = run reg.test "^H" "Hello"
+say "✓ regex.test: {isMatch}"
+
+note: Stream
+say "✓ stream module loaded"
+
+note: String
+let s = run str.capitalized "kadence"
+say "✓ string.capitalized: {s}"
+
+note: System
+let plat = run sys.platform
+say "✓ system.platform: {plat}"
+
+note: Test
+run test.assertTrue true "test.assertTrue"
+
+note: URL
+let u = run url.parseUrl "https://kadence-lang.org"
+say "✓ url.parseUrl loaded"
+
+note: UUID
+let id = run uuid.v4
+say "✓ uuid.v4: {id}"
+
+note: Validation
+let isEmail = run val.isEmail "test@example.com"
+say "✓ validation.isEmail: {isEmail}"
+
+say "--- All Tests Completed ---"

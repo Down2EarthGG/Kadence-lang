@@ -66,13 +66,13 @@ function copyFile (src, dest) {
  }
 if (typeof exports !== 'undefined') exports.copyFile = copyFile;
 function removeDir (path) { 
-  fsMod.rmSync(path); 
-  { recursive: true, force: true };  
+  let options = { recursive: true, force: true }; 
+  fsMod.rmSync(path, options);  
  }
 if (typeof exports !== 'undefined') exports.removeDir = removeDir;
 function copyDir (src, dest) { 
-  fsMod.cpSync(src, dest); 
-  { recursive: true };  
+  let options = { recursive: true }; 
+  fsMod.cpSync(src, dest, options);  
  }
 if (typeof exports !== 'undefined') exports.copyDir = copyDir;
 function stat (path) { 

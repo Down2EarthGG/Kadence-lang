@@ -72,7 +72,7 @@ function uuid () {
   let result = `#`; 
   for (let __i = 0; __i < 6; __i++) { 
   let idx = integer(0, 15); 
-  let result = result + (chars[idx]) ;  
+  result = result + (chars[idx]) ; 
  }  
   return result; 
  }

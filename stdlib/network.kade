@@ -6,16 +6,19 @@ export function serve port handler
     let server = http.createServer((req, res) => {
         let response = {
             send: (body) => {
-                res.writeHead(200, { "Content-Type": "text/plain" })
-                res.end(body)
+                run res.setHeader "Content-Type" "text/plain"
+                run res.writeHead 200
+                run res.end body
             }
             json: (body) => {
-                res.writeHead(200, { "Content-Type": "application/json" })
-                res.end(JSON.stringify(body))
+                run res.setHeader "Content-Type" "application/json"
+                run res.writeHead 200
+                run res.end (run JSON.stringify body)
             }
             html: (body) => {
-                res.writeHead(200, { "Content-Type": "text/html" })
-                res.end(body)
+                run res.setHeader "Content-Type" "text/html"
+                run res.writeHead 200
+                run res.end body
             }
         }
         
@@ -32,7 +35,7 @@ export function serve port handler
     })
 end
 
-export function fetchJson url
+export async function fetchJson url
     let result = await get from url
     return result
 end

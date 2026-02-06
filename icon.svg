@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="800px" height="800px" viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg">
+  <!-- Kadence Icon – refined geometry -->
+  <rect x="17" y="17" width="42" height="42" rx="5" fill="#000000"/>
+
+  <!-- Clean geometric K -->
+  <path 
+    d="M 30 25 L 30 51 
+       M 30 38 L 44 25 
+       M 30 38 L 46 51"
+    stroke="#ffffff"
+    stroke-width="5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+</svg>

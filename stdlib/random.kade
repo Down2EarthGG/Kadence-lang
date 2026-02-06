@@ -40,7 +40,7 @@ export function uuid
     let result = "#"
     repeat 6 times
         let idx = run integer 0 15
-        let result = result plus (chars[idx])
+        set result to result plus (chars[idx])
     end
     return result
 end

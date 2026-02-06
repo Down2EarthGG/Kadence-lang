@@ -36,13 +36,16 @@ let http = require(`http`);
 function serve (port, handler) { 
   let server = http.createServer((req, res) => { 
   let response = { send: (body) => { 
-  res.writeHead(200, { `Content-Type`: `text/plain` }); 
+  res.setHeader(`Content-Type`, `text/plain`); 
+  res.writeHead(200); 
   res.end(body);  
  } , json: (body) => { 
-  res.writeHead(200, { `Content-Type`: `application/json` }); 
-  res.end(JSON.stringify(body));  
+  res.setHeader(`Content-Type`, `application/json`); 
+  res.writeHead(200); 
+  res.end((JSON.stringify(body)));  
  } , html: (body) => { 
-  res.writeHead(200, { `Content-Type`: `text/html` }); 
+  res.setHeader(`Content-Type`, `text/html`); 
+  res.writeHead(200); 
   res.end(body);  
  }  }; 
   response.status = (code) => { 
@@ -56,7 +59,7 @@ function serve (port, handler) {
  } );  
  }
 if (typeof exports !== 'undefined') exports.serve = serve;
-function fetchJson (url) { 
+async function fetchJson (url) { 
   let result = await fetch(url).then(r => r.json()); 
   return result; 
  }

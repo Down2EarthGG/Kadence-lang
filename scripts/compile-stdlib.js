@@ -18,8 +18,9 @@ const failures = [];
 for (const file of kadeFiles) {
     const filePath = path.join('stdlib', file);
     try {
-        console.log(`Compiling ${file}...`);
-        execSync(`node bin/kadence.js ${filePath}`, {
+        const outputPath = filePath.replace('.kade', '.js');
+        console.log(`Compiling ${file} to ${outputPath}...`);
+        execSync(`node bin/kadence.js -c ${filePath} -o ${outputPath}`, {
             cwd: path.join(__dirname, '..'),
             stdio: 'pipe'
         });

@@ -188,6 +188,459 @@ let results = await run async.batch items 10 processBatch
 
 ---
 
+## Type Checking (stdlib/check.kade)
+
+Utilities for checking value types.
+
+### Functions
+
+#### `isNumber val`
+Checks if the value is a number.
+
+```kadence
+let isNum = run check.isNumber 42  // true
+```
+
+#### `isString val`
+Checks if the value is a string.
+
+```kadence
+let isStr = run check.isString "hello"  // true
+```
+
+#### `isEmail text`
+Checks if the string matches an email format.
+
+```kadence
+let valid = run check.isEmail "user@example.com"  // true
+```
+
+#### `between val min max`
+Checks if a number is between min and max (inclusive).
+
+```kadence
+let inRange = run check.between 5 1 10  // true
+```
+
+#### `coalesce a b`
+Returns `a` if it is not null or undefined, otherwise returns `b`.
+
+```kadence
+let val = run check.coalesce null "default"  // "default"
+```
+
+---
+
+## Color Utilities (stdlib/color.kade)
+
+Utilities for working with colors.
+
+### Functions
+
+#### `rgb r g b`
+Creates an RGB color string.
+
+```kadence
+let color = run color.rgb 255 0 0  // "rgb(255,0,0)"
+```
+
+#### `rgba r g b a`
+Creates an RGBA color string.
+
+```kadence
+let color = run color.rgba 255 0 0 0.5  // "rgba(255,0,0,0.5)"
+```
+
+#### `hex hexStr`
+Converts a hex string to an RGB object/string (implementation depends on helper).
+
+```kadence
+let rgbVal = run color.hex "#FF0000"
+```
+
+#### `randomHex`
+Generates a random hex color string.
+
+```kadence
+let randColor = run color.randomHex  // e.g. "#a3f2b1"
+```
+
+---
+
+## Console Output (stdlib/console.kade)
+
+Utilities for console logging and styling.
+
+### Functions
+
+#### `log message`
+Prints a message to stdout.
+
+```kadence
+run console.log "Hello World"
+```
+
+#### `error message`
+Prints a message to stderr.
+
+```kadence
+run console.error "Something went wrong"
+```
+
+#### `red text`
+Wraps text in ANSI red codes.
+
+```kadence
+echo run console.red "Error!"
+```
+
+#### `green text`
+Wraps text in ANSI green codes.
+
+```kadence
+echo run console.green "Success!"
+```
+
+#### `bold text`
+Wraps text in ANSI bold codes.
+
+```kadence
+echo run console.bold "Important"
+```
+
+---
+
+## Cryptography (stdlib/crypto.kade)
+
+Cryptographic utilities.
+
+### Functions
+
+#### `hash str`
+Creates a hash of the string (defaults to sha256 usually).
+
+```kadence
+let hashed = run crypto.hash "password"
+```
+
+#### `randomBytes n`
+Generates `n` cryptographically strong pseudo-random bytes.
+
+```kadence
+let bytes = run crypto.randomBytes 16
+```
+
+---
+
+---
+
+## Date & Time (stdlib/datetime.kade)
+
+Utilities for working with dates and times.
+
+### Functions
+
+#### `currentTime`
+Returns the current date and time as a Date object.
+
+```kadence
+let now = run datetime.currentTime
+```
+
+#### `today`
+Returns the current date as a Date object (same as currentTime).
+
+```kadence
+let d = run datetime.today
+```
+
+#### `year d`
+Returns the year from a Date object.
+
+```kadence
+let y = run datetime.year now  // 2026
+```
+
+#### `month d`
+Returns the month (1-12) from a Date object.
+
+```kadence
+let m = run datetime.month now  // 2
+```
+
+#### `day d`
+Returns the day of the month (1-31).
+
+```kadence
+let d = run datetime.day now  // 5
+```
+
+#### `toIso d`
+Returns the date as an ISO string.
+
+```kadence
+let iso = run datetime.toIso now  // "2026-02-05T..."
+```
+
+#### `addDays d n`
+Returns a new Date object with `n` days added.
+
+```kadence
+let nextWeek = run datetime.addDays now 7
+```
+
+---
+
+## Encoding (stdlib/encoding.kade)
+
+Utilities for string encoding and decoding.
+
+### Functions
+
+#### `base64Encode str`
+Encodes a string to Base64.
+
+```kadence
+let encoded = run encoding.base64Encode "hello"
+```
+
+#### `base64Decode str`
+Decodes a Base64 string.
+
+```kadence
+let decoded = run encoding.base64Decode encoded
+```
+
+#### `urlEncode str`
+Encodes a string for use in a URL.
+
+```kadence
+let safe = run encoding.urlEncode "hello world"  // "hello%20world"
+```
+
+#### `urlDecode str`
+Decodes a URL-encoded string.
+
+```kadence
+let original = run encoding.urlDecode safe
+```
+
+---
+
+## Environment (stdlib/env.kade)
+
+Utilities for accessing environment variables.
+
+### Functions
+
+#### `getEnv name`
+Returns the value of an environment variable.
+
+```kadence
+let path = run env.getEnv "PATH"
+```
+
+#### `hasEnv name`
+Checks if an environment variable exists.
+
+```kadence
+let hasPath = run env.hasEnv "PATH"  // true
+```
+
+---
+
+## File System (stdlib/file.kade)
+
+Utilities for file system operations.
+
+### Functions
+
+#### `listDir path`
+Returns a list of files and directories in the path.
+
+```kadence
+let files = run file.listDir "."
+```
+
+#### `exists path`
+Checks if a file or directory exists.
+
+```kadence
+let exists = run file.exists "README.md"  // true
+```
+
+#### `mkdir path`
+Creates a directory.
+
+```kadence
+run file.mkdir "new-folder"
+```
+
+#### `append path content`
+Appends content to a file.
+
+```kadence
+run file.append "log.txt" "New entry\n"
+```
+
+#### `unlink path`
+Deletes a file.
+
+```kadence
+run file.unlink "temp.txt"
+```
+
+#### `readFile path`
+Reads the content of a file as a string.
+
+```kadence
+let content = run file.readFile "README.md"
+```
+
+#### `writeFile path content`
+Writes content to a file (overwriting it).
+
+```kadence
+run file.writeFile "output.txt" "Hello"
+```
+
+#### `copyFile src dest`
+Copies a file from src to dest.
+
+```kadence
+run file.copyFile "source.txt" "dest.txt"
+```
+
+#### `removeDir path`
+Removes a directory and its contents recursively.
+
+```kadence
+run file.removeDir "temp-folder"
+```
+
+#### `copyDir src dest`
+Copies a directory and its contents recursively.
+
+```kadence
+run file.copyDir "src" "dist"
+```
+
+#### `stat path`
+Returns file statistics (size, modification time, etc.).
+
+```kadence
+let stats = run file.stat "file.txt"
+```
+
+#### `isDirectory path`
+Checks if the path is a directory.
+
+```kadence
+let isDir = run file.isDirectory "src"
+```
+
+#### `isFile path`
+Checks if the path is a file.
+
+```kadence
+let isFile = run file.isFile "README.md"
+```
+
+---
+
+## HTML Generation (stdlib/html.kade)
+
+Utilities for generating HTML strings.
+
+### Functions
+
+#### `tag name content`
+Creates an HTML tag with the given name and content.
+
+```kadence
+let html = run html.tag "strong" "Bold Text"  // "<strong>Bold Text</strong>"
+```
+
+#### `div content`
+Creates a `div` tag.
+
+```kadence
+let div = run html.div "Content"
+```
+
+#### `span content`
+Creates a `span` tag.
+
+```kadence
+let span = run html.span "Content"
+```
+
+#### `p content`
+Creates a `p` tag.
+
+```kadence
+let p = run html.p "Paragraph"
+```
+
+#### `h1 content`
+Creates an `h1` tag.
+
+```kadence
+let h1 = run html.h1 "Title"
+```
+
+#### `link content`
+Creates an `a` (anchor) tag (note: currently just wrapping content in `<a>`, useful when combined with manual attributes or simple links).
+
+```kadence
+let link = run html.link "Click me"
+```
+
+#### `img content`
+Creates an `img` tag (wrap the src in the content currently).
+
+```kadence
+let img = run html.img "src='image.png'"
+```
+
+---
+
+## JSON (stdlib/json.kade)
+
+Utilities for working with JSON files and data.
+
+### Functions
+
+#### `readJson path`
+Reads and parses a JSON file.
+
+```kadence
+let config = run json.readJson "config.json"
+```
+
+#### `writeJson path data`
+Writes data to a JSON file.
+
+```kadence
+run json.writeJson "data.json" (object { key: "value" })
+```
+
+#### `format data`
+Returns a formatted JSON string (pretty print).
+
+```kadence
+let str = run json.format data
+```
+
+#### `parseSafe text`
+Safely parses a JSON string, returning null on error.
+
+```kadence
+let data = run json.parseSafe "{ invalid json }"  // null
+```
+
+---
+
 ## Formatting (stdlib/format.kade)
 
 Text and number formatting utilities.
@@ -286,6 +739,86 @@ Converts text to kebab-case.
 
 ```kadence
 let kebab = run format.kebabCase "Hello World"  // "hello-world"
+```
+
+---
+
+---
+
+## List Operations (stdlib/list.kade)
+
+Utilities for working with lists.
+
+### Functions
+
+#### `sort array`
+Sorts an array in ascending order.
+
+```kadence
+let sorted = run list.sort (list 3 1 2)  // [1, 2, 3]
+```
+
+#### `sortBy array keyFn`
+Sorts an array based on the value returned by the key function.
+
+```kadence
+let sorted = run list.sortBy people (p => p.age)
+```
+
+#### `first array`
+Returns the first element of the array.
+
+```kadence
+let item = run list.first (list 1 2 3)  // 1
+```
+
+#### `lastOf array`
+Returns the last element of the array.
+
+```kadence
+let item = run list.lastOf (list 1 2 3)  // 3
+```
+
+#### `isEmpty array`
+Checks if the array is empty.
+
+```kadence
+let empty = run list.isEmpty (list)  // true
+```
+
+#### `length array`
+Returns the length of the array.
+
+```kadence
+let len = run list.length (list 1 2 3)  // 3
+```
+
+#### `contains array item`
+Checks if the array contains the specified item.
+
+```kadence
+let hasTwo = run list.contains (list 1 2 3) 2  // true
+```
+
+#### `unique array`
+Returns a new array with duplicate elements removed.
+
+```kadence
+let uniq = run list.unique (list 1 2 2 3)  // [1, 2, 3]
+```
+
+#### `shuffle array`
+Randomly shuffles the elements of the array.
+
+```kadence
+let mixed = run list.shuffle (list 1 2 3 4)
+```
+
+#### `makeRange start end`
+Creates an array of numbers from start to end (inclusive).
+
+```kadence
+let nums = run list.makeRange 1 5  // [1, 2, 3, 4, 5]
 ```
 
 ---
@@ -403,6 +936,334 @@ let obj = run map.fromPairs (list (list "a" 1) (list "b" 2))  // { a: 1, b: 2 }
 
 ---
 
+---
+
+## Math (stdlib/math.kade)
+
+Mathematical utilities.
+
+### Functions
+
+#### `hypotenuse a b`
+Calculates the hypotenuse of a right-angled triangle.
+
+```kadence
+let h = run math.hypotenuse 3 4  // 5
+```
+
+#### `areaOfCircle radius`
+Calculates the area of a circle.
+
+```kadence
+let area = run math.areaOfCircle 10
+```
+
+#### `isEven n`
+Checks if a number is even.
+
+```kadence
+let even = run math.isEven 4  // true
+```
+
+#### `clamp val min max`
+Restricts a value to be within a range.
+
+```kadence
+let val = run math.clamp 15 0 10  // 10
+```
+
+#### `randomFloat min max`
+Returns a random floating-point number between min and max.
+
+```kadence
+let r = run math.randomFloat 0.0 1.0
+```
+
+#### `toRadians deg`
+Converts degrees to radians.
+
+```kadence
+let rad = run math.toRadians 180  // 3.14159...
+```
+
+#### `toDegrees rad`
+Converts radians to degrees.
+
+```kadence
+let deg = run math.toDegrees 3.14159  // 180
+```
+
+---
+
+## Network (stdlib/network.kade)
+
+Network utilities including a simple HTTP server.
+
+### Functions
+
+#### `serve port handler`
+Starts a simple HTTP server.
+
+```kadence
+run network.serve 3000 (req, res) => {
+    run res.send "Hello World"
+}
+```
+
+#### `fetchJson url`
+Fetches a JSON response from a URL.
+
+```kadence
+let data = await run network.fetchJson "https://api.example.com/data"
+```
+
+---
+
+## Number Utilities (stdlib/number.kade)
+
+Utilities for working with numbers.
+
+### Functions
+
+#### `parseNumber str`
+Parses a string into a number.
+
+```kadence
+let n = run number.parseNumber "42.5"
+```
+
+#### `formatNumber num decimals`
+Formats a number with a fixed number of decimal places.
+
+```kadence
+let s = run number.formatNumber 3.14159 2  // "3.14"
+```
+
+#### `isNaNVal val`
+Checks if the value is NaN.
+
+```kadence
+let isNan = run number.isNaNVal (0 / 0)  // true
+```
+
+#### `isFiniteVal val`
+Checks if the value is a finite number.
+
+```kadence
+let isFin = run number.isFiniteVal 100  // true
+```
+
+---
+
+## Object Utilities (stdlib/object.kade)
+
+Utilities for object manipulation.
+
+### Functions
+
+#### `hasKey obj key`
+Checks if the object has the specified key.
+
+```kadence
+let has = run object.hasKey person "name"
+```
+
+#### `getKeys obj`
+Returns an array of the object's keys.
+
+```kadence
+let keys = run object.getKeys person
+```
+
+#### `getValues obj`
+Returns an array of the object's values.
+
+```kadence
+let values = run object.getValues person
+```
+
+#### `mergeObjects a b`
+Merges two objects into a new object.
+
+```kadence
+let merged = run object.mergeObjects obj1 obj2
+```
+
+---
+
+## Path Operations (stdlib/path.kade)
+
+Utilities for handling file paths.
+
+### Functions
+
+#### `joinPaths a b`
+Joins two path segments.
+
+```kadence
+let p = run path.joinPaths "src" "main.kade"
+```
+
+#### `resolve path`
+Resolves a path to an absolute path.
+
+```kadence
+let abs = run path.resolve "./src"
+```
+
+#### `dirname path`
+Returns the directory name of a path.
+
+```kadence
+let dir = run path.dirname "/path/to/file.txt"  // "/path/to"
+```
+
+#### `basename path`
+Returns the last portion of a path.
+
+```kadence
+let base = run path.basename "/path/to/file.txt"  // "file.txt"
+```
+
+#### `extension path`
+Returns the extension of the path.
+
+```kadence
+let ext = run path.extension "file.txt"  // ".txt"
+```
+
+---
+
+## Process (stdlib/process.kade)
+
+Utilities for interacting with the current process.
+
+### Functions
+
+#### `exit code`
+Exits the process with the specified code (default 0).
+
+```kadence
+run process.exit 1
+```
+
+#### `args`
+Returns the command-line arguments passed to the script.
+
+```kadence
+let args = run process.args
+```
+
+#### `cwd`
+Returns the current working directory.
+
+```kadence
+let dir = run process.cwd
+```
+
+---
+
+## Promises (stdlib/promise.kade)
+
+Utilities for working with Promises.
+
+### Functions
+
+#### `promiseAll promises`
+Waits for all promises to resolve.
+
+```kadence
+let results = await run promise.promiseAll (list p1 p2)
+```
+
+#### `promiseRace promises`
+Returns a promise that resolves or rejects as soon as one of the promises settles.
+
+```kadence
+let first = await run promise.promiseRace (list p1 p2)
+```
+
+#### `delay ms`
+Returns a promise that resolves after `ms` milliseconds.
+
+```kadence
+await run promise.delay 1000
+```
+
+#### `retry fn maxRetries`
+Retries an async function up to `maxRetries` times.
+
+```kadence
+let result = await run promise.retry fetchData 3
+```
+
+---
+
+## Random (stdlib/random.kade)
+
+Random number and item generation.
+
+### Functions
+
+#### `float min max`
+Returns a random floating-point number between min and max.
+
+```kadence
+let f = run random.float 0 10
+```
+
+#### `integer min max`
+Returns a random integer between min and max (inclusive).
+
+```kadence
+let i = run random.integer 1 100
+```
+
+#### `choice items`
+Returns a random item from the array.
+
+```kadence
+let item = run random.choice (list "a" "b" "c")
+```
+
+#### `shuffle items`
+Returns a new array with the items shuffled.
+
+```kadence
+let shuffled = run random.shuffle cards
+```
+
+#### `uuid`
+Generates a random UUID-like string (hex).
+
+```kadence
+let id = run random.uuid
+```
+
+---
+
+## Regular Expressions (stdlib/regex.kade)
+
+Regex utilities.
+
+### Functions
+
+#### `test pattern str`
+Tests if the string matches the pattern.
+
+```kadence
+let matches = run regex.test "^[0-9]+$" "123"  // true
+```
+
+#### `replaceAll pattern str replacement`
+Replaces all occurrences of the pattern in the string.
+
+```kadence
+let clean = run regex.replaceAll "\\s+" "hello world" "-"
+```
+
+---
+
 ## Set Operations (stdlib/set.kade)
 
 Mathematical set operations on arrays.
@@ -464,6 +1325,260 @@ Returns all possible pairs from both sets.
 ```kadence
 let product = run set.cartesianProduct (list 1 2) (list "a" "b")
 // [[1, "a"], [1, "b"], [2, "a"], [2, "b"]]
+```
+
+---
+
+---
+
+## Stream (stdlib/stream.kade)
+
+Utilities for working with streams.
+
+### Functions
+
+#### `createReader stream`
+Creates a reader for a ReadableStream.
+
+```kadence
+let reader = run stream.createReader response.body
+```
+
+#### `readAll stream`
+Reads all data from a stream and returns it as a list of chunks.
+
+```kadence
+let chunks = await run stream.readAll readable
+```
+
+#### `pipe source to target`
+Pipes a readable stream to a writable stream.
+
+```kadence
+run stream.pipe source to dest
+```
+
+---
+
+## String Operations (stdlib/string.kade)
+
+String manipulation utilities.
+
+### Functions
+
+#### `words text`
+Splits text into words.
+
+```kadence
+let w = run string.words "hello world"  // ["hello", "world"]
+```
+
+#### `lines text`
+Splits text into lines.
+
+```kadence
+let l = run string.lines "line1\nline2"
+```
+
+#### `trimmed text`
+Trims whitespace from both ends of the string.
+
+```kadence
+let t = run string.trimmed "  hello  "  // "hello"
+```
+
+#### `capitalized text`
+Capitalizes the first character of the string.
+
+```kadence
+let c = run string.capitalized "kadence"  // "Kadence"
+```
+
+#### `padStart text length char`
+Pads the start of the string with `char` until it reaches `length`.
+
+```kadence
+let p = run string.padStart "5" 3 "0"  // "005"
+```
+
+#### `padEnd text length char`
+Pads the end of the string with `char` until it reaches `length`.
+
+```kadence
+let p = run string.padEnd "Item" 10 "."  // "Item......"
+```
+
+#### `repeated text count`
+Repeats the string `count` times.
+
+```kadence
+let r = run string.repeated "na" 3  // "nanana"
+```
+
+#### `slice text start end`
+Extracts a section of the string.
+
+```kadence
+let s = run string.slice "hello" 1 4  // "ell"
+```
+
+#### `toCamelCase text`
+Converts a string to camelCase.
+
+```kadence
+let c = run string.toCamelCase "hello world"  // "helloWorld"
+```
+
+---
+
+## System Info (stdlib/system.kade)
+
+Utilities for retrieving system information.
+
+### Functions
+
+#### `platform`
+Returns the operating system platform.
+
+```kadence
+let p = run system.platform  // "win32", "linux", etc.
+```
+
+#### `arch`
+Returns the CPU architecture.
+
+```kadence
+let a = run system.arch  // "x64", "arm64", etc.
+```
+
+#### `cpus`
+Returns detailed CPU information.
+
+```kadence
+let cpus = run system.cpus
+```
+
+#### `totalMemory`
+Returns the total system memory in bytes.
+
+```kadence
+let total = run system.totalMemory
+```
+
+#### `freeMemory`
+Returns the free system memory in bytes.
+
+```kadence
+let free = run system.freeMemory
+```
+
+#### `homedir`
+Returns the path to the current user's home directory.
+
+```kadence
+let home = run system.homedir
+```
+
+#### `hostname`
+Returns the hostname of the operating system.
+
+```kadence
+let host = run system.hostname
+```
+
+---
+
+## Testing (stdlib/test.kade)
+
+Testing utilities.
+
+### Functions
+
+#### `suite name callback`
+Defines a test suite.
+
+```kadence
+run test.suite "Math Tests" () => { ... }
+```
+
+#### `assertEquals actual expected message`
+Asserts that two values are equal.
+
+```kadence
+run test.assertEquals 2 2 "2 should equal 2"
+```
+
+#### `assertTrue value message`
+Asserts that the value is true.
+
+```kadence
+run test.assertTrue (1 < 2) "Math works"
+```
+
+#### `assertFalse value message`
+Asserts that the value is false.
+
+```kadence
+run test.assertFalse (1 > 2) "Math still works"
+```
+
+#### `assertThrows fn message`
+Asserts that the function throws an error.
+
+```kadence
+run test.assertThrows () => { throw "Error" } "Should throw"
+```
+
+---
+
+## URL (stdlib/url.kade)
+
+URL Parsing and manipulation.
+
+### Functions
+
+#### `parseUrl urlString`
+Parses a URL string into a URL object.
+
+```kadence
+let u = run url.parseUrl "https://example.com"
+```
+
+#### `buildUrl href`
+Creates a URL string from a href (mostly alias for toString on URL object).
+
+```kadence
+let s = run url.buildUrl "https://example.com"
+```
+
+#### `getSearchParam url name`
+Gets the value of a query parameter.
+
+```kadence
+let u = run url.parseUrl "https://site.com?q=search"
+let q = run url.getSearchParam u "q"  // "search"
+```
+
+---
+
+## UUID (stdlib/uuid.kade)
+
+UUID generation and validation.
+
+### Functions
+
+#### `v4`
+Generates a random UUID v4 string.
+
+```kadence
+let id = run uuid.v4
+```
+
+#### `validate uuid`
+Checks if the string is a valid UUID.
+
+```kadence
+let valid = run uuid.validate id
 ```
 
 ---
