@@ -194,7 +194,7 @@ kadence help            # View all commands
 ## 🗺️ Roadmap
 
 - [x] Full Module System (`import`/`export`)
-- [x] Standard Library Core (40+ modules)
+- [x] Standard Library Core (32 modules)
 - [x] Browser Runtime & Vite Plugin
 - [x] Source Maps for easy debugging
 - [ ] Language Server Protocol (LSP) for enhanced IDE support

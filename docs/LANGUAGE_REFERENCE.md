@@ -1,6 +1,6 @@
 # Kadence Language Reference
 
-**Version 0.2.0**
+**Version 0.2.4**
 
 Kadence is a poetic, high-level programming language that transpiles to JavaScript. It is designed for maximum readability, making code feel like natural prose while retaining the power of modern systems.
 
@@ -27,13 +27,18 @@ Kadence supports two primary block styles:
 - **Mutable**: `let [name] be [value]` or `let [name] = [value]`
 - **Immutable**: `const [name] is [value]` or `const [name] = [value]`
 
-### 2.2 Assignment
+### 2.2 Identifiers
+Kadence allows most identifiers to be used as variable names, including common terms like `map`, `set`, `item`, `from`, `to`, `date`, and `time`.
+Only a small set of structural keywords (like `if`, `else`, `while`, `function`, `class`, `list`) are reserved.
+
+
+### 2.3 Assignment
 - **Standard**: `[variable] = [value]`
 - **Poetic**: `[variable] be [value]`
 - **Property Set**: `set [property] of [object] to [value]`
 - **Direct Set**: `set [object].[property] to [value]` or `set [variable] to [value]`
 
-### 2.3 Destructuring
+### 2.4 Destructuring
 Kadence supports modern destructuring patterns:
 - **Objects**: `let { name, age } = user`
 - **Lists**: `let [ first, second ] = items`

@@ -5,7 +5,7 @@ const readline = require("readline");
 const { execSync } = require("child_process");
 const { compile } = require("../src/compiler");
 
-const VERSION = "0.2.3";
+const VERSION = "0.2.4";
 
 const colors = {
   reset: "\x1b[0m",

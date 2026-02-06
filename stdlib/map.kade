@@ -3,11 +3,11 @@ note: Map and dictionary utilities for Kadence
 let mod = run require "./object-helpers.js"
 
 export function keys obj
-    return run mod.keys obj
+    return keys of obj
 end
 
 export function values obj
-    return run mod.values obj
+    return values of obj
 end
 
 export function entries obj
@@ -19,7 +19,7 @@ export function hasKey obj key
 end
 
 export function merge obj1 obj2
-    return run mod.merge obj1 obj2
+    return merge obj1 with obj2
 end
 
 export function pick obj keysArray

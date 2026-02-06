@@ -25,7 +25,7 @@ Type less, write more poetry. usage examples:
 Basic semantic analysis to catch common errors while you type.
 
 ### 📚 Standard Library Support
-First-class highlighting and autocomplete for the entire Kadence standard library, from `array` and `async` to `uuid` and `web`.
+First-class highlighting and autocomplete for the entire Kadence standard library, from `array` and `async` to `url` and `uuid`.
 
 ## 📦 Installation
 

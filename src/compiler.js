@@ -216,7 +216,9 @@ Kadence {
 
   Block = "{" Statement* "}"
 
-  Expression = AwaitExpr | NewExpr | CreateExpr | ObjectLiteral | SpreadExpr | TypeofExpr | CoalesceExpr
+  Expression = RunCall | AwaitExpr | NewExpr | CreateExpr | ObjectLiteral | SpreadExpr | TypeofExpr | CoalesceExpr
+  
+  RunCall = "run" MemberAccess Arg*
   
   NewExpr = "new" identifier "(" ListOf<Expression, ","> ")" -- paren
           | "new" identifier Arg* -- classic
@@ -370,7 +372,6 @@ Kadence {
   Primary = List                -- list
           | Lambda              -- lambda
           | ItemAccess          -- access
-          | Call                -- call
           | MathExpr            -- math
           | StringCmd           -- string
           | ArrayMethod         -- arrayay
@@ -387,20 +388,24 @@ Kadence {
           | RegexExpr           -- regex
           | RangeExpr           -- range
           | TransformExpr       -- transform
+          | Call                -- call
           | MemberAccess        -- member
           | "pi"                -- pi
           | number              -- num
           | bool                -- bool
+          | "null"              -- null
+          | "undefined"         -- undefined
           | string              -- str
           | "(" Expression ")"  -- paren
 
-  MemberAccess = MemberAccess "?." word  -- opt_prop
-               | MemberAccess "?." "[" Expression "]"  -- opt_index
-               | MemberAccess "." word  -- prop
-               | MemberAccess "[" Expression "]"  -- index
-               | "this"                        -- this
+  MemberAccess = "this"                        -- this
                | "super"                       -- super
-               | identifier                    -- base
+               | identifier MemberAccessSeg*   -- chain
+
+  MemberAccessSeg = "." word  -- prop
+                  | "[" Expression "]"  -- index
+                  | "?." word  -- opt_prop
+                  | "?." "[" Expression "]"  -- opt_index
 
   List = "list" Arg*
   ItemAccess = "item" Primary "from" Primary
@@ -429,7 +434,7 @@ Kadence {
   trim_kw = "trim" ~idchar
   includes_kw = "includes" ~idchar
   replace_kw = "replace" ~idchar
-  keyword = ("function" | "let" | "const" | "echo" | "say" | "print" | "true" | "false" | "if" | "elif" | "else" | "end" | "while" | "for" | "each" | "in" | "when" | "is" | "and" | "or" | "not" | "equals" | "more" | "than" | "at" | "least" | "most" | "plus" | "minus" | "times" | "run" | "list" | "item" | "from" | "create" | "element" | "set" | "class" | "add" | "to" | "ask" | "of" | "size" | "remove" | "increment" | "decrement" | "random" | "return" | "give" | "be" | "has" | "say" | "number" | "wait" | "second" | "seconds" | "uppercase" | "lowercase" | "average" | "save" | "read" | "go" | "convert" | "the" | "time" | "now" | "date" | "today" | "background" | "async" | "await" | "try" | "catch" | "match" | "then" | "repeat" | "object" | "get" | "post" | "put" | "delete" | "parse" | "stringify" | "regex" | "all" | "range" | "by" | "where" | "with" | "new" | "this" | "super" | "trim" | "split" | "join" | "map" | "filter" | "reduce" | "find" | "some" | "every" | "includes" | "starts" | "ends" | "replace" | "matches" | "extract" | "import" | "export" | "as" | "minimum" | "maximum" | "index" | "last" | "private" | "static" | "extends" | "pi" | "floor" | "ceiling" | "round" | "absolute" | "square" | "root" | "power" | "sin" | "cos" | "tan" | "break" | "continue") ~(letter | digit | "_")
+    keyword = ("function" | "let" | "const" | "if" | "elif" | "else" | "end" | "while" | "for" | "in" | "return" | "break" | "continue" | "try" | "catch" | "async" | "await" | "new" | "this" | "super" | "true" | "false" | "null" | "undefined" | "class" | "extends" | "static" | "private" | "import" | "export" | "switch" | "case" | "default" | "delete" | "void" | "typeof" | "instanceof" | "do" | "yield" | "throw" | "finally" | "debugger" | "var" | "enum" | "public" | "protected" | "interface" | "implements" | "package" | "list" | "random" | "match" | "then" | "add" | "echo" | "say" | "print" | "post" | "run" | "repeat" | "times" | "time") ~(letter | digit | "_")
   number = digit+ ("." digit+)?
   
   string = doubleString | templateString
@@ -835,9 +840,19 @@ function __kadence_add(parent, child) {
       });
       return createNode(this, [asyncKw, "(", ...paramList, ") => ", body.toNode()]);
     },
-    MemberAccess_prop(obj, _dot, prop) { return createNode(this, [obj.toNode(), ".", prop.toNode()]); },
-    MemberAccess_index(obj, _lb, index, _rb) { return createNode(this, [obj.toNode(), "[", index.toNode(), "]"]); },
-    MemberAccess_base(id) { return id.toNode(); },
+    MemberAccess_chain(id, segs) {
+      let r = id.toNode();
+      for (const seg of segs.children) {
+        r = createNode(this, [r, seg.toNode()]);
+      }
+      return r;
+    },
+    MemberAccess_this(_this) { return "this"; },
+    MemberAccess_super(_super) { return "super"; },
+    MemberAccessSeg_prop(_dot, prop) { return createNode(this, [".", prop.toNode()]); },
+    MemberAccessSeg_index(_lb, index, _rb) { return createNode(this, ["[", index.toNode(), "]"]); },
+    MemberAccessSeg_opt_prop(_opt, prop) { return createNode(this, ["?.", prop.toNode()]); },
+    MemberAccessSeg_opt_index(_opt, _lb, index, _rb) { return createNode(this, ["?.[", index.toNode(), "]"]); },
     CreateExpr_call(_create, _elem, str) { return createNode(this, ["document.createElement(", str.toNode(), ")"]); },
     BreakStmt(_break) { return createNode(this, ["break;"]); },
     ContinueStmt(_continue) { return createNode(this, ["continue;"]); },
@@ -974,6 +989,8 @@ function __kadence_add(parent, child) {
     Primary_pi(_pi) { return "Math.PI"; },
     Primary_num(child) { return child.toNode(); },
     Primary_bool(child) { return child.toNode(); },
+    Primary_null(_n) { return "null"; },
+    Primary_undefined(_u) { return "undefined"; },
     Primary_str(child) { return child.toNode(); },
     Primary_paren(_lp, expr, _rp) { return createNode(this, ["(", expr.toNode(), ")"]); },
     Call_paren(id, _lp, args, _rp) {
@@ -984,6 +1001,15 @@ function __kadence_add(parent, child) {
         if (i < ps.length - 1) argList.push(", ");
       });
       return createNode(this, [id.toNode(), "(", ...argList, ")"]);
+    },
+    RunCall(_run, member, args) {
+      const ps = args.children.map(a => a.toNode());
+      const argList = [];
+      ps.forEach((p, i) => {
+        argList.push(p);
+        if (i < ps.length - 1) argList.push(", ");
+      });
+      return createNode(this, [member.toNode(), "(", ...argList, ")"]);
     },
     Call_run(_run, id, args) {
       const ps = args.children.map(a => a.toNode());
@@ -1006,10 +1032,6 @@ function __kadence_add(parent, child) {
       return createNode(this, ["[", ...argList, "]"]);
     },
     ItemAccess(_item, index, _from, list) { return createNode(this, [list.toNode(), "[", index.toNode(), "]"]); },
-    MemberAccess_opt_prop(obj, _dot, prop) { return createNode(this, [obj.toNode(), "?.", prop.toNode()]); },
-    MemberAccess_opt_index(obj, _dot, _lb, index, _rb) { return createNode(this, [obj.toNode(), "?.[", index.toNode(), "]"]); },
-    MemberAccess_this(_this) { return "this"; },
-    MemberAccess_super(_super) { return "super"; },
     string(child) { return child.toNode(); },
     doubleString(_l, parts, _r) { return createNode(this, ["`", ...parts.children.map(p => p.toNode()), "`"]); },
     templateString(_l, parts, _r) { return createNode(this, ["`", ...parts.children.map(p => p.toNode()), "`"]); },
@@ -1493,14 +1515,30 @@ function __kadence_add(parent, child) {
         .children.map((p) => p.toJS())
         .join(", ")}) => ${body.toJS()}`;
     },
-    MemberAccess_prop(obj, _dot, prop) {
-      return `${obj.toJS()}.${prop.toJS()}`;
+    MemberAccess_chain(id, segs) {
+      let r = id.toJS();
+      for (const seg of segs.children) {
+        r = r + seg.toJS();
+      }
+      return r;
     },
-    MemberAccess_index(obj, _lb, index, _rb) {
-      return `${obj.toJS()}[${index.toJS()}]`;
+    MemberAccess_this(_this) {
+      return "this";
     },
-    MemberAccess_base(id) {
-      return id.toJS();
+    MemberAccess_super(_super) {
+      return "super";
+    },
+    MemberAccessSeg_prop(_dot, prop) {
+      return `.${prop.toJS()}`;
+    },
+    MemberAccessSeg_index(_lb, index, _rb) {
+      return `[${index.toJS()}]`;
+    },
+    MemberAccessSeg_opt_prop(_opt, prop) {
+      return `?.${prop.toJS()}`;
+    },
+    MemberAccessSeg_opt_index(_opt, _lb, index, _rb) {
+      return `?.[${index.toJS()}]`;
     },
     CreateExpr_call(_create, _elem, str) {
       return `document.createElement(${str.toJS()})`;
@@ -1790,6 +1828,12 @@ function __kadence_add(parent, child) {
     Primary_bool(child) {
       return child.toJS();
     },
+    Primary_null(_n) {
+      return `null`;
+    },
+    Primary_undefined(_u) {
+      return `undefined`;
+    },
     Primary_str(child) {
       return child.toJS();
     },
@@ -1799,6 +1843,10 @@ function __kadence_add(parent, child) {
     Call_paren(id, _lp, args, _rp) {
       const argList = args.asIteration().children.map((a) => a.toJS()).join(", ");
       return `${id.toJS()}(${argList})`;
+    },
+    RunCall(_run, member, args) {
+      const argList = args.children.map((a) => a.toJS()).join(", ");
+      return `${member.toJS()}(${argList})`;
     },
     Call_run(_run, id, args) {
       const argList = args.children.map((a) => a.toJS()).join(", ");
@@ -1816,12 +1864,6 @@ function __kadence_add(parent, child) {
     },
     ItemAccess(_item, index, _from, list) {
       return `${list.toJS()}[${index.toJS()}]`;
-    },
-    MemberAccess_opt_prop(obj, _dot, prop) {
-      return `${obj.toJS()}?.${prop.toJS()}`;
-    },
-    MemberAccess_opt_index(obj, _dot, _lb, index, _rb) {
-      return `${obj.toJS()}?.[${index.toJS()}]`;
     },
     MemberAccess_this(_this) {
       return "this";
@@ -2061,13 +2103,13 @@ analyzer.addOperation("analyze(context)", {
   },
   VariableDecl(_let, pattern, _eq, expr) {
     const context = this.args.context;
-    expr.analyze(context);
     pattern.analyze(context);
+    expr.analyze(context);
   },
   ConstantDecl(_const, pattern, _eq, expr) {
     const context = this.args.context;
-    expr.analyze(context);
     pattern.analyze(context);
+    expr.analyze(context);
   },
   BindingPattern_object(_lb, ids, _rb) {
     const context = this.args.context;
@@ -2095,7 +2137,8 @@ analyzer.addOperation("analyze(context)", {
     });
   },
   Block(_lb, statements, _rb) {
-    statements.analyze(this.args.context);
+    const blockContext = { symbols: new Set(this.args.context.symbols) };
+    statements.analyze(blockContext);
   },
   TryStmt(_try, tryBlock, _catch, errorId, catchBlock) {
     const context = this.args.context;
@@ -2150,6 +2193,11 @@ analyzer.addOperation("analyze(context)", {
     id.analyze(context);
     args.analyze(context);
   },
+  RunCall(_run, member, args) {
+    const context = this.args.context;
+    member.analyze(context);
+    args.analyze(context);
+  },
   Call_run(_run, id, args) {
     const context = this.args.context;
     id.analyze(context);
@@ -2187,17 +2235,7 @@ analyzer.addOperation("analyze(context)", {
     params.asIteration().children.forEach((p) => lambdaContext.symbols.add(p.sourceString));
     body.analyze(lambdaContext);
   },
-  MemberAccess_prop(parent, _dot, _id) {
-    parent.analyze(this.args.context);
-  },
-  MemberAccess_index(parent, _lb, expr, _rb) {
-    parent.analyze(this.args.context);
-    expr.analyze(this.args.context);
-  },
-  MemberAccess_this(_this) {
-    // 'this' is always allowed
-  },
-  MemberAccess_base(id) {
+  MemberAccess_chain(id, segs) {
     const context = this.args.context;
     const name = id.sourceString;
     const globals = [
@@ -2242,6 +2280,18 @@ analyzer.addOperation("analyze(context)", {
     if (!context.symbols.has(name) && !globals.includes(name)) {
       semanticError(id, `Semantic Error: Using undefined variable "${name}"`);
     }
+    segs.children.forEach((seg) => seg.analyze(this.args.context));
+  },
+  MemberAccess_this(_this) {
+    // 'this' is always allowed
+  },
+  MemberAccessSeg_prop(_dot, _prop) {},
+  MemberAccessSeg_index(_lb, expr, _rb) {
+    expr.analyze(this.args.context);
+  },
+  MemberAccessSeg_opt_prop(_opt, _prop) {},
+  MemberAccessSeg_opt_index(_opt, _lb, expr, _rb) {
+    expr.analyze(this.args.context);
   },
   word(_first, _rest) { },
   identifier(w) { w.analyze(this.args.context); },
@@ -2266,6 +2316,11 @@ function compile(source, options) {
   initLineMap(preprocessed);
   const match = grammar.match(preprocessed);
   if (match.failed()) {
+    // Set KADENCE_TRACE_PARSE=1 to dump Ohm parse trace on failure (for grammar debugging).
+    if (process.env.KADENCE_TRACE_PARSE) {
+      const trace = grammar.trace(preprocessed);
+      console.error('=== Parse trace ===\n' + trace.toString());
+    }
     throw new Error(match.message);
   }
 

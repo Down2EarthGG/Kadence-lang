@@ -1,0 +1,12 @@
+
+// This file tests if we can use common terms as variable names
+let map = 10
+let set = 20
+let from = 30
+let to = 40
+let item = 50
+let create = 60
+let date = 80
+let time = 90
+let result = map + set + from + to + item + create + date + time
+print result
