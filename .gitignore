@@ -21,6 +21,7 @@ stdlib/.object.kade.js
 # Ignore all apps
 apps/
 
+
 # Agent / AI local storage
 .agent/
 .gemini/
