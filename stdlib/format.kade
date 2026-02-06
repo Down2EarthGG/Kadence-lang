@@ -117,3 +117,7 @@ end
 export function kebabCase text
     return run mod.kebabCase text
 end
+
+export function slug text
+    return run mod.slug text
+end

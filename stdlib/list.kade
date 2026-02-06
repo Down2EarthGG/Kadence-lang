@@ -1,5 +1,15 @@
 note: List utilities for Kadence
 
+let listMod = run require "./list-helpers.js"
+
+export function sort array
+    return run listMod.sort array
+end
+
+export function sortBy array keyFn
+    return run listMod.sortBy array keyFn
+end
+
 export function first array
     return array[0]
 end

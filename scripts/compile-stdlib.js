@@ -5,7 +5,9 @@ const { execSync } = require('child_process');
 const stdlibDir = path.join(__dirname, '..', 'stdlib');
 const files = fs.readdirSync(stdlibDir);
 
-const kadeFiles = files.filter(f => f.endsWith('.kade') && !f.includes('test'));
+const kadeFiles = files.filter(f =>
+    f.endsWith('.kade') && (f === 'test.kade' || !f.includes('test'))
+);
 
 console.log(`Found ${kadeFiles.length} stdlib files to compile\n`);
 

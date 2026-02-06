@@ -127,3 +127,11 @@ export function findIndex array predicate
     end
     return 0 minus 1
 end
+
+export function findFirst array predicate
+    let idx = run findIndex array predicate
+    if idx at least 0
+        return array[idx]
+    end
+    return undefined
+end

@@ -1,6 +1,7 @@
 note: Test utilities for Kadence
 
 let term = run require "./console.js"
+let testHelpers = run require "./test-helpers.js"
 
 export function suite name callback
     echo "Suite: " plus name
@@ -32,6 +33,32 @@ export function assertTrue value message
     else
         let colored = run term.red "FAIL"
         echo colored plus ": " plus message
+        return false
+    end
+end
+
+export function assertFalse value message
+    if not value
+        let colored = run term.green "PASS"
+        echo colored plus ": " plus message
+        return true
+    else
+        let colored = run term.red "FAIL"
+        echo colored plus ": " plus message
+        return false
+    end
+end
+
+export function assertThrows fn message
+    let result = run testHelpers.assertThrows fn
+    if result.threw
+        let colored = run term.green "PASS"
+        echo colored plus ": " plus message
+        return true
+    else
+        let colored = run term.red "FAIL"
+        echo colored plus ": " plus message
+        echo "  Expected function to throw"
         return false
     end
 end

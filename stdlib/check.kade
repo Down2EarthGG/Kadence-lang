@@ -19,3 +19,10 @@ export function between val min max
     end
     return val at least min and val at most max
 end
+
+export function coalesce a b
+    if a not equals undefined and a not equals null
+        return a
+    end
+    return b
+end

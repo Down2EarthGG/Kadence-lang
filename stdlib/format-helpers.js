@@ -36,6 +36,16 @@ function kebabCase(text) {
     return text.toLowerCase().replace(/\s+/g, "-");
 }
 
+function slug(text) {
+    return text
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w-]+/g, "-")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+}
+
 if (typeof module !== "undefined" && module.exports) {
-    module.exports = { currency, phoneNumber, snakeCase, kebabCase };
+    module.exports = { currency, phoneNumber, snakeCase, kebabCase, slug };
 }
