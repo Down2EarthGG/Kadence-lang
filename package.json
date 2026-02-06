@@ -5,7 +5,8 @@
   "icon": "icon.svg",
   "main": "src/compiler.js",
   "bin": {
-    "kadence": "./bin/kadence.js"
+    "kadence": "./bin/kadence.js",
+    "kadence-lang": "./bin/kadence.js"
   },
   "repository": {
     "type": "git",
@@ -30,9 +31,9 @@
     "dev": "npm run serve:demo",
     "demo": "npm run serve:demo",
     "build:demo": "node scripts/build-demo.js",
-    "serve:demo": "npm run build:demo && serve . -p 3000",
+    "serve:demo": "npm run build:demo && serve apps/website -p 3000",
     "build:apps": "node scripts/build-apps.js",
-    "serve:apps": "npm run build:apps && serve . -p 3000",
+    "serve:apps": "npm run build:apps && serve apps/website -p 3000",
     "test": "vitest run",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

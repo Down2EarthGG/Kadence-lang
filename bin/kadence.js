@@ -5,7 +5,7 @@ const readline = require("readline");
 const { execSync } = require("child_process");
 const { compile } = require("../src/compiler");
 
-const VERSION = "0.2.0";
+const VERSION = "0.2.1";
 
 const colors = {
   reset: "\x1b[0m",
@@ -34,26 +34,32 @@ function getPkgName(pkg) {
 
 function printHelp() {
   log(`Kadence CLI v${VERSION}`, colors.bright + colors.cyan);
+  log("A human-readable programming language that feels like poetry", colors.dim);
   console.log(`
 Usage:
+  npx kadence-lang [command] [options]
+
+Core Commands:
   kadence                Start interactive REPL
   kadence <file>         Compile and run a .kade file
   kadence -c <file>      Compile to JavaScript only
-  kadence -c <file> -o <out> --target browser   Compile for browser (no Node APIs)
-  kadence -c <file> -o <out> --sourcemap        Emit source map for debugging
-  kadence create <name> [--web] [--yes]  Create project folder and run npm install
-  kadence init [--web]    Initialize a new project in current directory
-  kadence install <pkg>  Install a package (npm/github)
-  kadence uninstall <pkg> Remove a package
-  kadence update         Update all dependencies
-  kadence list           List installed packages
-  kadence run <script>   Run a script from kadence.json
-  kadence build         Compile all .kade files in project
-  kadence test          Run all .test.kade files
-  kadence docs          Generate documentation from comments
-  kadence dev           Start Vite development server
-  kadence -v             Show version
-  kadence help           Show this help
+  
+Project Commands:
+  kadence create <name> [--web]  Create a new project from a template
+  kadence init [--web]           Initialize Kadence in existing folder
+  kadence dev                    Start Vite development server (Web only)
+  kadence build                  Compile all .kade files in project
+  kadence test                   Run all .test.kade files
+  
+Package Management:
+  kadence install <pkg>          Install a package (kadence or npm)
+  kadence uninstall <pkg>        Remove a package
+  kadence update                 Update all dependencies
+  kadence list                   List installed packages
+
+Other Options:
+  kadence -v                     Show version
+  kadence help                   Show this help
     `);
 }
 
@@ -138,7 +144,7 @@ function writeScaffold(targetDir, opts) {
   const config = {
     name: projectName,
     version: version || "1.0.0",
-    description: description || "",
+    description: description || "A beautiful Kadence project",
     author: author || "",
     scripts: isWeb
       ? { dev: "kadence dev", build: "kadence build --web", preview: "vite preview" }
@@ -148,19 +154,97 @@ function writeScaffold(targetDir, opts) {
 
   const mainKade = path.join(targetDir, "src", "main.kade");
   if (!fs.existsSync(mainKade)) {
-    fs.writeFileSync(mainKade, "// Welcome to your new Kadence project!\nsay \"Hello, World!\"\n", "utf8");
+    if (isWeb) {
+      fs.writeFileSync(
+        mainKade,
+        `// Welcome to your new Kadence Web App!
+say "Kadence is running!"
+
+// Simple reactive counter example
+let count = 0
+
+function increment() {
+    count = count + 1
+    updateUI()
+}
+
+function updateUI() {
+    const el = document.getElementById("counter")
+    if el {
+        el.innerText = "Count: " + count
+    }
+}
+
+// Initialize
+updateUI()
+
+// Expose increment to window for button clicks
+window.increment = increment
+`,
+        "utf8"
+      );
+    } else {
+      fs.writeFileSync(
+        mainKade,
+        `// Welcome to your new Kadence Tool!
+import math
+
+say "Hello from Kadence!"
+say "The square root of 144 is " + math.sqrt(144)
+
+// Try running with: kadence src/main.kade
+`,
+        "utf8"
+      );
+    }
   }
 
   const gitignore = path.join(targetDir, ".gitignore");
   if (!fs.existsSync(gitignore)) {
-    fs.writeFileSync(gitignore, "node_modules/\ndist/\n*.js\n*.js.map\n", "utf8");
+    fs.writeFileSync(gitignore, "node_modules/\ndist/\n*.js\n*.js.map\n.DS_Store\n", "utf8");
+  }
+
+  const readme = path.join(targetDir, "README.md");
+  if (!fs.existsSync(readme)) {
+    fs.writeFileSync(
+      readme,
+      `# ${projectName}
+
+${description || "A new Kadence project."}
+
+## Getting Started
+
+1. Install dependencies:
+   \`\`\`bash
+   npm install
+   \`\`\`
+
+2. Start the project:
+   \`\`\`bash
+   ${isWeb ? "npm run dev" : "npm run start"}
+   \`\`\`
+
+## Project Structure
+
+- \`src/\`: Source files (.kade)
+- \`dist/\`: Compiled JavaScript
+- \`kadence.json\`: Kadence project configuration
+`,
+      "utf8"
+    );
   }
 
   const kadenceConfig = path.join(targetDir, "kadence.config.js");
   if (!fs.existsSync(kadenceConfig)) {
     fs.writeFileSync(
       kadenceConfig,
-      "/** @type {import('kadence-lang').Config} */\nmodule.exports = {\n  outDir: 'dist',\n  srcDir: 'src',\n  target: 'node'\n};\n",
+      `/** @type {import('kadence-lang').Config} */
+module.exports = {
+  outDir: 'dist',
+  srcDir: 'src',
+  target: '${isWeb ? "browser" : "node"}'
+};
+`,
       "utf8"
     );
   }
@@ -172,11 +256,13 @@ function writeScaffold(targetDir, opts) {
     const pkg = {
       name: projectName,
       version: version || "1.0.0",
+      description: description || "",
       type: "commonjs",
-      dependencies: { "kadence-lang": "latest" },
+      scripts: config.scripts,
+      dependencies: { "kadence-lang": "^0.2.1" },
     };
     if (isWeb) {
-      pkg.devDependencies = { vite: "latest", "vite-plugin-kadence": "latest" };
+      pkg.devDependencies = { vite: "latest", "vite-plugin-kadence": "^0.2.1" };
     }
     fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
   }
@@ -187,18 +273,146 @@ function writeScaffold(targetDir, opts) {
       fs.writeFileSync(
         indexHtml,
         `<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>${projectName}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${projectName} | Kadence</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="app"></div>
+    <div class="container">
+        <header>
+            <div class="logo">♪</div>
+            <h1>${projectName}</h1>
+            <p class="subtitle">Built with Kadence</p>
+        </header>
+        
+        <main>
+            <div class="card">
+                <h2 id="counter">Count: 0</h2>
+                <button onclick="increment()">Increment</button>
+            </div>
+            
+            <div class="info">
+                <p>Edit <code>src/main.kade</code> to get started.</p>
+            </div>
+        </main>
+    </div>
     <script type="module" src="/src/main.kade"></script>
 </body>
 </html>`,
         "utf8"
       );
     }
+
+    const styleCss = path.join(targetDir, "src", "style.css");
+    if (!fs.existsSync(styleCss)) {
+      fs.writeFileSync(
+        styleCss,
+        `body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Outfit', sans-serif;
+    background: radial-gradient(circle at top right, #1a1a2e, #0f0f1b);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    text-align: center;
+    max-width: 600px;
+    padding: 2rem;
+}
+
+header {
+    margin-bottom: 3rem;
+}
+
+.logo {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.subtitle {
+    color: #94a3b8;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2.5rem;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+button {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    border: none;
+    color: white;
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 10px 15px -3px rgba(79, 172, 254, 0.3);
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 25px -5px rgba(79, 172, 254, 0.4);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.info {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+code {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    color: #e2e8f0;
+}
+`,
+        "utf8"
+      );
+    }
+
     const viteConfig = path.join(targetDir, "vite.config.js");
     if (!fs.existsSync(viteConfig)) {
       fs.writeFileSync(
@@ -207,7 +421,11 @@ function writeScaffold(targetDir, opts) {
 import { kadencePlugin } from './vite-plugin-kadence';
 
 export default defineConfig({
-  plugins: [kadencePlugin()]
+  plugins: [kadencePlugin()],
+  server: {
+    port: 3000,
+    open: true
+  }
 });`,
         "utf8"
       );
