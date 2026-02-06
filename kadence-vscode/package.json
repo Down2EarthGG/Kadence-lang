@@ -12,9 +12,6 @@
     "description": "Language support for Kadence",
     "version": "0.2.1",
     "main": "./extension.js",
-    "activationEvents": [
-        "onLanguage:kadence"
-    ],
     "engines": {
         "vscode": "^1.75.0"
     },
@@ -38,8 +35,7 @@
             {
                 "id": "kadence",
                 "aliases": [
-                    "Kadence",
-                    "kadence"
+                    "Kadence"
                 ],
                 "extensions": [
                     ".kade"
