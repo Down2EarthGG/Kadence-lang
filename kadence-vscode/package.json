@@ -10,7 +10,7 @@
         "url": "https://github.com/Down2EarthGG/Kadence-lang"
     },
     "description": "Language support for Kadence",
-    "version": "0.2.2",
+    "version": "0.2.1",
     "main": "./extension.js",
     "engines": {
         "vscode": "^1.75.0"
