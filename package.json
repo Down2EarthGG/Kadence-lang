@@ -51,10 +51,7 @@
   "author": "The Kadence Team",
   "license": "MIT",
   "dependencies": {
-    "lodash": "^4.17.23",
     "ohm-js": "^17.3.0",
-    "readline-sync": "^1.4.10",
-    "safe-eval": "^0.4.1",
     "source-map": "^0.7.4"
   },
   "devDependencies": {
