@@ -2,6 +2,7 @@
   "name": "kadence-lang",
   "version": "0.2.0",
   "description": "A human-readable programming language that feels like poetry",
+  "icon": "icon.svg",
   "main": "src/compiler.js",
   "bin": {
     "kadence": "./bin/kadence.js"
@@ -19,7 +20,8 @@
     "bin/",
     "stdlib/",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "icon.svg"
   ],
   "engines": {
     "node": ">=14.0.0"
