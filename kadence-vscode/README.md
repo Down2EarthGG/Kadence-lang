@@ -24,6 +24,9 @@ Type less, write more poetry. usage examples:
 ### 🔬 Error Checking
 Basic semantic analysis to catch common errors while you type.
 
+### 📚 Standard Library Support
+First-class highlighting and autocomplete for the entire Kadence standard library, from `array` and `async` to `uuid` and `web`.
+
 ## 📦 Installation
 
 ### From Marketplace

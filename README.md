@@ -137,26 +137,30 @@ Kadence ships with a comprehensive set of modules for common tasks.
 | :--- | :--- |
 | `array` | `flatten`, `zip`, `chunk`, `partition`, `take`, `drop`, `reverse`, `findIndex` |
 | `async` | `delay`, `timeout`, `retry`, `debounce`, `throttle`, `parallel`, `sequential`, `waterfall` |
-| `list` | `first`, `lastOf`, `shuffle`, `range`, `unique` |
-| `string` | `trimmed`, `repeated`, `toCamelCase`, `padStart`, `words` |
+| `list` | `first`, `lastOf`, `shuffle`, `makeRange`, `unique`, `sort`, `sortBy` |
+| `string` | `trimmed`, `repeated`, `toCamelCase`, `padStart`, `words`, `lines`, `capitalized` |
 | `map` | `keys`, `values`, `entries`, `merge`, `pick`, `omit`, `mapValues`, `deepClone`, `fromPairs` |
 | `set` | `union`, `intersection`, `difference`, `isSubset`, `isSuperset`, `cartesianProduct` |
 | `format` | `currency`, `fileSize`, `ordinal`, `plural`, `titleCase`, `snakeCase`, `kebabCase` |
 | `validation` | `isEmail`, `isUrl`, `isNumeric`, `isAlpha`, `isInRange`, `isHexColor`, `isCreditCard` |
-| `math` | `clamp`, `randomFloat`, `toRadians`, `hypotenuse` |
-| `datetime` | `the time now`, `the date today`, `diffDays`, `toIso` |
-| `file` | `readFile`, `writeFile`, `copyDir`, `removeDir`, `stat` |
+| `math` | `clamp`, `randomFloat`, `hypotenuse`, `areaOfCircle`, `isEven`, `toRadians` |
+| `datetime` | `currentTime`, `today`, `year`, `month`, `day`, `toIso`, `addDays` |
+| `file` | `readFile`, `writeFile`, `copyDir`, `removeDir`, `stat`, `listDir`, `exists` |
 | `path` | `joinPaths`, `resolve`, `basename`, `dirname`, `extension` |
-| `env` | `getEnv`, `hasEnv` (Environment Variables) |
+| `env` | `getEnv`, `hasEnv` |
 | `process` | `args`, `exit`, `cwd` |
-| `system` | `platform`, `arch`, `totalMemory`, `freeMemory` |
-| `network` | `serve`, `fetchJson` (Simple HTTP Server) |
+| `system` | `platform`, `arch`, `totalMemory`, `freeMemory`, `cpus`, `homedir` |
+| `network` | `serve`, `fetchJson` |
 | `json` | `readJson`, `writeJson`, `format`, `parseSafe` |
-| `check` | `isNumber`, `isString`, `isEmail`, `between` |
+| `check` | `isNumber`, `isString`, `isEmail`, `between`, `coalesce` |
 | `test` | `suite`, `assertEquals`, `assertTrue`, `assertThrows` |
-| `color` | `randomHex`, `rgbToHex`, `hexToRgb` |
-| `html` | `div`, `span`, `p`, `img`, `link` (Browser only) |
-| `crypto` | `hash`, `randomBytes`, `uuid` |
+| `color` | `rgb`, `rgba`, `hex`, `randomHex` |
+| `html` | `tag`, `div`, `span`, `p`, `img`, `link`, `h1` |
+| `crypto` | `hash`, `randomBytes` |
+| `uuid` | `v4`, `validate` |
+| `random` | `float`, `integer`, `choice`, `shuffle` |
+| `stream` | `createReader`, `readAll`, `pipe` |
+| `url` | `parseUrl`, `buildUrl`, `getSearchParam` |
 
 *Usage Example:*
 ```kadence

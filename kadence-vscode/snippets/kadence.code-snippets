@@ -34,12 +34,12 @@
     "Test Suite": {
         "prefix": "suite",
         "body": [
-            "import \"../stdlib/test.kade\" as t",
+            "import \"stdlib/test.kade\" as t",
             "",
-            "t.suite \"${1:Feature Name}\" () =>",
+            "t.suite \"${1:Feature Name}\" () => {",
             "    t.assertEquals (${2:1 plus 1}) ${3:2} \"${4:1 + 1 should be 2}\"",
             "    $0",
-            "end"
+            "}",
         ],
         "description": "Create a new test suite"
     },
@@ -133,9 +133,9 @@
     "Lambda Block": {
         "prefix": "lambdablock",
         "body": [
-            "(${1:params}) =>",
+            "(${1:params}) => {",
             "    $0",
-            "end"
+            "}"
         ],
         "description": "Arrow function with block"
     },
