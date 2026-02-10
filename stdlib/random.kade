@@ -35,7 +35,7 @@ export function shuffle items
     return res
 end
 
-export function uuid
+export function hex
     let chars = "0123456789abcdef"
     let result = "#"
     repeat 6 times
