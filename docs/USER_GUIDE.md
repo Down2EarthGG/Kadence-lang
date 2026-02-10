@@ -16,9 +16,12 @@ Kadence is designed to make code read like natural English while maintaining the
 6. [Objects & Classes](#objects--classes)
 7. [Module System](#module-system)
 8. [Standard Library](#standard-library)
-9. [Web Development](#web-development)
-10. [File System](#file-system)
-11. [Error Handling](#error-handling)
+9. [Built-in Language Features](#built-in-language-features)
+10. [Web Development](#web-development)
+11. [File System](#file-system)
+12. [Error Handling](#error-handling)
+13. [Debugging](#debugging)
+14. [Philosophy](#philosophy)
 
 ---
 
@@ -81,7 +84,7 @@ Variables are mutable, constants are fixed. You can use standard `=` or the more
 
 ```kadence
 let name be "Kadence"      // Mutable
-const version is "2.0.0"   // Immutable
+const version is "0.2.4"   // Immutable
 ```
 
 ### Blocks & Indentation
@@ -393,272 +396,14 @@ echo run list.first nums   // 10
 echo run list.lastOf nums   // 30
 ```
 
-### Advanced Array Operations (stdlib/array.kade)
+### Module Reference
+For a complete list of functions, signatures, and examples for every module, please see the [Standard Library Reference](STDLIB_REFERENCE.md).
 
-The `array` module provides advanced array manipulation utilities written in pure Kadence.
+---
 
-```kadence
-import "stdlib/array.kade" as array
+## Built-in Language Features
 
-// Flatten nested arrays
-let nested = list (list 1 2) (list 3 4)
-let flat = run array.flatten nested  // [1, 2, 3, 4]
-
-// Zip two arrays together
-let names = list "Alice" "Bob" "Carol"
-let ages = list 25 30 35
-let pairs = run array.zip names ages  // [["Alice", 25], ["Bob", 30], ["Carol", 35]]
-
-// Chunk array into smaller arrays
-let numbers = list 1 2 3 4 5 6
-let chunks = run array.chunk numbers 2  // [[1, 2], [3, 4], [5, 6]]
-
-// Partition array by predicate
-let nums = list 1 2 3 4 5 6
-let partitioned = run array.partition nums (x => x more than 3)  // [[4, 5, 6], [1, 2, 3]]
-
-// Take first N elements
-let first3 = run array.take numbers 3  // [1, 2, 3]
-
-// Drop first N elements
-let rest = run array.drop numbers 2  // [3, 4, 5, 6]
-
-// Reverse an array
-let reversed = run array.reverse numbers  // [6, 5, 4, 3, 2, 1]
-
-// Find index of first match
-let index = run array.findIndex nums (x => x equals 4)  // 3
-```
-
-### Async Utilities (stdlib/async.kade)
-
-The `async` module provides powerful tools for managing asynchronous operations.
-
-```kadence
-import "stdlib/async.kade" as async
-
-// Delay execution
-async function example
-    await run async.delay 1000  // Wait 1 second
-    echo "Done waiting!"
-end
-
-// Add timeout to a promise
-async function fetchWithTimeout
-    let promise = get from "https://api.example.com/data"
-    let result = await run async.timeout promise 5000  // 5 second timeout
-    return result
-end
-
-// Retry failed operations
-async function retryExample
-    let result = await run async.retry fetchData 3 1000  // 3 attempts, 1s delay
-    return result
-end
-
-// Debounce function calls
-let debouncedSearch = run async.debounce searchFunction 300
-
-// Throttle function calls
-let throttledScroll = run async.throttle handleScroll 100
-
-// Run promises in parallel
-let results = await run async.parallel (list promise1 promise2 promise3)
-
-// Race promises
-let fastest = await run async.race (list promise1 promise2)
-
-// Run tasks sequentially
-let results = await run async.sequential (list task1 task2 task3)
-
-// Waterfall pattern (pass result to next task)
-let final = await run async.waterfall (list task1 task2 task3) initialValue
-
-// Process items in batches
-let results = await run async.batch items 10 processBatch
-```
-
-### Formatting Utilities (stdlib/format.kade)
-
-The `format` module provides text and number formatting functions.
-
-```kadence
-import "stdlib/format.kade" as format
-
-// Format currency
-let price = run format.currency 1234.56 "USD"  // "$1,234.56"
-
-// Format numbers with decimals
-let formatted = run format.formatNumber 3.14159 2  // "3.14"
-
-// Format percentages
-let percent = run format.percentage 0.856 1  // "0.9%"
-
-// Format file sizes
-let size = run format.fileSize 1536000  // "1.46 MB"
-
-// Ordinal numbers
-echo run format.ordinal 1   // "1st"
-echo run format.ordinal 2   // "2nd"
-echo run format.ordinal 3   // "3rd"
-echo run format.ordinal 11  // "11th"
-echo run format.ordinal 21  // "21st"
-
-// Pluralization
-let word = run format.plural 1 "item" "items"  // "item"
-let word2 = run format.plural 5 "item" "items"  // "items"
-
-// Truncate text
-let short = run format.truncate "Hello World" 8 "..."  // "Hello Wo..."
-
-// Ellipsis (truncate with "...")
-let ellipsed = run format.ellipsis "Long text here" 10  // "Long text ..."
-
-// Pad numbers with zeros
-let padded = run format.padNumber 7 3  // "007"
-
-// Format phone numbers
-let phone = run format.phoneNumber "1234567890"  // "(123) 456-7890"
-
-// Title case
-let title = run format.titleCase "hello world"  // "Hello World"
-
-// Snake case
-let snake = run format.snakeCase "Hello World"  // "hello_world"
-
-// Kebab case
-let kebab = run format.kebabCase "Hello World"  // "hello-world"
-```
-
-### Map/Dictionary Utilities (stdlib/map.kade)
-
-The `map` module provides utilities for working with objects as dictionaries.
-
-```kadence
-import "stdlib/map.kade" as map
-
-let person = object { name: "Alice", age: 30, city: "NYC" }
-
-// Get keys, values, entries
-let allKeys = run map.keys person      // ["name", "age", "city"]
-let allValues = run map.values person  // ["Alice", 30, "NYC"]
-let pairs = run map.entries person     // [["name", "Alice"], ["age", 30], ["city", "NYC"]]
-
-// Check if key exists
-let hasAge = run map.hasKey person "age"  // true
-
-// Merge objects
-let extra = object { country: "USA" }
-let merged = run map.merge person extra  // { name: "Alice", age: 30, city: "NYC", country: "USA" }
-
-// Pick specific keys
-let subset = run map.pick person (list "name" "age")  // { name: "Alice", age: 30 }
-
-// Omit specific keys
-let without = run map.omit person (list "city")  // { name: "Alice", age: 30 }
-
-// Transform values
-let doubled = run map.mapValues (object { a: 1, b: 2 }) (x => x times 2)  // { a: 2, b: 4 }
-
-// Transform keys
-let prefixed = run map.mapKeys person (k => "user_" plus k)
-
-// Invert keys and values
-let inverted = run map.invert (object { a: "x", b: "y" })  // { x: "a", y: "b" }
-
-// Deep clone
-let clone = run map.deepClone person
-
-// Get nested path
-let value = run map.getPath person "address.city"
-
-// Set defaults
-let withDefaults = run map.defaults person (object { country: "USA", age: 18 })
-
-// Check if empty
-let empty = run map.isEmpty (object {})  // true
-
-// Create from pairs
-let obj = run map.fromPairs (list (list "a" 1) (list "b" 2))  // { a: 1, b: 2 }
-```
-
-### Set Operations (stdlib/set.kade)
-
-The `set` module provides mathematical set operations on arrays.
-
-```kadence
-import "stdlib/set.kade" as set
-
-let setA = list 1 2 3 4
-let setB = list 3 4 5 6
-
-// Union (all unique elements)
-let combined = run set.union setA setB  // [1, 2, 3, 4, 5, 6]
-
-// Intersection (common elements)
-let common = run set.intersection setA setB  // [3, 4]
-
-// Difference (in A but not in B)
-let diff = run set.difference setA setB  // [1, 2]
-
-// Symmetric difference (in A or B but not both)
-let symDiff = run set.symmetricDifference setA setB  // [1, 2, 5, 6]
-
-// Check if subset
-let isSub = run set.isSubset (list 1 2) setA  // true
-
-// Check if superset
-let isSuper = run set.isSuperset setA (list 1 2)  // true
-
-// Check if disjoint (no common elements)
-let disjoint = run set.areDisjoint (list 1 2) (list 5 6)  // true
-
-// Cartesian product
-let product = run set.cartesianProduct (list 1 2) (list "a" "b")
-// [[1, "a"], [1, "b"], [2, "a"], [2, "b"]]
-```
-
-### Validation Utilities (stdlib/validation.kade)
-
-The `validation` module provides comprehensive input validation functions.
-
-```kadence
-import "stdlib/validation.kade" as validation
-
-// Email validation
-let valid = run validation.isEmail "user@example.com"  // true
-let invalid = run validation.isEmail "not-an-email"    // false
-
-// URL validation
-let validUrl = run validation.isUrl "https://example.com"  // true
-
-// Numeric checks
-let isNum = run validation.isNumeric "12345"     // true
-let isAlpha = run validation.isAlpha "Hello"     // true
-let isAlphaNum = run validation.isAlphanumeric "Hello123"  // true
-let isInt = run validation.isInteger "42"        // true
-
-// Number comparisons
-let positive = run validation.isPositive 5       // true
-let negative = run validation.isNegative (0 - 3) // true
-let inRange = run validation.isInRange 5 1 10    // true
-
-// String length validation
-let validLen = run validation.isLength "hello" 3 10  // true
-
-// Empty/blank checks
-let blank = run validation.isBlank "   "         // true
-let notEmpty = run validation.isNotEmpty "text"  // true
-
-// Format validations
-let hexColor = run validation.isHexColor "#FF5733"      // true
-let ipAddr = run validation.isIpAddress "192.168.1.1"   // true
-let phone = run validation.isPhoneNumber "555-123-4567" // true
-let creditCard = run validation.isCreditCard "4532015112830366"  // true (Luhn check)
-let strongPass = run validation.isStrongPassword "MyP@ssw0rd123"  // true
-```
-
-### Built-in string methods
+Unlike the Standard Library which requires an `import`, the following features are built directly into the Kadence syntax for maximum performance and readability.
 
 ```kadence
 let s = "  hello world  "

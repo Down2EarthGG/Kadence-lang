@@ -1233,11 +1233,11 @@ Returns a new array with the items shuffled.
 let shuffled = run random.shuffle cards
 ```
 
-#### `uuid`
-Generates a random UUID-like string (hex).
+#### `hex`
+Generates a random 6-digit hex color string (prefixed with #).
 
 ```kadence
-let id = run random.uuid
+let color = run random.hex  // e.g. "#a1b2c3"
 ```
 
 ---

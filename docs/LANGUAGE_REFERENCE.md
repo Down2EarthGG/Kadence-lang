@@ -27,9 +27,24 @@ Kadence supports two primary block styles:
 - **Mutable**: `let [name] be [value]` or `let [name] = [value]`
 - **Immutable**: `const [name] is [value]` or `const [name] = [value]`
 
-### 2.2 Identifiers
-Kadence allows most identifiers to be used as variable names, including common terms like `map`, `set`, `item`, `from`, `to`, `date`, and `time`.
-Only a small set of structural keywords (like `if`, `else`, `while`, `function`, `class`, `list`) are reserved.
+### 2.2 Identifiers and Keywords
+Kadence uses a rich set of keywords to enable its poetic, English-like syntax. While common terms like `map`, `set`, `item`, `from`, `to`, `date`, and `time` are used as keywords for specific built-in operations, they are reserved and cannot be used as variable identifiers.
+
+**Reserved Keyword Categories:**
+- **Control Flow**: `if`, `elif`, `else`, `end`, `while`, `for`, `each`, `in`, `match`, `when`, `then`, `repeat`, `times`, `break`, `continue`.
+- **Logic & Comparison**: `and`, `or`, `not`, `equals`, `more than`, `less than`, `at least`, `at most`, `is`, `has`.
+- **State Management**: `let`, `be`, `const`, `is`, `set`, `to`, `increment`, `decrement`.
+- **Functional & Collections**: `list`, `object`, `map`, `filter`, `reduce`, `find`, `some`, `every`, `item`, `from`, `add`.
+- **I/O & System**: `say`, `echo`, `print`, `post`, `ask`, `save`, `read`, `wait`, `seconds`, `time`, `now`, `date`, `today`.
+- **Standard Math**: `plus`, `minus`, `times`, `divided by`, `average of`, `minimum of`, `maximum of`, `round`, `floor`, `ceiling`, `absolute`, `square root`, `power`.
+- **String Ops**: `trim`, `split`, `join`, `replace`, `uppercase`, `lowercase`, `includes`, `starts`, `ends`, `matches`.
+- **Object/Class**: `class`, `extends`, `static`, `private`, `new`, `this`, `super`, `keys of`, `values of`, `merge`.
+- **Modules**: `import`, `export`, `as`.
+- **Transitions**: `run`, `give`, `return`, `convert`.
+- **Async**: `async`, `await`, `background`.
+- **Error Handling**: `try`, `catch`.
+- **JSON**: `parse`, `stringify`.
+- **Regex**: `regex`, `all`, `extract`.
 
 
 ### 2.3 Assignment
