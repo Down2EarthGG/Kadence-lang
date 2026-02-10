@@ -17,7 +17,13 @@ coverage/
 
 # Generated / build output
 examples/*.js
-stdlib/.object.kade.js
+stdlib/*.js
+!stdlib/*-helpers.js
+apps/**/*.js
+!apps/**/service-worker.js
+!apps/website/service-worker.js
+compiler-browser.js
+*.js.map
 # Ignore all apps
 apps/
 /demo-web

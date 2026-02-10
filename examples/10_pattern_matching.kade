@@ -1,0 +1,26 @@
+note: --- Deep Pattern Matching ---
+
+function describeStatus code
+    let res = ""
+    match code
+        when 200 then set res to "Success: Everything is working"
+        when 201 then set res to "Success: Resource created"
+        when 400 then set res to "Client Error: Bad request"
+        when 404 then set res to "Client Error: Not found"
+        when 500 then set res to "Server Error: Internal breakdown"
+        else set res to "Unknown status code: {code}"
+    end
+    give res
+end
+
+say "Status 200: {run describeStatus 200}"
+say "Status 404: {run describeStatus 404}"
+say "Status 999: {run describeStatus 999}"
+
+note: Poetic matching with strings
+let mood = "happy"
+match mood
+    when "happy" then say "Glad to hear it! 😊"
+    when "sad" then say "Hope you feel better soon. 💙"
+    else say "Stay curious! ✨"
+end

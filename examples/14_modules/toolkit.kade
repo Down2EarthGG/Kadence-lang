@@ -1,0 +1,11 @@
+note: --- Math Utilities Module ---
+
+export function calculateArea radius
+    note: Using the builtin math properties/logic
+    let pi = 3.14159
+    return pi * (radius * radius)
+end
+
+export function getGreeting name
+    return "Hello, {name}! Greetings from the toolkit."
+end

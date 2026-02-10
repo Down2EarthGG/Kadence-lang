@@ -1,0 +1,40 @@
+note: --- Data Validation Showcase ---
+import "../stdlib/validation.kade" as v
+
+function validateRegistration user
+    let errors = list
+    
+    let email = user.email
+    if not (run v.isEmail email)
+        add "Invalid email address" to errors
+    end
+    
+    let pass = user.password
+    if not (run v.isStrongPassword pass)
+        add "Password is too weak (needs 8+ chars and special symbols)" to errors
+    end
+    
+    let age = user.age
+    if not (run v.isInRange age 13 120)
+        add "Age must be between 13 and 120" to errors
+    end
+    
+    return errors
+end
+
+let newUser = object
+    email: "alex@example.com"
+    password: "Password123!"
+    age: 25
+end
+
+say "Checking user registration..."
+let problems = run validateRegistration newUser
+
+if size of problems equals 0
+    say "Success: User validation passed!"
+else
+    for each p in problems
+        say "Validation Error: {p}"
+    end
+end

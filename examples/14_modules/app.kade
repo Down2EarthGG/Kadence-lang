@@ -1,0 +1,13 @@
+note: --- Multi-Module App ---
+import "./toolkit.kade" as toolkit
+
+say "--- Module Demo ---"
+
+let name = "Developer"
+say run toolkit.getGreeting name
+
+let r = 10
+let area = run toolkit.calculateArea r
+say "The area of a circle with radius {r} is {area}"
+
+say "Done."

@@ -1,0 +1,22 @@
+note: --- Native File System I/O ---
+note: This example is intended for Node.js targets.
+
+import "../stdlib/file.kade" as file
+import "../stdlib/path.kade" as path
+
+let testFile = "sample_output.txt"
+
+say "Writing to {testFile}..."
+run file.writeFile testFile "Hello from Kadence! {run path.resolve "."}"
+
+if run file.exists testFile
+    say "File exists. Reading content back..."
+    let content = run file.readFile testFile
+    say "Content: {content}"
+    
+    say "Cleaning up..."
+    run file.unlink testFile
+    say "File removed."
+else
+    say "Error: File was not created."
+end

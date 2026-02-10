@@ -1,0 +1,30 @@
+note: --- Async & Concurrent Programming ---
+import "../stdlib/async.kade" as asyncLib
+
+async function fetchUser id
+    say "Fetching data for user {id}..."
+    await run asyncLib.delay 1000
+    give object { id: id, name: "User {id}" }
+end
+
+async function main
+    say "--- Async Demo ---"
+    
+    note: Sequential execution
+    let user1 = await run fetchUser 1
+    say "Received: {user1.name}"
+    
+    note: Parallel execution
+    say "Fetching multiple users in parallel..."
+    let p1 = run fetchUser 2
+    let p2 = run fetchUser 3
+    let users = await run asyncLib.parallel (list p1 p2)
+    
+    for each u in users
+        say "Parallel Result: {u.name}"
+    end
+    
+    say "All tasks complete!"
+end
+
+run main

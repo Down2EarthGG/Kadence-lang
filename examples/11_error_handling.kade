@@ -1,0 +1,24 @@
+note: --- Error Resilience ---
+import "../stdlib/json.kade" as json
+
+function safeParse raw
+    try
+        let data = run json.parseSafe raw
+        if data equals null
+            say "Error: Data was not valid JSON"
+            give object { error: true }
+        end
+        give data
+    catch err
+        say "Caught a critical error during parse!"
+        give object { error: true, message: err }
+    end
+end
+
+say "--- Processing Valid JSON ---"
+let result1 = run safeParse "{\"name\": \"Kadence\"}"
+say "Name: {result1.name}"
+
+say "--- Processing Invalid JSON ---"
+let result2 = run safeParse "{ bad string }"
+say "Is Error: {result2.error}"

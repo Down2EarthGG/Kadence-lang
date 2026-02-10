@@ -50,8 +50,14 @@ export function assertFalse value message
 end
 
 export function assertThrows fn message
-    let result = run testHelpers.assertThrows fn
-    if result.threw
+    let threw = false
+    try
+        run fn
+    catch e
+        set threw to true
+    end
+    
+    if threw
         let colored = run term.green "PASS"
         echo colored plus ": " plus message
         return true

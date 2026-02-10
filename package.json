@@ -39,7 +39,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "compile": "node src/compiler.js",
-    "prepublishOnly": "eslint src/compiler.js bin/kadence.js src/vite-plugin-kadence.js && npm test"
+    "compile-stdlib": "node scripts/compile-stdlib.js",
+    "prepublishOnly": "npm run compile-stdlib && eslint src/compiler.js bin/kadence.js src/vite-plugin-kadence.js && npm test"
   },
   "keywords": [
     "language",

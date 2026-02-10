@@ -1,0 +1,25 @@
+note: --- Object-Oriented Programming ---
+
+class Player
+    function constructor name score
+        set this.name to name
+        set this.score to score
+    end
+
+    function greet
+        say "Hello, I am {this.name} and my score is {this.score}!"
+    end
+
+    function addPoints points
+        set this.score to this.score plus points
+        say "{this.name} gained {points} points. New total: {this.score}"
+    end
+end
+
+note: Create a new instance
+let hero = new Player("Arthur", 100)
+
+note: Use methods
+run hero.greet
+run hero.addPoints 50
+run hero.greet

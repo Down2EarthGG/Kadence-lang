@@ -3,7 +3,11 @@ note: List utilities for Kadence
 let listMod = run require "./list-helpers.js"
 
 export function sort array
-    return run listMod.sort array
+    return sort array
+end
+
+export function reverse array
+    return reverse array
 end
 
 export function sortBy array keyFn
@@ -30,13 +34,7 @@ export function length array
 end
 
 export function contains array itemToFind
-    let found = false
-    for each x in array
-        if x equals itemToFind
-            let found = true
-        end
-    end
-    return found
+    return some array where x => x equals itemToFind
 end
 
 export function unique array

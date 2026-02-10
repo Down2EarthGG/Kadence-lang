@@ -398,9 +398,7 @@ Kadence {
           | string              -- str
           | "(" Expression ")"  -- paren
 
-  MemberAccess = "this"                        -- this
-               | "super"                       -- super
-               | identifier MemberAccessSeg*   -- chain
+  MemberAccess = ("this" | "super" | identifier) MemberAccessSeg*
 
   MemberAccessSeg = "." word  -- prop
                   | "[" Expression "]"  -- index
@@ -414,7 +412,7 @@ Kadence {
   Call = MemberAccess "(" ListOf<Expression, ","> ")" -- paren
        | "run" MemberAccess Arg*                      -- run
   
-  Arg = Lambda | List | identifier | number | bool | string | "(" Expression ")" -- paren
+  Arg = Lambda | List | MemberAccess | number | bool | string | "(" Expression ")" -- paren
 
   bool = "true" | "false"
   word = (letter | "_") (letter | digit | "_")*
@@ -434,7 +432,7 @@ Kadence {
   trim_kw = "trim" ~idchar
   includes_kw = "includes" ~idchar
   replace_kw = "replace" ~idchar
-    keyword = ("function" | "let" | "const" | "if" | "elif" | "else" | "end" | "while" | "for" | "in" | "return" | "break" | "continue" | "try" | "catch" | "async" | "await" | "new" | "this" | "super" | "true" | "false" | "null" | "undefined" | "class" | "extends" | "static" | "private" | "import" | "export" | "switch" | "case" | "default" | "delete" | "void" | "typeof" | "instanceof" | "do" | "yield" | "throw" | "finally" | "debugger" | "var" | "enum" | "public" | "protected" | "interface" | "implements" | "package" | "list" | "random" | "match" | "then" | "add" | "echo" | "say" | "print" | "post" | "run" | "repeat" | "times" | "time") ~(letter | digit | "_")
+  keyword = ("function" | "let" | "const" | "echo" | "say" | "print" | "post" | "true" | "false" | "if" | "elif" | "else" | "end" | "while" | "for" | "each" | "in" | "when" | "is" | "and" | "or" | "not" | "equals" | "more" | "than" | "less" | "at" | "least" | "most" | "plus" | "minus" | "times" | "divided" | "by" | "run" | "list" | "item" | "from" | "create" | "element" | "set" | "class" | "add" | "to" | "ask" | "of" | "size" | "remove" | "increment" | "decrement" | "random" | "return" | "give" | "be" | "has" | "number" | "wait" | "second" | "seconds" | "uppercase" | "lowercase" | "average" | "minimum" | "maximum" | "save" | "read" | "go" | "convert" | "the" | "time" | "now" | "date" | "today" | "background" | "async" | "await" | "try" | "catch" | "match" | "then" | "repeat" | "object" | "get" | "put" | "delete" | "parse" | "stringify" | "regex" | "all" | "range" | "where" | "with" | "new" | "this" | "super" | "trim" | "split" | "join" | "map" | "filter" | "reduce" | "find" | "some" | "every" | "includes" | "starts" | "ends" | "replace" | "matches" | "extract" | "import" | "export" | "as" | "index" | "last" | "private" | "static" | "extends" | "pi" | "floor" | "ceiling" | "round" | "absolute" | "square" | "root" | "power" | "sin" | "cos" | "tan" | "break" | "continue") ~(letter | digit | "_")
   number = digit+ ("." digit+)?
   
   string = doubleString | templateString
@@ -739,7 +737,9 @@ function __kadence_add(parent, child) {
     MathExpr_sin(_sin, expr) { return createNode(this, ["Math.sin(", expr.toNode(), ")"]); },
     MathExpr_cos(_cos, expr) { return createNode(this, ["Math.cos(", expr.toNode(), ")"]); },
     MathExpr_tan(_tan, expr) { return createNode(this, ["Math.tan(", expr.toNode(), ")"]); },
-    ListExpr_sort(_sort, expr) { return createNode(this, ["([...", expr.toNode(), "].sort())"]); },
+    ListExpr_sort(_sort, expr) {
+      return createNode(this, ["([...", expr.toNode(), "].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0)))"]);
+    },
     ListExpr_reverse(_reverse, expr) { return createNode(this, ["([...", expr.toNode(), "].reverse())"]); },
     ListExpr_push(_push, val, _to, array) {
       return createNode(this, ["(() => { const _a = ", array.toNode(), "; _a.push(", val.toNode(), "); return _a; })()"]);
@@ -827,10 +827,14 @@ function __kadence_add(parent, child) {
       return createNode(this, ["Array.from({length: ", end.toNode(), " - ", start.toNode(), " + 1}, (_, i) => i + ", start.toNode(), ")"]);
     },
     Lambda_simple(param, _arrow, body) {
+      const oldSubject = currentSubject;
       const asyncKw = body.hasAwait() ? "async " : "";
-      return createNode(this, [asyncKw, param.toNode(), " => ", body.toNode()]);
+      const res = createNode(this, [asyncKw, param.toNode(), " => ", body.toNode()]);
+      currentSubject = oldSubject;
+      return res;
     },
     Lambda_multi(_lp, params, _rp, _arrow, body) {
+      const oldSubject = currentSubject;
       const asyncKw = body.hasAwait() ? "async " : "";
       const ps = params.asIteration().children.map(p => p.toNode());
       const paramList = [];
@@ -838,17 +842,17 @@ function __kadence_add(parent, child) {
         paramList.push(p);
         if (i < ps.length - 1) paramList.push(", ");
       });
-      return createNode(this, [asyncKw, "(", ...paramList, ") => ", body.toNode()]);
+      const res = createNode(this, [asyncKw, "(", ...paramList, ") => ", body.toNode()]);
+      currentSubject = oldSubject;
+      return res;
     },
-    MemberAccess_chain(id, segs) {
-      let r = id.toNode();
+    MemberAccess(base, segs) {
+      let r = base.toNode();
       for (const seg of segs.children) {
         r = createNode(this, [r, seg.toNode()]);
       }
       return r;
     },
-    MemberAccess_this(_this) { return "this"; },
-    MemberAccess_super(_super) { return "super"; },
     MemberAccessSeg_prop(_dot, prop) { return createNode(this, [".", prop.toNode()]); },
     MemberAccessSeg_index(_lb, index, _rb) { return createNode(this, ["[", index.toNode(), "]"]); },
     MemberAccessSeg_opt_prop(_opt, prop) { return createNode(this, ["?.", prop.toNode()]); },
@@ -992,44 +996,61 @@ function __kadence_add(parent, child) {
     Primary_null(_n) { return "null"; },
     Primary_undefined(_u) { return "undefined"; },
     Primary_str(child) { return child.toNode(); },
-    Primary_paren(_lp, expr, _rp) { return createNode(this, ["(", expr.toNode(), ")"]); },
+    Primary_paren(_lp, expr, _rp) {
+      const oldSubject = currentSubject;
+      const res = createNode(this, ["(", expr.toNode(), ")"]);
+      currentSubject = oldSubject;
+      return res;
+    },
     Call_paren(id, _lp, args, _rp) {
+      const oldSubject = currentSubject;
       const ps = args.asIteration().children.map(a => a.toNode());
       const argList = [];
       ps.forEach((p, i) => {
         argList.push(p);
         if (i < ps.length - 1) argList.push(", ");
       });
-      return createNode(this, [id.toNode(), "(", ...argList, ")"]);
+      const res = createNode(this, [id.toNode(), "(", ...argList, ")"]);
+      currentSubject = oldSubject;
+      return res;
     },
     RunCall(_run, member, args) {
+      const oldSubject = currentSubject;
       const ps = args.children.map(a => a.toNode());
       const argList = [];
       ps.forEach((p, i) => {
         argList.push(p);
         if (i < ps.length - 1) argList.push(", ");
       });
-      return createNode(this, [member.toNode(), "(", ...argList, ")"]);
+      const res = createNode(this, [member.toNode(), "(", ...argList, ")"]);
+      currentSubject = oldSubject;
+      return res;
     },
     Call_run(_run, id, args) {
+      const oldSubject = currentSubject;
       const ps = args.children.map(a => a.toNode());
       const argList = [];
       ps.forEach((p, i) => {
         argList.push(p);
         if (i < ps.length - 1) argList.push(", ");
       });
-      return createNode(this, [id.toNode(), "(", ...argList, ")"]);
+      const res = createNode(this, [id.toNode(), "(", ...argList, ")"]);
+      currentSubject = oldSubject;
+      return res;
     },
     Arg(child) { return child.toNode(); },
     Arg_paren(_lp, expr, _rp) { return createNode(this, ["(", expr.toNode(), ")"]); },
     List(_list, args) {
+      const oldSubject = currentSubject;
       const ps = args.children.map(a => a.toNode());
       const argList = [];
       ps.forEach((p, i) => {
         argList.push(p);
         if (i < ps.length - 1) argList.push(", ");
       });
-      return createNode(this, ["[", ...argList, "]"]);
+      const res = createNode(this, ["[", ...argList, "]"]);
+      currentSubject = oldSubject;
+      return res;
     },
     ItemAccess(_item, index, _from, list) { return createNode(this, [list.toNode(), "[", index.toNode(), "]"]); },
     string(child) { return child.toNode(); },
@@ -1344,7 +1365,7 @@ function __kadence_add(parent, child) {
     },
 
     ListExpr_sort(_sort, expr) {
-      return `[...${expr.toJS()}].sort()`;
+      return `[...${expr.toJS()}].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))`;
     },
     ListExpr_reverse(_reverse, expr) {
       return `[...${expr.toJS()}].reverse()`;
@@ -1505,28 +1526,28 @@ function __kadence_add(parent, child) {
       return `Array.from({length: ${end.toJS()} - ${start.toJS()} + 1}, (_, i) => i + ${start.toJS()})`;
     },
     Lambda_simple(param, _arrow, body) {
+      const oldSubject = currentSubject;
       const asyncKw = body.hasAwait() ? "async " : "";
-      return `${asyncKw}${param.toJS()} => ${body.toJS()}`;
+      const res = `${asyncKw}${param.toJS()} => ${body.toJS()}`;
+      currentSubject = oldSubject;
+      return res;
     },
     Lambda_multi(_lp, params, _rp, _arrow, body) {
+      const oldSubject = currentSubject;
       const asyncKw = body.hasAwait() ? "async " : "";
-      return `${asyncKw}(${params
+      const res = `${asyncKw}(${params
         .asIteration()
         .children.map((p) => p.toJS())
         .join(", ")}) => ${body.toJS()}`;
+      currentSubject = oldSubject;
+      return res;
     },
-    MemberAccess_chain(id, segs) {
-      let r = id.toJS();
+    MemberAccess(base, segs) {
+      let r = base.toJS();
       for (const seg of segs.children) {
         r = r + seg.toJS();
       }
       return r;
-    },
-    MemberAccess_this(_this) {
-      return "this";
-    },
-    MemberAccess_super(_super) {
-      return "super";
     },
     MemberAccessSeg_prop(_dot, prop) {
       return `.${prop.toJS()}`;
@@ -1838,19 +1859,31 @@ function __kadence_add(parent, child) {
       return child.toJS();
     },
     Primary_paren(_lp, expr, _rp) {
-      return `(${expr.toJS()})`;
+      const oldSubject = currentSubject;
+      const res = `(${expr.toJS()})`;
+      currentSubject = oldSubject;
+      return res;
     },
     Call_paren(id, _lp, args, _rp) {
+      const oldSubject = currentSubject;
       const argList = args.asIteration().children.map((a) => a.toJS()).join(", ");
-      return `${id.toJS()}(${argList})`;
+      const res = `${id.toJS()}(${argList})`;
+      currentSubject = oldSubject;
+      return res;
     },
     RunCall(_run, member, args) {
+      const oldSubject = currentSubject;
       const argList = args.children.map((a) => a.toJS()).join(", ");
-      return `${member.toJS()}(${argList})`;
+      const res = `${member.toJS()}(${argList})`;
+      currentSubject = oldSubject;
+      return res;
     },
     Call_run(_run, id, args) {
+      const oldSubject = currentSubject;
       const argList = args.children.map((a) => a.toJS()).join(", ");
-      return `${id.toJS()}(${argList})`;
+      const res = `${id.toJS()}(${argList})`;
+      currentSubject = oldSubject;
+      return res;
     },
     Arg(child) {
       return child.toJS();
@@ -1859,18 +1892,16 @@ function __kadence_add(parent, child) {
       return `(${expr.toJS()})`;
     },
     List(_list, args) {
+      const oldSubject = currentSubject;
       const argList = args.children.map((a) => a.toJS()).join(", ");
-      return `[${argList}]`;
+      const res = `[${argList}]`;
+      currentSubject = oldSubject;
+      return res;
     },
     ItemAccess(_item, index, _from, list) {
       return `${list.toJS()}[${index.toJS()}]`;
     },
-    MemberAccess_this(_this) {
-      return "this";
-    },
-    MemberAccess_super(_super) {
-      return "super";
-    },
+
     string(child) {
       return child.toJS();
     },
@@ -2235,9 +2266,9 @@ analyzer.addOperation("analyze(context)", {
     params.asIteration().children.forEach((p) => lambdaContext.symbols.add(p.sourceString));
     body.analyze(lambdaContext);
   },
-  MemberAccess_chain(id, segs) {
+  MemberAccess(base, segs) {
     const context = this.args.context;
-    const name = id.sourceString;
+    const name = base.sourceString;
     const globals = [
       "document",
       "window",
@@ -2277,19 +2308,19 @@ analyzer.addOperation("analyze(context)", {
       "decodeURIComponent",
       "globalThis",
     ];
-    if (!context.symbols.has(name) && !globals.includes(name)) {
-      semanticError(id, `Semantic Error: Using undefined variable "${name}"`);
+    // 'this' and 'super' are always allowed
+    if (name !== "this" && name !== "super") {
+      if (!context.symbols.has(name) && !globals.includes(name)) {
+        semanticError(base, `Semantic Error: Using undefined variable "${name}"`);
+      }
     }
-    segs.children.forEach((seg) => seg.analyze(this.args.context));
+    segs.children.forEach((seg) => seg.analyze(context));
   },
-  MemberAccess_this(_this) {
-    // 'this' is always allowed
-  },
-  MemberAccessSeg_prop(_dot, _prop) {},
+  MemberAccessSeg_prop(_dot, _prop) { },
   MemberAccessSeg_index(_lb, expr, _rb) {
     expr.analyze(this.args.context);
   },
-  MemberAccessSeg_opt_prop(_opt, _prop) {},
+  MemberAccessSeg_opt_prop(_opt, _prop) { },
   MemberAccessSeg_opt_index(_opt, _lb, expr, _rb) {
     expr.analyze(this.args.context);
   },

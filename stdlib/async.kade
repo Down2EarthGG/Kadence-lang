@@ -2,8 +2,9 @@ note: Async utilities for Kadence
 
 let mod = run require "./async-helpers.js"
 
-export function delay milliseconds
-    return run mod.delay milliseconds
+export async function delay milliseconds
+    let s = milliseconds / 1000
+    wait s seconds
 end
 
 export function timeout promise milliseconds
@@ -30,8 +31,13 @@ export function race promises
     return Promise.race(promises)
 end
 
-export function sequential tasks
-    return run mod.sequential tasks
+export async function sequential tasks
+    let results = list
+    for each task in tasks
+        let res = await (run task)
+        add res to results
+    end
+    return results
 end
 
 export function waterfall tasks initialValue
